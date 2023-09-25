@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="04f1b534-0624-4f8b-bf25-b064eaa2fef8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Chess.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/Bishop.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/Bishop.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/ChessBoard.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/ChessBoard.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/ChessGame$TeamColor.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/ChessGame.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/ChessGame.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/ChessMove.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/ChessMove.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/ChessPiece$PieceType.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/ChessPiece.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/ChessPiece.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/ChessPosition.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/ChessPosition.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/InvalidMoveException.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/InvalidMoveException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/King.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/King.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/Knight.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/Knight.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/Main.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/MyBoard.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/MyBoard.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/MyChessMove.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/MyPosition.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/MyPosition.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/Pawn.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/Pawn.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/Queen.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/Queen.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/Rook.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/chess/Rook.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/starter/chess/ChessBoard.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/starter/chess/ChessGame.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/starter/chess/ChessMove.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/starter/chess/ChessPiece.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/starter/chess/ChessPosition.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/starter/chess/InvalidMoveException.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 5
+}]]></component>
+  <component name="ProjectId" id="2Vu9InQma2q2urELpKCm8HmJZdQ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="04f1b534-0624-4f8b-bf25-b064eaa2fef8" name="Changes" comment="" />
+      <created>1695675021164</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1695675021164</updated>
+      <workItem from="1695675022181" duration="873000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+</project>
