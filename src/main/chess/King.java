@@ -57,32 +57,6 @@ public class King implements ChessPiece{
                     else moves.add(new MyChessMove(myPosition, curSquare));
                 }
             }
-            if(!hasMoved()) { //castling
-                int direction = (getTeamColor() == ChessGame.TeamColor.WHITE) ? 1 : -1;
-                ChessPiece bishopKSide = board.getPiece(new MyPosition(row+direction,col));
-                ChessPiece knightKSide = board.getPiece(new MyPosition(row+direction*2,col));
-                ChessPiece rookKSide = board.getPiece(new MyPosition(row+direction*3,col));
-
-                ChessPiece queen = board.getPiece(new MyPosition(row-direction,col));
-                ChessPiece bishopQSide = board.getPiece(new MyPosition(row-direction*2,col));
-                ChessPiece knightQSide = board.getPiece(new MyPosition(row-direction*3,col));
-                ChessPiece rookQSide = board.getPiece(new MyPosition(row-direction*4,col));
-
-                if(bishopKSide == null && knightKSide == null && rookKSide != null) {
-                    if(rookKSide.getPieceType() == PieceType.ROOK) {
-                        Rook rook = (Rook) rookKSide;
-                        if (!rook.hasMoved())
-                            moves.add(new MyChessMove(myPosition, new MyPosition(row + direction * 2, col)));
-                    }
-                }
-                if(bishopQSide == null && knightQSide == null && queen == null && rookQSide != null) {
-                    if(rookQSide.getPieceType() == PieceType.ROOK) {
-                        Rook rook = (Rook) rookQSide;
-                        if (!rook.hasMoved())
-                            moves.add(new MyChessMove(myPosition, new MyPosition(row + direction * 3, col)));
-                    }
-                }
-            }
         }
         return moves;
     }

@@ -30,50 +30,49 @@ public class Bishop implements ChessPiece{
         List<ChessMove> moves = new ArrayList<>();
         int i = row;
         int j = col;
-        if(row < 8 && col < 8) {
-            while (i <= 8 && j <= 8) {
-                i++;
-                j++;
-                if (checkSquare(board, myPosition, moves, i, j) == null) break;
-                moves.add(checkSquare(board, myPosition, moves, i, j));
-            }
+        while (i < 8 && j < 8) {
+            i++;
+            j++;
+            if (checkSquare(board, myPosition, moves, i, j) == null) break;
+            moves.add(checkSquare(board, myPosition, moves, i, j));
         }
-        if(row > 1 && col < 8) {
-            while (i >= 1 && j <= 8) {
-                i--;
-                j++;
-                if (checkSquare(board, myPosition, moves, i, j) == null) break;
-                moves.add(checkSquare(board, myPosition, moves, i, j));
-            }
+        i = row;
+        j = col;
+        while (i > 1 && j < 8) {
+            i--;
+            j++;
+            if (checkSquare(board, myPosition, moves, i, j) == null) break;
+            moves.add(checkSquare(board, myPosition, moves, i, j));
         }
-        if(row > 1 && col > 1) {
-            while (i >= 1 && j >= 1) {
-                i--;
-                j--;
-                if (checkSquare(board, myPosition, moves, i, j) == null) break;
-                moves.add(checkSquare(board, myPosition, moves, i, j));
-            }
+        i = row;
+        j = col;
+        while (i > 1 && j > 1) {
+            i--;
+            j--;
+            if (checkSquare(board, myPosition, moves, i, j) == null) break;
+            moves.add(checkSquare(board, myPosition, moves, i, j));
         }
-        if(row < 8 && col > 1) {
-            while (i <= 8 && j >= 1) {
-                i++;
-                j--;
-                if (checkSquare(board, myPosition, moves, i, j) == null) break;
-                moves.add(checkSquare(board, myPosition, moves, i, j));
-            }
+        i = row;
+        j = col;
+        while (i < 8 && j > 1) {
+            i++;
+            j--;
+            if (checkSquare(board, myPosition, moves, i, j) == null) break;
+            moves.add(checkSquare(board, myPosition, moves, i, j));
         }
         return moves;
     }
 
     private ChessMove checkSquare(ChessBoard board, ChessPosition myPosition, List<ChessMove> moves, int i, int j) {
         ChessPosition curSquare = new MyPosition(i, j);
-        if (board.getPiece(curSquare) == null) return new MyChessMove(myPosition, curSquare);
+        ChessMove res = null;
+        if (board.getPiece(curSquare) == null) res = new MyChessMove(myPosition, curSquare);
         else {
             ChessPiece curPiece = board.getPiece(curSquare);
             if (curPiece.getTeamColor() != getTeamColor() && curPiece.getPieceType() != PieceType.KING)
-                return new MyChessMove(myPosition, curSquare);
-            return null;
+                res = new MyChessMove(myPosition, curSquare);
         }
+        return res;
     }
 
     public String toString() {

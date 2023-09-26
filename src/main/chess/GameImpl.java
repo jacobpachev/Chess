@@ -22,6 +22,7 @@ public class GameImpl implements ChessGame{
     @Override
     public Collection<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece piece = board.getPiece(startPosition);
+        //TODO: Add castling functionality
         if(piece == null) return null;
         return piece.pieceMoves(board,startPosition);
     }
@@ -31,12 +32,13 @@ public class GameImpl implements ChessGame{
         ChessPiece startPiece = board.getPiece(move.getStartPosition());
         if(startPiece == null) throw new InvalidMoveException("No piece to move");
         if(startPiece.getTeamColor() != getTeamTurn()) throw new InvalidMoveException("Wrong color");
-        if(startPiece.pieceMoves(board, move.getStartPosition()).contains(move)) {
+        if(validMoves(move.getStartPosition()).contains(move)) {
             board.clearSquare(move.getEndPosition());
             board.addPiece(move.getEndPosition(), startPiece);
             board.getPiece(move.getEndPosition()).setMoved(true);
             board.clearSquare(move.getStartPosition());
         }
+        else throw new InvalidMoveException("Illegal move");
     }
 
     @Override
