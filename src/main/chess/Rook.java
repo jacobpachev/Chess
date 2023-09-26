@@ -76,8 +76,12 @@ public class Rook implements ChessPiece{
                 }
             }
         }
+
         return moves;
     }
 
+    public String toString() {
+        return getTeamColor() == ChessGame.TeamColor.BLACK ? "r" :"R";
+    }
 }
 

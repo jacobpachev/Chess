@@ -65,4 +65,8 @@ public class Pawn implements ChessPiece{
 
         return moves;
     }
+
+    public String toString() {
+        return getTeamColor() == ChessGame.TeamColor.BLACK ? "p" :"P";
+    }
 }

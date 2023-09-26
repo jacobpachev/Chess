@@ -1,6 +1,9 @@
 package chess;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class Knight implements ChessPiece{
     ChessGame.TeamColor color;
@@ -23,6 +26,29 @@ public class Knight implements ChessPiece{
 
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        return null;
+        List<ChessMove> moves = new ArrayList<>();
+        List<Integer> rowIncrements = List.of(2,2,1,-1,-2,-2,1,-1);
+        List<Integer> colIncrements = List.of(1,-1,2,2,1,-1,-2,-2);
+        int row = myPosition.getRow();
+        int col = myPosition.getColumn();
+        for(int i = 0; i < rowIncrements.size(); i++) {
+            int curRow = rowIncrements.get(i)+row;
+            int curCol = colIncrements.get(i)+col;
+            if(curRow <= 8 && curRow >= 1 && curCol <= 8 && curCol >= 1) {
+                ChessPosition curSquare = new MyPosition(curRow, curCol);
+                ChessPiece piece = board.getPiece(curSquare);
+                if(piece != null) {
+                    if(piece.getPieceType() != PieceType.KING) {
+                        if(piece.getTeamColor() != getTeamColor()) moves.add(new MyChessMove(myPosition, curSquare));
+                    }
+                }
+                else moves.add(new MyChessMove(myPosition, curSquare));
+            }
+        }
+        return moves;
+    }
+
+    public String toString() {
+        return getTeamColor() == ChessGame.TeamColor.BLACK ? "n" :"N";
     }
 }

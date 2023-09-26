@@ -1,6 +1,8 @@
 package chess;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class Queen implements ChessPiece{
     ChessGame.TeamColor color;
@@ -23,6 +25,16 @@ public class Queen implements ChessPiece{
 
     @Override
     public Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition) {
-        return null;
+
+        List<ChessMove> moves = new ArrayList<>();
+        ChessPiece rook = new Rook(getTeamColor());
+        ChessPiece bishop = new Bishop(getTeamColor());
+        moves.addAll(rook.pieceMoves(board, myPosition));
+        moves.addAll(bishop.pieceMoves(board, myPosition));
+        return moves;
+    }
+
+    public String toString() {
+        return getTeamColor() == ChessGame.TeamColor.BLACK ? "q" :"Q";
     }
 }
