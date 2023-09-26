@@ -7,9 +7,11 @@ import java.util.List;
 public class Bishop implements ChessPiece{
     ChessGame.TeamColor color;
     PieceType pieceType;
+    boolean moved;
     public Bishop(ChessGame.TeamColor color) {
         this.color = color;
         pieceType = PieceType.BISHOP;
+        moved = false;
     }
     @Override
     public ChessGame.TeamColor getTeamColor() {
@@ -76,6 +78,14 @@ public class Bishop implements ChessPiece{
 
     public String toString() {
         return getTeamColor() == ChessGame.TeamColor.BLACK ? "b" :"B";
+    }
+
+    public boolean hasMoved() {
+        return moved;
+    }
+
+    public void setMoved(boolean moved) {
+        this.moved = moved;
     }
 }
 

@@ -6,11 +6,11 @@ import java.util.List;
 
 public class Queen implements ChessPiece{
     ChessGame.TeamColor color;
-    boolean hasMoved;
+    boolean moved;
     PieceType pieceType;
     public Queen(ChessGame.TeamColor color) {
         this.color = color;
-        hasMoved = false;
+        moved = false;
         pieceType = PieceType.QUEEN;
     }
     @Override
@@ -32,6 +32,13 @@ public class Queen implements ChessPiece{
         moves.addAll(rook.pieceMoves(board, myPosition));
         moves.addAll(bishop.pieceMoves(board, myPosition));
         return moves;
+    }
+
+    public boolean hasMoved() {
+        return moved;
+    }
+    public void setMoved(boolean moved) {
+        this.moved = moved;
     }
 
     public String toString() {

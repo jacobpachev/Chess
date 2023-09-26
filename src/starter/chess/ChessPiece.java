@@ -7,6 +7,8 @@ import java.util.Collection;
  */
 public interface ChessPiece {
 
+    void setMoved(boolean b);
+
     /**
      * The various different chess piece options
      */
@@ -35,4 +37,6 @@ public interface ChessPiece {
      * @return Collection of valid moves
      */
     Collection<ChessMove> pieceMoves(ChessBoard board, ChessPosition myPosition);
+
+    boolean hasMoved();
 }

@@ -7,11 +7,11 @@ import java.util.List;
 
 public class King implements ChessPiece{
     ChessGame.TeamColor color;
-    boolean hasMoved;
+    boolean moved;
     PieceType pieceType;
     public King(ChessGame.TeamColor color) {
         this.color = color;
-        hasMoved = false;
+        moved = false;
         pieceType = PieceType.KING;
     }
     @Override
@@ -57,7 +57,7 @@ public class King implements ChessPiece{
                     else moves.add(new MyChessMove(myPosition, curSquare));
                 }
             }
-            if(!hasMoved) { //castling
+            if(!hasMoved()) { //castling
                 int direction = (getTeamColor() == ChessGame.TeamColor.WHITE) ? 1 : -1;
                 ChessPiece bishopKSide = board.getPiece(new MyPosition(row+direction,col));
                 ChessPiece knightKSide = board.getPiece(new MyPosition(row+direction*2,col));
@@ -71,20 +71,28 @@ public class King implements ChessPiece{
                 if(bishopKSide == null && knightKSide == null && rookKSide != null) {
                     if(rookKSide.getPieceType() == PieceType.ROOK) {
                         Rook rook = (Rook) rookKSide;
-                        if (!rook.hasMoved)
+                        if (!rook.hasMoved())
                             moves.add(new MyChessMove(myPosition, new MyPosition(row + direction * 2, col)));
                     }
                 }
                 if(bishopQSide == null && knightQSide == null && queen == null && rookQSide != null) {
                     if(rookQSide.getPieceType() == PieceType.ROOK) {
                         Rook rook = (Rook) rookQSide;
-                        if (!rook.hasMoved)
+                        if (!rook.hasMoved())
                             moves.add(new MyChessMove(myPosition, new MyPosition(row + direction * 3, col)));
                     }
                 }
             }
         }
         return moves;
+    }
+
+    public boolean hasMoved() {
+        return moved;
+    }
+
+    public void setMoved(boolean moved) {
+        this.moved = moved;
     }
 
     public String toString() {

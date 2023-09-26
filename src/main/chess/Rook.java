@@ -6,11 +6,11 @@ import java.util.List;
 
 public class Rook implements ChessPiece{
     ChessGame.TeamColor color;
-    boolean hasMoved;
+    boolean moved;
     PieceType pieceType;
     public Rook(ChessGame.TeamColor color) {
         this.color = color;
-        hasMoved = false;
+        moved = false;
         pieceType = PieceType.ROOK;
     }
     @Override
@@ -78,6 +78,13 @@ public class Rook implements ChessPiece{
         }
 
         return moves;
+    }
+
+    public boolean hasMoved() {
+        return moved;
+    }
+    public void setMoved(boolean moved) {
+        this.moved = moved;
     }
 
     public String toString() {

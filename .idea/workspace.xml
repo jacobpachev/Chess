@@ -4,29 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="04f1b534-0624-4f8b-bf25-b064eaa2fef8" name="Changes" comment="Setting up project, made chess pieces and set up Rook and Pawn moves">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/junit_jupiter_params.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/chess/Bishop.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/chess/King.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/chess/Knight.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/chess/Main.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/chess/MyBoard.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/chess/MyPosition.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/chess/Pawn.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/chess/Rook.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/passoffTests/TestFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/passoffTests/chessTests/ChessBoardTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/passoffTests/chessTests/ChessGameTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/passoffTests/chessTests/chessExtraCredit/CastlingTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/passoffTests/chessTests/chessExtraCredit/EnPassantTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/passoffTests/chessTests/chessPieceTests/BishopMoveTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/passoffTests/chessTests/chessPieceTests/KingMoveTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/passoffTests/chessTests/chessPieceTests/KnightMoveTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/passoffTests/chessTests/chessPieceTests/PawnMoveTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/passoffTests/chessTests/chessPieceTests/QueenMoveTests.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/passoffTests/chessTests/chessPieceTests/RookMoveTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="04f1b534-0624-4f8b-bf25-b064eaa2fef8" name="Changes" comment="Finished setting up legal moves for other pieces, fixed project structure">
+      <change afterPath="$PROJECT_DIR$/src/main/chess/GameImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Chess.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Chess.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/chess/Bishop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/Bishop.java" afterDir="false" />
@@ -37,11 +16,20 @@
       <change beforePath="$PROJECT_DIR$/src/main/chess/Pawn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/Pawn.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/chess/Queen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/Queen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/chess/Rook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/Rook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/starter/chess/ChessBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/starter/chess/ChessBoard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/starter/chess/ChessPiece.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/starter/chess/ChessPiece.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -80,6 +68,7 @@
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -117,7 +106,7 @@
       <workItem from="1695675022181" duration="4139000" />
       <workItem from="1695690741123" duration="38000" />
       <workItem from="1695690785402" duration="11000" />
-      <workItem from="1695690890561" duration="7881000" />
+      <workItem from="1695690890561" duration="11765000" />
     </task>
     <task id="LOCAL-00001" summary="Setting up project, made chess pieces and set up Rook and Pawn moves">
       <option name="closed" value="true" />
@@ -127,15 +116,35 @@
       <option name="project" value="LOCAL" />
       <updated>1695676079833</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Finished setting up legal moves for other pieces, fixed project structure">
+      <option name="closed" value="true" />
+      <created>1695702802651</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1695702802651</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="Setting up project, made chess pieces and set up Rook and Pawn moves" />
-    <option name="LAST_COMMIT_MESSAGE" value="Setting up project, made chess pieces and set up Rook and Pawn moves" />
+    <MESSAGE value="Finished setting up legal moves for other pieces, fixed project structure" />
+    <option name="LAST_COMMIT_MESSAGE" value="Finished setting up legal moves for other pieces, fixed project structure" />
   </component>
 </project>

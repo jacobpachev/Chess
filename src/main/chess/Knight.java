@@ -7,11 +7,11 @@ import java.util.List;
 
 public class Knight implements ChessPiece{
     ChessGame.TeamColor color;
-    boolean hasMoved;
+    boolean moved;
     PieceType pieceType;
     public Knight(ChessGame.TeamColor color) {
         this.color = color;
-        hasMoved = false;
+        moved = false;
         pieceType = PieceType.KNIGHT;
     }
     @Override
@@ -46,6 +46,13 @@ public class Knight implements ChessPiece{
             }
         }
         return moves;
+    }
+
+    public boolean hasMoved() {
+        return moved;
+    }
+    public void setMoved(boolean moved) {
+        this.moved = moved;
     }
 
     public String toString() {

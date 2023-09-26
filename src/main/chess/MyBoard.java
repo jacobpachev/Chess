@@ -15,6 +15,8 @@ public class MyBoard implements ChessBoard{
         board.put(position, piece);
     }
 
+    public void clearSquare(ChessPosition position) { board.put(position, null); }
+
     @Override
     public ChessPiece getPiece(ChessPosition position) {
         for(Map.Entry<ChessPosition, ChessPiece> entry : board.entrySet()) {

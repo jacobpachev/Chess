@@ -6,12 +6,12 @@ import java.util.List;
 
 public class Pawn implements ChessPiece{
     ChessGame.TeamColor color;
-    boolean hasMoved;
+    boolean moved;
     boolean firstMove; //for en-passant
     PieceType pieceType;
     public Pawn(ChessGame.TeamColor color) {
         this.color = color;
-        hasMoved = false;
+        moved = false;
         firstMove = false;
         pieceType = PieceType.PAWN;
     }
@@ -51,19 +51,30 @@ public class Pawn implements ChessPiece{
         ChessPosition square2 = new MyPosition(row-1, col+direction*1);
         ChessPiece diagonal1 = board.getPiece(square1);
         ChessPiece diagonal2 = board.getPiece(square2);
-
-        if(diagonal1 != null && diagonal1.getTeamColor() != getTeamColor()) moves.add(new MyChessMove(myPosition, square1));
-        if(diagonal2 != null && diagonal1.getTeamColor() != getTeamColor()) moves.add(new MyChessMove(myPosition, square2));
+        if(diagonal1 != null) {
+            if (diagonal1.getTeamColor() != getTeamColor()) moves.add(new MyChessMove(myPosition, square1));
+        }
+        if(diagonal2 != null) {
+            if (diagonal2.getTeamColor() != getTeamColor())
+                moves.add(new MyChessMove(myPosition, square2));
+        }
         ChessPosition squareAhead = new MyPosition(row, col+direction*1);
         if(board.getPiece(squareAhead) != null)
             return moves;
         moves.add(new MyChessMove(myPosition, squareAhead));
-        if(!hasMoved) {
+        if(!hasMoved()) {
             squareAhead = new MyPosition(row, col+direction*2);
             if(board.getPiece(squareAhead) == null) moves.add(new MyChessMove(myPosition, squareAhead));
         }
 
         return moves;
+    }
+
+    public boolean hasMoved() {
+        return moved;
+    }
+    public void setMoved(boolean moved) {
+        this.moved = moved;
     }
 
     public String toString() {
