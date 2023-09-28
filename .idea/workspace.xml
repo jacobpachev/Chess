@@ -4,14 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="04f1b534-0624-4f8b-bf25-b064eaa2fef8" name="Changes" comment="Fixed some check bugs, king still can move into check :(">
+    <list default="true" id="04f1b534-0624-4f8b-bf25-b064eaa2fef8" name="Changes" comment="Fixed more check bugs">
+      <change afterPath="$PROJECT_DIR$/.attach_pid11992" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/chess/Bishop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/Bishop.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/chess/GameImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/GameImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/chess/Knight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/Knight.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/chess/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/chess/Pawn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/Pawn.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/chess/Rook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/Rook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/chess/MyChessMove.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/MyChessMove.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +126,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="passoffTests.chessTests.chessPieceTests in Chess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="KingMoveTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Chess" />
       <extension name="coverage">
         <pattern>
@@ -137,7 +135,8 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="passoffTests.chessTests.chessPieceTests" />
-      <option name="TEST_OBJECT" value="package" />
+      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.chessPieceTests.KingMoveTests" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -145,10 +144,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.ChessGameTests" />
-        <item itemvalue="JUnit.ChessGameTests$ValidMoveTests.kingInDanger" />
         <item itemvalue="Application.Main" />
+        <item itemvalue="JUnit.KingMoveTests" />
+        <item itemvalue="JUnit.ChessGameTests$ValidMoveTests.kingInDanger" />
         <item itemvalue="JUnit.ChessBoardTests" />
-        <item itemvalue="JUnit.passoffTests.chessTests.chessPieceTests in Chess" />
       </list>
     </recent_temporary>
   </component>
@@ -221,7 +220,23 @@
       <option name="project" value="LOCAL" />
       <updated>1695879015362</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="Fixed more check bugs">
+      <option name="closed" value="true" />
+      <created>1695912959027</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1695912959027</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Fixed more check bugs">
+      <option name="closed" value="true" />
+      <created>1695913012826</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1695913012826</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -246,6 +261,7 @@
     <MESSAGE value="All pieces except pawn passed" />
     <MESSAGE value="All moves for all pieces pass!" />
     <MESSAGE value="Fixed some check bugs, king still can move into check :(" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed some check bugs, king still can move into check :(" />
+    <MESSAGE value="Fixed more check bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="Fixed more check bugs" />
   </component>
 </project>

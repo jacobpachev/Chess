@@ -37,6 +37,7 @@ public class GameImpl implements ChessGame{
                 if (endSquarePiece != null) {
                     if (endSquarePiece.getPieceType() != ChessPiece.PieceType.KING) moves.add(move);
                 }
+                else moves.add(move);
             }
             board.clearSquare(endPos);
             board.addPiece(endPos, endSquarePiece);
@@ -49,13 +50,26 @@ public class GameImpl implements ChessGame{
     public void makeMove(ChessMove move) throws InvalidMoveException {
         ChessPosition startPos = move.getStartPosition();
         ChessPosition endPos = move.getEndPosition();
+        boolean edge = (teamTurn == ChessGame.TeamColor.WHITE) ? endPos.getRow() == 8 : endPos.getRow() == 1;
         ChessPiece startPiece = board.getPiece(startPos);
         TeamColor otherTeam = (teamTurn == TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
         if(startPiece == null) throw new InvalidMoveException("No piece to move");
         if(startPiece.getTeamColor() != getTeamTurn()) throw new InvalidMoveException("Wrong color");
+
         if(validMoves(startPos).contains(move)) {
             ChessPiece endSquarePiece = board.getPiece(endPos);
-            tryMove(startPos, endPos, startPiece);
+            if(startPiece.getPieceType() == ChessPiece.PieceType.PAWN && edge) {
+                    board.clearSquare(endPos);
+                    switch(move.getPromotionPiece()) {
+                        case KNIGHT -> board.addPiece(endPos, new Knight(teamTurn));
+                        case BISHOP -> board.addPiece(endPos, new Bishop(teamTurn));
+                        case ROOK -> board.addPiece(endPos, new Rook(teamTurn));
+                        case QUEEN -> board.addPiece(endPos, new Queen(teamTurn));
+                    }
+                    board.getPiece(endPos).setMoved(true);
+                    board.clearSquare(startPos);
+            }
+            else tryMove(startPos, endPos, startPiece);
             if(isInCheck(teamTurn)) {
                 board.clearSquare(endPos);
                 board.addPiece(endPos, endSquarePiece);

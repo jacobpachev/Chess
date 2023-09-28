@@ -37,6 +37,7 @@ public class MyChessMove implements ChessMove {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         MyChessMove that = (MyChessMove) o;
+
         return promotionPiece == that.promotionPiece && Objects.equals(start, that.start) && Objects.equals(end, that.end);
     }
 
