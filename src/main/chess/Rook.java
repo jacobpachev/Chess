@@ -34,7 +34,7 @@ public class Rook implements ChessPiece{
                 if (board.getPiece(curSquare) == null) moves.add(new MyChessMove(myPosition, curSquare));
                 else {
                     ChessPiece curPiece = board.getPiece(curSquare);
-                    if (curPiece.getTeamColor() != getTeamColor() && curPiece.getPieceType() != PieceType.KING)
+                    if (curPiece.getTeamColor() != getTeamColor())
                         moves.add(new MyChessMove(myPosition, curSquare));
                     break;
                 }
@@ -46,7 +46,7 @@ public class Rook implements ChessPiece{
                 if (board.getPiece(curSquare) == null) moves.add(new MyChessMove(myPosition, curSquare));
                 else {
                     ChessPiece curPiece = board.getPiece(curSquare);
-                    if (curPiece.getTeamColor() != getTeamColor() && curPiece.getPieceType() != PieceType.KING)
+                    if (curPiece.getTeamColor() != getTeamColor())
                         moves.add(new MyChessMove(myPosition, curSquare));
                     break;
                 }
@@ -58,7 +58,7 @@ public class Rook implements ChessPiece{
                 if (board.getPiece(curSquare) == null) moves.add(new MyChessMove(myPosition, curSquare));
                 else {
                     ChessPiece curPiece = board.getPiece(curSquare);
-                    if (curPiece.getTeamColor() != getTeamColor() && curPiece.getPieceType() != PieceType.KING)
+                    if (curPiece.getTeamColor() != getTeamColor())
                         moves.add(new MyChessMove(myPosition, curSquare));
                     break;
                 }
@@ -70,7 +70,7 @@ public class Rook implements ChessPiece{
                 if (board.getPiece(curSquare) == null) moves.add(new MyChessMove(myPosition, curSquare));
                 else {
                     ChessPiece curPiece = board.getPiece(curSquare);
-                    if (curPiece.getTeamColor() != getTeamColor() && curPiece.getPieceType() != PieceType.KING)
+                    if (curPiece.getTeamColor() != getTeamColor())
                         moves.add(new MyChessMove(myPosition, curSquare));
                     break;
                 }

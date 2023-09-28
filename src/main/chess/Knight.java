@@ -38,9 +38,7 @@ public class Knight implements ChessPiece{
                 ChessPosition curSquare = new MyPosition(curRow, curCol);
                 ChessPiece piece = board.getPiece(curSquare);
                 if(piece != null) {
-                    if(piece.getPieceType() != PieceType.KING) {
-                        if(piece.getTeamColor() != getTeamColor()) moves.add(new MyChessMove(myPosition, curSquare));
-                    }
+                    if(piece.getTeamColor() != getTeamColor()) moves.add(new MyChessMove(myPosition, curSquare));
                 }
                 else moves.add(new MyChessMove(myPosition, curSquare));
             }

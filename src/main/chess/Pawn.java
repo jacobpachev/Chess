@@ -54,7 +54,7 @@ public class Pawn implements ChessPiece{
         ChessPiece diagonal1 = board.getPiece(square1);
         ChessPiece diagonal2 = board.getPiece(square2);
         if(diagonal1 != null) {
-            if (diagonal1.getTeamColor() != getTeamColor() && diagonal1.getPieceType() != PieceType.KING){
+            if (diagonal1.getTeamColor() != getTeamColor()){
                 if(!edge) moves.add(new MyChessMove(myPosition, square1));
                 else {
                     moves.addAll(addAllPromotion(myPosition, square1));
@@ -62,7 +62,7 @@ public class Pawn implements ChessPiece{
             }
         }
         if(diagonal2 != null) {
-            if (diagonal2.getTeamColor() != getTeamColor() && diagonal2.getPieceType() != PieceType.KING) {
+            if (diagonal2.getTeamColor() != getTeamColor()) {
                 if(!edge) moves.add(new MyChessMove(myPosition, square2));
                 else {
                     moves.addAll(addAllPromotion(myPosition, square2));

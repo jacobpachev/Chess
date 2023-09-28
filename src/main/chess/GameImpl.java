@@ -33,8 +33,10 @@ public class GameImpl implements ChessGame{
             ChessPiece startPiece = board.getPiece(startPos);
             ChessPiece endSquarePiece = board.getPiece(endPos);
             tryMove(startPos, endPos, startPiece);
-            if(!isInCheck(teamTurn)) {
-                moves.add(move);
+            if(!isInCheck(piece.getTeamColor())) {
+                if (endSquarePiece != null) {
+                    if (endSquarePiece.getPieceType() != ChessPiece.PieceType.KING) moves.add(move);
+                }
             }
             board.clearSquare(endPos);
             board.addPiece(endPos, endSquarePiece);
@@ -90,7 +92,6 @@ public class GameImpl implements ChessGame{
             }
         }
         if(king == null) return inCheck;
-        board.clearSquare(kingPos); // Pieces can't take a king, but can move to the square king was on if empty
         for(ChessPosition pos : board.getBoard().keySet()) {
             ChessPiece curPiece = board.getPiece(pos);
             if(curPiece != null) {
@@ -103,7 +104,6 @@ public class GameImpl implements ChessGame{
                 }
             }
         }
-        board.addPiece(kingPos, king);
         return inCheck;
     }
 
