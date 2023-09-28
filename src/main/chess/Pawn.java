@@ -31,39 +31,53 @@ public class Pawn implements ChessPiece{
         int row = myPosition.getRow();
         int col = myPosition.getColumn();
         int direction = getTeamColor() == ChessGame.TeamColor.WHITE ? 1 : -1;
-        ChessPosition squareRight = new MyPosition(row+1, col);
-        ChessPosition squareLeft = new MyPosition(row-1, col);
+        boolean moved = (getTeamColor() == ChessGame.TeamColor.WHITE) ? row != 2 : row != 7;
+        boolean edge = (getTeamColor() == ChessGame.TeamColor.WHITE) ? row == 7 : row == 2;
+        ChessPosition squareRight = new MyPosition(row, col+1);
+        ChessPosition squareLeft = new MyPosition(row, col-1);
         ChessPiece side1;
         ChessPiece side2;
         if(board.getPiece(squareRight) != null){
             side1 = board.getPiece(squareRight);
             if(side1.getTeamColor() != getTeamColor()) {
-                moves.add(new MyChessMove(myPosition, new MyPosition(row+1,col+direction)));
+                moves.add(new MyChessMove(myPosition, new MyPosition(row+direction,col+1)));
             }
         }
         if(board.getPiece(squareLeft) != null){
             side2 = board.getPiece(squareLeft);
             if(side2.getTeamColor() != getTeamColor()) {
-                moves.add(new MyChessMove(myPosition, new MyPosition(row-1,col+direction)));
+                moves.add(new MyChessMove(myPosition, new MyPosition(row+direction,col-1)));
             }
         }
-        ChessPosition square1 = new MyPosition(row+1, col+direction);
-        ChessPosition square2 = new MyPosition(row-1, col+direction);
+        ChessPosition square1 = new MyPosition(row+direction, col+1);
+        ChessPosition square2 = new MyPosition(row+direction, col-1);
         ChessPiece diagonal1 = board.getPiece(square1);
         ChessPiece diagonal2 = board.getPiece(square2);
         if(diagonal1 != null) {
-            if (diagonal1.getTeamColor() != getTeamColor() && diagonal1.getPieceType() != PieceType.KING) moves.add(new MyChessMove(myPosition, square1));
+            if (diagonal1.getTeamColor() != getTeamColor() && diagonal1.getPieceType() != PieceType.KING){
+                if(!edge) moves.add(new MyChessMove(myPosition, square1));
+                else {
+                    moves.addAll(addAllPromotion(myPosition, square1));
+                }
+            }
         }
         if(diagonal2 != null) {
-            if (diagonal2.getTeamColor() != getTeamColor() && diagonal2.getPieceType() != PieceType.KING)
-                moves.add(new MyChessMove(myPosition, square2));
+            if (diagonal2.getTeamColor() != getTeamColor() && diagonal2.getPieceType() != PieceType.KING) {
+                if(!edge) moves.add(new MyChessMove(myPosition, square2));
+                else {
+                    moves.addAll(addAllPromotion(myPosition, square2));
+                }
+            }
         }
-        ChessPosition squareAhead = new MyPosition(row, col+direction);
+        ChessPosition squareAhead = new MyPosition(row+direction, col);
         if(board.getPiece(squareAhead) != null)
             return moves;
-        moves.add(new MyChessMove(myPosition, squareAhead));
-        if(!hasMoved()) {
-            squareAhead = new MyPosition(row, col+direction*2);
+        if(!edge) moves.add(new MyChessMove(myPosition, squareAhead));
+        else {
+            moves.addAll(addAllPromotion(myPosition, squareAhead));
+        }
+        if(!moved) {
+            squareAhead = new MyPosition(row+2*direction,col);
             if(board.getPiece(squareAhead) == null) moves.add(new MyChessMove(myPosition, squareAhead));
         }
 
@@ -79,5 +93,14 @@ public class Pawn implements ChessPiece{
 
     public String toString() {
         return getTeamColor() == ChessGame.TeamColor.BLACK ? "p" :"P";
+    }
+
+    public List<ChessMove> addAllPromotion(ChessPosition pos, ChessPosition endPos) {
+        var moves = new ArrayList<ChessMove>();
+        moves.add(new MyChessMove(PieceType.KNIGHT, pos, endPos));
+        moves.add(new MyChessMove(PieceType.BISHOP, pos, endPos));
+        moves.add(new MyChessMove(PieceType.ROOK, pos, endPos));
+        moves.add(new MyChessMove(PieceType.QUEEN, pos, endPos));
+        return moves;
     }
 }

@@ -136,7 +136,6 @@ public class BishopMoveTests {
         // + +
         validMoves.add(TestFactory.getNewMove(position, TestFactory.getNewPosition(6, 3), null));
         validMoves.add(TestFactory.getNewMove(position, enemyPiecePositions[1], null));
-        System.out.println(board);
 
         //check
         Assertions.assertEquals(validMoves, pieceMoves,

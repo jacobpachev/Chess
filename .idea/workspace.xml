@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="04f1b534-0624-4f8b-bf25-b064eaa2fef8" name="Changes" comment="Working on Game implementation">
+    <list default="true" id="04f1b534-0624-4f8b-bf25-b064eaa2fef8" name="Changes" comment="All pieces except pawn passed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/chess/Bishop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/Bishop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/chess/GameImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/GameImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/chess/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/chess/MyBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/MyBoard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/chess/Pawn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/Pawn.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/starter/chess/ChessBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/starter/chess/ChessBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/passoffTests/chessTests/chessPieceTests/BishopMoveTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/passoffTests/chessTests/chessPieceTests/BishopMoveTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,6 +108,21 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="PawnMoveTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Chess" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="passoffTests.chessTests.chessPieceTests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="passoffTests.chessTests.chessPieceTests" />
+      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.chessPieceTests.PawnMoveTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="passoffTests.chessTests.chessPieceTests in Chess" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Chess" />
       <extension name="coverage">
@@ -130,9 +140,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="JUnit.passoffTests.chessTests.chessPieceTests in Chess" />
+        <item itemvalue="JUnit.PawnMoveTests" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="JUnit.KingMoveTests" />
         <item itemvalue="JUnit.BishopMoveTests" />
-        <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
@@ -173,7 +184,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695740569176</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="All pieces except pawn passed">
+      <option name="closed" value="true" />
+      <created>1695862689572</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1695862689573</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -195,6 +214,7 @@
     <MESSAGE value="Setting up project, made chess pieces and set up Rook and Pawn moves" />
     <MESSAGE value="Finished setting up legal moves for other pieces, fixed project structure" />
     <MESSAGE value="Working on Game implementation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Working on Game implementation" />
+    <MESSAGE value="All pieces except pawn passed" />
+    <option name="LAST_COMMIT_MESSAGE" value="All pieces except pawn passed" />
   </component>
 </project>
