@@ -1,5 +1,7 @@
 package chess;
 
+import java.util.HashMap;
+
 /**
  * A chessboard that can hold and rearrange chess pieces
  */
@@ -19,11 +21,13 @@ public interface ChessBoard {
      */
     ChessPiece getPiece(ChessPosition position);
 
+    HashMap<ChessPosition, ChessPiece> getBoard();
+
     /**
      * Sets the board to the default starting board
      * (How the game of chess normally starts)
      */
     void resetBoard();
 
-    void clearSquare(ChessPosition endPosition);
+    void clearSquare(ChessPosition position);
 }

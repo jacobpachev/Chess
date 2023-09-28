@@ -38,27 +38,27 @@ public class Pawn implements ChessPiece{
         if(board.getPiece(squareRight) != null){
             side1 = board.getPiece(squareRight);
             if(side1.getTeamColor() != getTeamColor()) {
-                moves.add(new MyChessMove(myPosition, new MyPosition(row,col+direction*1)));
+                moves.add(new MyChessMove(myPosition, new MyPosition(row+1,col+direction)));
             }
         }
         if(board.getPiece(squareLeft) != null){
             side2 = board.getPiece(squareLeft);
             if(side2.getTeamColor() != getTeamColor()) {
-                moves.add(new MyChessMove(myPosition, new MyPosition(row,col+direction*1)));
+                moves.add(new MyChessMove(myPosition, new MyPosition(row-1,col+direction)));
             }
         }
-        ChessPosition square1 = new MyPosition(row+1, col+direction*1);
-        ChessPosition square2 = new MyPosition(row-1, col+direction*1);
+        ChessPosition square1 = new MyPosition(row+1, col+direction);
+        ChessPosition square2 = new MyPosition(row-1, col+direction);
         ChessPiece diagonal1 = board.getPiece(square1);
         ChessPiece diagonal2 = board.getPiece(square2);
         if(diagonal1 != null) {
-            if (diagonal1.getTeamColor() != getTeamColor()) moves.add(new MyChessMove(myPosition, square1));
+            if (diagonal1.getTeamColor() != getTeamColor() && diagonal1.getPieceType() != PieceType.KING) moves.add(new MyChessMove(myPosition, square1));
         }
         if(diagonal2 != null) {
-            if (diagonal2.getTeamColor() != getTeamColor())
+            if (diagonal2.getTeamColor() != getTeamColor() && diagonal2.getPieceType() != PieceType.KING)
                 moves.add(new MyChessMove(myPosition, square2));
         }
-        ChessPosition squareAhead = new MyPosition(row, col+direction*1);
+        ChessPosition squareAhead = new MyPosition(row, col+direction);
         if(board.getPiece(squareAhead) != null)
             return moves;
         moves.add(new MyChessMove(myPosition, squareAhead));

@@ -10,6 +10,7 @@ public class MyBoard implements ChessBoard{
     public MyBoard(){
         board = new HashMap<>();
     }
+    public HashMap<ChessPosition, ChessPiece> getBoard() {return board;}
     @Override
     public void addPiece(ChessPosition position, ChessPiece piece) {
         board.put(position, piece);
@@ -61,8 +62,8 @@ public class MyBoard implements ChessBoard{
         for(int i = 8; i >= 1; i--) {
             for(int j = 1; j <= 8; j++) {
                 boardString.append("|");
-                if(getPiece(new MyPosition(j,i)) == null) boardString.append(" ");
-                else boardString.append(getPiece(new MyPosition(j,i)).toString());
+                if(getPiece(new MyPosition(i,j)) == null) boardString.append(" ");
+                else boardString.append(getPiece(new MyPosition(i,j)).toString());
                 if(j == 8) boardString.append("|\n");
             }
         }

@@ -1,6 +1,7 @@
 package chess;
 
 import java.util.Collection;
+import java.util.HashMap;
 
 public class GameImpl implements ChessGame{
     TeamColor teamTurn;
@@ -43,7 +44,34 @@ public class GameImpl implements ChessGame{
 
     @Override
     public boolean isInCheck(TeamColor teamColor) {
-        return false;
+        TeamColor otherTeam = (teamColor == TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
+        boolean inCheck = false;
+        ChessPosition kingPos = null;
+        ChessPiece king = null;
+        for(ChessPosition pos : board.getBoard().keySet()) {
+            ChessPiece curPiece = board.getPiece(pos);
+            if(curPiece != null) {
+                if (curPiece.getPieceType() == ChessPiece.PieceType.KING && curPiece.getTeamColor() == teamColor) {
+                    kingPos = pos;
+                    king = curPiece;
+                }
+            }
+        }
+        board.clearSquare(kingPos); // Pieces can't take a king, but can move to the square king was on if empty
+        for(ChessPosition pos : board.getBoard().keySet()) {
+            ChessPiece curPiece = board.getPiece(pos);
+            if(curPiece != null) {
+                if (curPiece.getTeamColor() == otherTeam) {
+                    for (ChessMove move : curPiece.pieceMoves(board, pos)) {
+                        if (move.getEndPosition().equals(kingPos)) {
+                            inCheck = true;
+                        }
+                    }
+                }
+            }
+        }
+        board.addPiece(kingPos, king);
+        return inCheck;
     }
 
     @Override
