@@ -3,6 +3,7 @@ package chess;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 public class GameImpl implements ChessGame{
     TeamColor teamTurn;
@@ -123,12 +124,31 @@ public class GameImpl implements ChessGame{
 
     @Override
     public boolean isInCheckmate(TeamColor teamColor) {
-        return false;
+        return isInCheck(teamColor) && noMoves(teamColor, false, new King(teamColor));
     }
 
     @Override
     public boolean isInStalemate(TeamColor teamColor) {
-        return false;
+        return !isInCheck(teamColor) && noMoves(teamColor, true, null);
+    }
+
+    public boolean noMoves(TeamColor teamColor, boolean checkAllPieces, ChessPiece piece) {
+        var allBoard = List.copyOf(board.getBoard().keySet());
+        for(int i = 0; i < allBoard.size(); i++) {
+            ChessPosition pos = allBoard.get(i);
+            ChessPiece curPiece = board.getPiece(pos);
+            if(curPiece != null) {
+                if (curPiece.getTeamColor().equals(teamColor)) {
+                    if(checkAllPieces) {
+                        if (!validMoves(pos).isEmpty()) return false;
+                    }
+                    else {
+                        if (!validMoves(pos).isEmpty() && curPiece.equals(piece)) return false;
+                    }
+                }
+            }
+        }
+        return true;
     }
 
     @Override

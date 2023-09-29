@@ -3,16 +3,18 @@ package chess;
 public class Main {
     public static void main(String[] args) throws InvalidMoveException {
         ChessBoard board = new MyBoard();
-        ChessGame game = new GameImpl();
-        board.addPiece(new MyPosition(7,2), new Pawn(ChessGame.TeamColor.WHITE));
-//        board.addPiece(new MyPosition(6,5), new Pawn(ChessGame.TeamColor.WHITE));
-//        board.addPiece(new MyPosition(2,7), new Pawn(ChessGame.TeamColor.BLACK));
+        GameImpl game = new GameImpl();
+        board.addPiece(new MyPosition(4,6), new King(ChessGame.TeamColor.WHITE));
+        board.addPiece(new MyPosition(3,3), new Rook(ChessGame.TeamColor.BLACK));
+        board.addPiece(new MyPosition(7,3), new Bishop(ChessGame.TeamColor.BLACK));
+        board.addPiece(new MyPosition(5,4), new Pawn(ChessGame.TeamColor.BLACK));
+        board.addPiece(new MyPosition(7,4), new Queen(ChessGame.TeamColor.BLACK));
+        board.addPiece(new MyPosition(2,5), new Knight(ChessGame.TeamColor.BLACK));
+        board.addPiece(new MyPosition(5,8), new King(ChessGame.TeamColor.BLACK));
         game.setTeamTurn(ChessGame.TeamColor.WHITE);
         game.setBoard(board);
         System.out.println(board);
-        System.out.println(game.validMoves(new MyPosition(7,2)));
-        game.makeMove(new MyChessMove(ChessPiece.PieceType.QUEEN, new MyPosition(7,2), new MyPosition(8,2)));
-//        System.out.println(game.validMoves(new MyPosition(2,7)));
+        System.out.println(game.noMoves(ChessGame.TeamColor.WHITE, false, new King(ChessGame.TeamColor.WHITE)));
 
 
 
