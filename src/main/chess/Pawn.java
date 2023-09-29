@@ -12,7 +12,7 @@ public class Pawn implements ChessPiece{
     public Pawn(ChessGame.TeamColor color) {
         this.color = color;
         moved = false;
-        firstMove = false;
+        firstMove = true;
         pieceType = PieceType.PAWN;
     }
     @Override
@@ -33,19 +33,20 @@ public class Pawn implements ChessPiece{
         int direction = getTeamColor() == ChessGame.TeamColor.WHITE ? 1 : -1;
         boolean moved = (getTeamColor() == ChessGame.TeamColor.WHITE) ? row != 2 : row != 7;
         boolean edge = (getTeamColor() == ChessGame.TeamColor.WHITE) ? row == 7 : row == 2;
+        int rightRow = (getTeamColor() == ChessGame.TeamColor.WHITE) ? 5 : 4;
         ChessPosition squareRight = new MyPosition(row, col+1);
         ChessPosition squareLeft = new MyPosition(row, col-1);
         ChessPiece side1;
         ChessPiece side2;
         if(board.getPiece(squareRight) != null){
             side1 = board.getPiece(squareRight);
-            if(side1.getTeamColor() != getTeamColor()) {
+            if(side1.getTeamColor() != getTeamColor() && side1.isFirstMove() && row == rightRow) {
                 moves.add(new MyChessMove(myPosition, new MyPosition(row+direction,col+1)));
             }
         }
         if(board.getPiece(squareLeft) != null){
             side2 = board.getPiece(squareLeft);
-            if(side2.getTeamColor() != getTeamColor()) {
+            if(side2.getTeamColor() != getTeamColor() && side2.isFirstMove() && row == rightRow) {
                 moves.add(new MyChessMove(myPosition, new MyPosition(row+direction,col-1)));
             }
         }
@@ -102,5 +103,13 @@ public class Pawn implements ChessPiece{
         moves.add(new MyChessMove(PieceType.ROOK, pos, endPos));
         moves.add(new MyChessMove(PieceType.QUEEN, pos, endPos));
         return moves;
+    }
+
+    @Override
+    public boolean isFirstMove() {
+        return firstMove;
+    }
+    public void setFirstMove(boolean b) {
+        firstMove = b;
     }
 }

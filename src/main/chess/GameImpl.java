@@ -23,7 +23,7 @@ public class GameImpl implements ChessGame{
     }
 
     @Override
-    public Collection<ChessMove> validMoves(ChessPosition startPosition) {
+    public List<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece piece = board.getPiece(startPosition);
         var moves = new ArrayList<ChessMove>();
         //TODO: Add castling and en passant functionality
@@ -71,15 +71,22 @@ public class GameImpl implements ChessGame{
                     board.clearSquare(startPos);
             }
             else tryMove(startPos, endPos, startPiece);
+            int direction = startPiece.getTeamColor() == ChessGame.TeamColor.WHITE ? 1 : -1;
+            if(startPiece.getPieceType() == ChessPiece.PieceType.PAWN && startPos.getRow()+direction == endPos.getRow() && endSquarePiece == null) {
+                board.clearSquare(new MyPosition(endPos.getRow()-direction, endPos.getColumn()));
+            }
             if(isInCheck(teamTurn)) {
                 board.clearSquare(endPos);
                 board.addPiece(endPos, endSquarePiece);
                 board.addPiece(startPos, startPiece);
                 throw new InvalidMoveException("Attempted to move while in check");
             }
+            checkEnPassant(teamTurn);
             setTeamTurn(otherTeam);
         }
-        else throw new InvalidMoveException("Illegal move");
+        else {
+            throw new InvalidMoveException("Illegal move");
+        }
     }
 
     public void tryMove(ChessPosition startPos, ChessPosition endPos, ChessPiece startPiece) {
@@ -89,7 +96,25 @@ public class GameImpl implements ChessGame{
         board.clearSquare(startPos);
     }
 
-
+    void checkEnPassant(TeamColor turn) {
+        var allBoard = List.copyOf(board.getBoard().keySet());
+        for (ChessPosition pos : allBoard) {
+            ChessPiece curPiece = board.getPiece(pos);
+            if (curPiece != null) {
+                if(curPiece.getTeamColor().equals(turn) && curPiece.getPieceType().equals(ChessPiece.PieceType.PAWN)) {
+                    for(ChessMove move : validMoves(pos)) {
+                        ChessPosition startPos = move.getStartPosition();
+                        ChessPosition endPos = move.getEndPosition();
+                        int direction = (turn == ChessGame.TeamColor.WHITE) ? 1 : -1;
+                        int rightRow = (curPiece.getTeamColor() == ChessGame.TeamColor.WHITE) ? 5 : 4;
+                        if (startPos.getColumn()  != endPos.getRow() && board.getPiece(endPos) == null && startPos.getRow() == rightRow) {
+                            board.getPiece(new MyPosition(endPos.getRow()-direction, endPos.getColumn())).setFirstMove(false);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     @Override
     public boolean isInCheck(TeamColor teamColor) {
@@ -134,15 +159,13 @@ public class GameImpl implements ChessGame{
 
     public boolean noMoves(TeamColor teamColor, boolean checkAllPieces, ChessPiece piece) {
         var allBoard = List.copyOf(board.getBoard().keySet());
-        for(int i = 0; i < allBoard.size(); i++) {
-            ChessPosition pos = allBoard.get(i);
+        for (ChessPosition pos : allBoard) {
             ChessPiece curPiece = board.getPiece(pos);
-            if(curPiece != null) {
+            if (curPiece != null) {
                 if (curPiece.getTeamColor().equals(teamColor)) {
-                    if(checkAllPieces) {
+                    if (checkAllPieces) {
                         if (!validMoves(pos).isEmpty()) return false;
-                    }
-                    else {
+                    } else {
                         if (!validMoves(pos).isEmpty() && curPiece.equals(piece)) return false;
                     }
                 }

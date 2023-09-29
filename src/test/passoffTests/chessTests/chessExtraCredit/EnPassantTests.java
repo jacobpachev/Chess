@@ -72,7 +72,6 @@ public class EnPassantTests {
                 TestFactory.getNewMove(TestFactory.getNewPosition(5, 2), TestFactory.getNewPosition(6, 3), null);
         Assertions.assertTrue(game.validMoves(position).contains(enPassantMove),
                 "ChessGame validMoves did not contain a valid En Passant move");
-
         //en passant move works correctly
         Assertions.assertDoesNotThrow(() -> game.makeMove(enPassantMove));
         Assertions.assertNull(game.getBoard().getPiece(TestFactory.getNewPosition(5, 2)),
@@ -341,8 +340,8 @@ public class EnPassantTests {
 
         //make sure pawn cannot do En Passant move
         Assertions.assertFalse(game.validMoves(position).contains(
-                TestFactory.getNewMove(TestFactory.getNewPosition(5, 2),
-                        TestFactory.getNewPosition(6, 3), null)),
+                        TestFactory.getNewMove(TestFactory.getNewPosition(5, 2),
+                                TestFactory.getNewPosition(6, 3), null)),
                 "ChessGame validMoves contained a En Passant move after the move became invalid");
     }
 

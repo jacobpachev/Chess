@@ -8,10 +8,12 @@ import java.util.List;
 public class King implements ChessPiece{
     ChessGame.TeamColor color;
     boolean moved;
+    boolean firstMove;
     PieceType pieceType;
     public King(ChessGame.TeamColor color) {
         this.color = color;
         moved = false;
+        firstMove = false;
         pieceType = PieceType.KING;
     }
     @Override
@@ -71,5 +73,13 @@ public class King implements ChessPiece{
 
     public String toString() {
         return getTeamColor() == ChessGame.TeamColor.BLACK ? "k" :"K";
+    }
+    @Override
+    public boolean isFirstMove() {
+        return firstMove;
+    }
+
+    public void setFirstMove(boolean b) {
+        firstMove = b;
     }
 }

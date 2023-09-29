@@ -4,11 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="04f1b534-0624-4f8b-bf25-b064eaa2fef8" name="Changes" comment="All game working except checkmate and stalemate">
+    <list default="true" id="04f1b534-0624-4f8b-bf25-b064eaa2fef8" name="Changes" comment="Implemented checkmate and stalemate. All tests(except extra credit) pass!">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/chess/Bishop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/Bishop.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/chess/GameImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/GameImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/chess/King.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/King.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/chess/Knight.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/Knight.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/chess/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/starter/chess/ChessGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/starter/chess/ChessGame.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/chess/MyChessMove.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/MyChessMove.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/chess/Pawn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/Pawn.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/chess/Queen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/Queen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/chess/Rook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/chess/Rook.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/starter/chess/ChessPiece.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/starter/chess/ChessPiece.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/passoffTests/chessTests/chessExtraCredit/EnPassantTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/passoffTests/chessTests/chessExtraCredit/EnPassantTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +70,7 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager" selected="JUnit.ChessBoardTests">
+  <component name="RunManager" selected="JUnit.ChessGameTests">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="ALTERNATIVE_JRE_PATH" value="20" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
@@ -109,16 +117,16 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="KingMoveTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="EnPassantTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Chess" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="passoffTests.chessTests.chessPieceTests.*" />
+          <option name="PATTERN" value="passoffTests.chessTests.chessExtraCredit.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="passoffTests.chessTests.chessPieceTests" />
-      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.chessPieceTests.KingMoveTests" />
+      <option name="PACKAGE_NAME" value="passoffTests.chessTests.chessExtraCredit" />
+      <option name="MAIN_CLASS_NAME" value="passoffTests.chessTests.chessExtraCredit.EnPassantTests" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -140,11 +148,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.ChessGameTests" />
         <item itemvalue="JUnit.ChessBoardTests" />
         <item itemvalue="JUnit.passoffTests.chessTests.chessPieceTests in Chess" />
-        <item itemvalue="JUnit.ChessGameTests" />
+        <item itemvalue="JUnit.EnPassantTests" />
         <item itemvalue="Application.Main" />
-        <item itemvalue="JUnit.KingMoveTests" />
       </list>
     </recent_temporary>
   </component>
@@ -241,7 +249,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695944114186</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Implemented checkmate and stalemate. All tests(except extra credit) pass!">
+      <option name="closed" value="true" />
+      <created>1695947110757</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1695947110757</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -268,6 +284,7 @@
     <MESSAGE value="Fixed some check bugs, king still can move into check :(" />
     <MESSAGE value="Fixed more check bugs" />
     <MESSAGE value="All game working except checkmate and stalemate" />
-    <option name="LAST_COMMIT_MESSAGE" value="All game working except checkmate and stalemate" />
+    <MESSAGE value="Implemented checkmate and stalemate. All tests(except extra credit) pass!" />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented checkmate and stalemate. All tests(except extra credit) pass!" />
   </component>
 </project>

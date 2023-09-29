@@ -9,6 +9,10 @@ public interface ChessPiece {
 
     void setMoved(boolean b);
 
+    boolean isFirstMove();
+
+    void setFirstMove(boolean b);
+
     /**
      * The various different chess piece options
      */
