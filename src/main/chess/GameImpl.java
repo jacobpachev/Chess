@@ -1,8 +1,6 @@
 package chess;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 
 public class GameImpl implements ChessGame{
@@ -26,14 +24,35 @@ public class GameImpl implements ChessGame{
     public List<ChessMove> validMoves(ChessPosition startPosition) {
         ChessPiece piece = board.getPiece(startPosition);
         var moves = new ArrayList<ChessMove>();
-        //TODO: Add castling and en passant functionality
         if(piece == null) return null;
         for(ChessMove move : piece.pieceMoves(board,startPosition)) {
             ChessPosition startPos = move.getStartPosition();
             ChessPosition endPos = move.getEndPosition();
             ChessPiece startPiece = board.getPiece(startPos);
+            boolean startPieceMoved = startPiece.hasMoved();
             ChessPiece endSquarePiece = board.getPiece(endPos);
-            tryMove(startPos, endPos, startPiece);
+            if(startPiece.getPieceType() == ChessPiece.PieceType.KING) {
+                if(endPos.getColumn() == startPos.getColumn()+2) {
+                    System.out.println(move);
+                    if(canCastleMove(startPos, endPos, startPiece, new MyPosition(endPos.getRow(), endPos.getColumn()+1))){
+                        moves.add(move);
+                        board.addPiece(startPos, startPiece);
+                        board.addPiece(new MyPosition(endPos.getRow(), endPos.getColumn()+1), board.getPiece(new MyPosition(endPos.getRow(), startPos.getColumn()+1)));
+                        board.clearSquare(endPos);
+                        board.clearSquare(new MyPosition(endPos.getRow(), endPos.getColumn()-1));
+                    }
+                }
+                else if(endPos.getColumn() == startPos.getColumn()-2) {
+                    if(canCastleMove(startPos, endPos, startPiece, new MyPosition(endPos.getRow(), endPos.getColumn()-2))) {
+                        moves.add(move);
+                        board.addPiece(startPos, startPiece);
+                        board.addPiece(new MyPosition(endPos.getRow(), endPos.getColumn()-2), board.getPiece(new MyPosition(endPos.getRow(), startPos.getColumn()-1)));
+                        board.clearSquare(endPos);
+                        board.clearSquare(new MyPosition(endPos.getRow(), endPos.getColumn()+1));
+                    }
+                }
+            }
+            else tryMove(startPos, endPos, startPiece);
             if(!isInCheck(piece.getTeamColor())) {
                 if (endSquarePiece != null) {
                     if (endSquarePiece.getPieceType() != ChessPiece.PieceType.KING) moves.add(move);
@@ -43,6 +62,7 @@ public class GameImpl implements ChessGame{
             board.clearSquare(endPos);
             board.addPiece(endPos, endSquarePiece);
             board.addPiece(startPos, startPiece);
+            if(!startPieceMoved) startPiece.setMoved(false);
         }
         return moves;
     }
@@ -56,7 +76,6 @@ public class GameImpl implements ChessGame{
         TeamColor otherTeam = (teamTurn == TeamColor.WHITE) ? TeamColor.BLACK : TeamColor.WHITE;
         if(startPiece == null) throw new InvalidMoveException("No piece to move");
         if(startPiece.getTeamColor() != getTeamTurn()) throw new InvalidMoveException("Wrong color");
-
         if(validMoves(startPos).contains(move)) {
             ChessPiece endSquarePiece = board.getPiece(endPos);
             if(startPiece.getPieceType() == ChessPiece.PieceType.PAWN && edge) {
@@ -69,6 +88,18 @@ public class GameImpl implements ChessGame{
                     }
                     board.getPiece(endPos).setMoved(true);
                     board.clearSquare(startPos);
+            }
+            else if(startPiece.getPieceType() == ChessPiece.PieceType.KING) {
+                if(isInCheck(teamTurn)) throw new InvalidMoveException("Tried to castle in check");
+                if(endPos.getColumn() == startPos.getColumn()+2) {
+
+                    if(!canCastleMove(startPos, endPos, startPiece, new MyPosition(endPos.getRow(), endPos.getColumn()+1)))
+                        throw new InvalidMoveException("Tried to castle through check");
+                }
+                else if(endPos.getColumn() == startPos.getColumn()-2) {
+                    if(!canCastleMove(startPos, endPos, startPiece, new MyPosition(endPos.getRow(), endPos.getColumn()-2)))
+                        throw new InvalidMoveException("Tried to castle through check");
+                }
             }
             else tryMove(startPos, endPos, startPiece);
             int direction = startPiece.getTeamColor() == ChessGame.TeamColor.WHITE ? 1 : -1;
@@ -94,6 +125,39 @@ public class GameImpl implements ChessGame{
         board.addPiece(endPos, startPiece);
         board.getPiece(endPos).setMoved(true);
         board.clearSquare(startPos);
+    }
+
+    boolean canCastleMove(ChessPosition startPos, ChessPosition endPos, ChessPiece startPiece, ChessPosition rookSquare) {
+        int rookEndCol = (rookSquare.getColumn() == 8) ? 6 : 4;
+        if(rookSquare.getColumn() == 8) {
+            for(int i = 7; i >5; i--) {
+                if(hasChecksCastle(startPos, rookSquare, startPiece, i)) return false;
+            }
+        }
+        else {
+            for(int i = 3; i <5; i++) {
+                if(hasChecksCastle(startPos, rookSquare, startPiece, i)){
+                    return false;
+                }
+            }
+        }
+        ChessPiece rook = board.getPiece(rookSquare);
+        board.addPiece(endPos, startPiece);
+        board.clearSquare(startPos);
+        board.addPiece(new MyPosition(endPos.getRow(), rookEndCol), rook);
+        board.clearSquare(rookSquare);
+        return true;
+    }
+    boolean hasChecksCastle(ChessPosition startPos, ChessPosition rookSquare, ChessPiece startPiece, int i) {
+        tryMove(startPos, new MyPosition(rookSquare.getRow(), i), startPiece);
+        if (isInCheck(teamTurn)) {
+            board.clearSquare(new MyPosition(rookSquare.getRow(), i));
+            board.addPiece(startPos, startPiece);
+            return true;
+        }
+        board.clearSquare(new MyPosition(rookSquare.getRow(), i));
+        board.addPiece(startPos, startPiece);
+        return false;
     }
 
     void checkEnPassant(TeamColor turn) {

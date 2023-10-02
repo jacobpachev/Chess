@@ -163,7 +163,6 @@ public class CastlingTests {
         ChessGame game = TestFactory.getNewGame();
         game.setBoard(board);
         game.setTeamTurn(ChessGame.TeamColor.BLACK);
-
         //check that with nothing in way, king can castle
         ChessMove queenSide = TestFactory.getNewMove(TestFactory.getNewPosition(8, 5),
                 TestFactory.getNewPosition(8, 3), null);

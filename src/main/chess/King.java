@@ -60,6 +60,31 @@ public class King implements ChessPiece{
                 }
             }
         }
+        if(!hasMoved()) { //castling
+            ChessPiece bishopKSide = board.getPiece(new MyPosition(row,col+1));
+            ChessPiece knightKSide = board.getPiece(new MyPosition(row,col+2));
+            ChessPiece rookKSide = board.getPiece(new MyPosition(row,col+3));
+
+            ChessPiece queen = board.getPiece(new MyPosition(row,col-1));
+            ChessPiece bishopQSide = board.getPiece(new MyPosition(row,col-2));
+            ChessPiece knightQSide = board.getPiece(new MyPosition(row,col-3));
+            ChessPiece rookQSide = board.getPiece(new MyPosition(row,col-4));
+
+            if(bishopKSide == null && knightKSide == null && rookKSide != null) {
+                if(rookKSide.getPieceType() == PieceType.ROOK) {
+                    Rook rook = (Rook) rookKSide;
+                    if (!rook.hasMoved())
+                        moves.add(new MyChessMove(myPosition, new MyPosition(row, col + 2)));
+                }
+            }
+            if(bishopQSide == null && knightQSide == null && queen == null && rookQSide != null) {
+                if(rookQSide.getPieceType() == PieceType.ROOK) {
+                    Rook rook = (Rook) rookQSide;
+                    if (!rook.hasMoved())
+                        moves.add(new MyChessMove(myPosition, new MyPosition(row, col - 2)));
+                }
+            }
+        }
         return moves;
     }
 
