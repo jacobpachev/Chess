@@ -1,4 +1,4 @@
-package starter.chess;
+package chess;
 
 /**
  * Represents a single square position on a chess board

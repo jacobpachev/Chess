@@ -1,4 +1,4 @@
-package main.chess;
+package chess;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +9,9 @@ public class MyBoard implements ChessBoard{
     HashMap<ChessPosition, ChessPiece> board;
     public MyBoard(){
         board = new HashMap<>();
+    }
+    public MyBoard(ChessBoard other) {
+       board = (HashMap<ChessPosition, ChessPiece>) other.getBoard().clone();
     }
     public HashMap<ChessPosition, ChessPiece> getBoard() {return board;}
     @Override

@@ -1,4 +1,4 @@
-package main.chess;
+package chess;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +22,12 @@ public class GameImpl implements ChessGame{
 
     @Override
     public List<ChessMove> validMoves(ChessPosition startPosition) {
+        TeamColor startTeam = teamTurn;
+        ChessBoard otherBoard = new MyBoard(board);
         ChessPiece piece = board.getPiece(startPosition);
         var moves = new ArrayList<ChessMove>();
         if(piece == null) return null;
+        setTeamTurn(piece.getTeamColor());
         for(ChessMove move : piece.pieceMoves(board,startPosition)) {
             ChessPosition startPos = move.getStartPosition();
             ChessPosition endPos = move.getEndPosition();
@@ -33,42 +36,54 @@ public class GameImpl implements ChessGame{
             ChessPiece endSquarePiece = board.getPiece(endPos);
             if(startPiece.getPieceType() == ChessPiece.PieceType.KING) {
                 if(endPos.getColumn() == startPos.getColumn()+2) {
-                    System.out.println(move);
-                    if(canCastleMove(startPos, endPos, startPiece, new MyPosition(endPos.getRow(), endPos.getColumn()+1))){
-                        moves.add(move);
-                        board.addPiece(startPos, startPiece);
-                        board.addPiece(new MyPosition(endPos.getRow(), endPos.getColumn()+1), board.getPiece(new MyPosition(endPos.getRow(), startPos.getColumn()+1)));
-                        board.clearSquare(endPos);
-                        board.clearSquare(new MyPosition(endPos.getRow(), endPos.getColumn()-1));
+                     if(canCastleMove(startPos, endPos, startPiece, new MyPosition(endPos.getRow(), endPos.getColumn()+1))) {
+                         moves.add(move);
+                     }
+                    board = new MyBoard(otherBoard);
+                    if(!startPieceMoved) {
+                        board.getPiece(startPos).setMoved(false);
                     }
+                    continue;
                 }
                 else if(endPos.getColumn() == startPos.getColumn()-2) {
-                    if(canCastleMove(startPos, endPos, startPiece, new MyPosition(endPos.getRow(), endPos.getColumn()-2))) {
+                    if(canCastleMove(startPos, endPos, startPiece, new MyPosition(endPos.getRow(), endPos.getColumn()-2))){
                         moves.add(move);
-                        board.addPiece(startPos, startPiece);
-                        board.addPiece(new MyPosition(endPos.getRow(), endPos.getColumn()-2), board.getPiece(new MyPosition(endPos.getRow(), startPos.getColumn()-1)));
-                        board.clearSquare(endPos);
-                        board.clearSquare(new MyPosition(endPos.getRow(), endPos.getColumn()+1));
                     }
+                    board = new MyBoard(otherBoard);
+                    if(!startPieceMoved) {
+                        board.getPiece(startPos).setMoved(false);
+                    }
+                    continue;
+                }
+                else {
+                    tryMove(startPos, endPos, startPiece);
                 }
             }
-            else tryMove(startPos, endPos, startPiece);
+            else {
+                tryMove(startPos, endPos, startPiece);
+            }
             if(!isInCheck(piece.getTeamColor())) {
                 if (endSquarePiece != null) {
-                    if (endSquarePiece.getPieceType() != ChessPiece.PieceType.KING) moves.add(move);
+                    if (endSquarePiece.getPieceType() != ChessPiece.PieceType.KING) {
+                        moves.add(move);
+                    }
                 }
-                else moves.add(move);
+                else {
+                    moves.add(move);
+                }
             }
-            board.clearSquare(endPos);
-            board.addPiece(endPos, endSquarePiece);
-            board.addPiece(startPos, startPiece);
-            if(!startPieceMoved) startPiece.setMoved(false);
+            board = new MyBoard(otherBoard);
+            if(!startPieceMoved) {
+                board.getPiece(startPos).setMoved(false);
+            }
         }
+        setTeamTurn(startTeam);
         return moves;
     }
 
     @Override
     public void makeMove(ChessMove move) throws InvalidMoveException {
+        ChessBoard otherBoard = new MyBoard(board);
         ChessPosition startPos = move.getStartPosition();
         ChessPosition endPos = move.getEndPosition();
         boolean edge = (teamTurn == ChessGame.TeamColor.WHITE) ? endPos.getRow() == 8 : endPos.getRow() == 1;
@@ -86,13 +101,12 @@ public class GameImpl implements ChessGame{
                         case ROOK -> board.addPiece(endPos, new Rook(teamTurn));
                         case QUEEN -> board.addPiece(endPos, new Queen(teamTurn));
                     }
-                    board.getPiece(endPos).setMoved(true);
                     board.clearSquare(startPos);
+                    board.getPiece(endPos).setMoved(true);
             }
             else if(startPiece.getPieceType() == ChessPiece.PieceType.KING) {
                 if(isInCheck(teamTurn)) throw new InvalidMoveException("Tried to castle in check");
                 if(endPos.getColumn() == startPos.getColumn()+2) {
-
                     if(!canCastleMove(startPos, endPos, startPiece, new MyPosition(endPos.getRow(), endPos.getColumn()+1)))
                         throw new InvalidMoveException("Tried to castle through check");
                 }
@@ -100,6 +114,7 @@ public class GameImpl implements ChessGame{
                     if(!canCastleMove(startPos, endPos, startPiece, new MyPosition(endPos.getRow(), endPos.getColumn()-2)))
                         throw new InvalidMoveException("Tried to castle through check");
                 }
+                else tryMove(startPos, endPos, startPiece);
             }
             else tryMove(startPos, endPos, startPiece);
             int direction = startPiece.getTeamColor() == ChessGame.TeamColor.WHITE ? 1 : -1;
@@ -107,9 +122,7 @@ public class GameImpl implements ChessGame{
                 board.clearSquare(new MyPosition(endPos.getRow()-direction, endPos.getColumn()));
             }
             if(isInCheck(teamTurn)) {
-                board.clearSquare(endPos);
-                board.addPiece(endPos, endSquarePiece);
-                board.addPiece(startPos, startPiece);
+                board = new MyBoard(otherBoard);
                 throw new InvalidMoveException("Attempted to move while in check");
             }
             checkEnPassant(teamTurn);

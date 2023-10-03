@@ -331,7 +331,6 @@ public class CastlingTests {
                 TestFactory.getNewMove(TestFactory.getNewPosition(8, 5),
                         TestFactory.getNewPosition(8, 3), null)),
                 "ChessGame validMoves contained an invalid castling move");
-
         Assertions.assertFalse(game.validMoves(position).contains(
                 TestFactory.getNewMove(TestFactory.getNewPosition(8, 5),
                         TestFactory.getNewPosition(8, 7), null)),
