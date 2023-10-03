@@ -1,4 +1,4 @@
-package chess;
+package starter.chess;
 
 import java.util.Collection;
 

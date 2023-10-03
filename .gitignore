@@ -3,9 +3,6 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-!**/src/main/**/*.class
-
-
 ### Eclipse ###
 .apt_generated
 .classpath
@@ -30,3 +27,4 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+/.idea/

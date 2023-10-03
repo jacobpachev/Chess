@@ -1,4 +1,4 @@
-package passoffTests;
+package test.passoffTests;
 
 import chess.*;
 

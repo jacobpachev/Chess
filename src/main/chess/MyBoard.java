@@ -1,4 +1,4 @@
-package chess;
+package main.chess;
 
 import java.util.ArrayList;
 import java.util.HashMap;
