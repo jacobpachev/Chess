@@ -2,6 +2,8 @@ package models;
 
 import chess.ChessGame;
 
+import java.util.Random;
+
 /**
  * model of Chess Game
  */
@@ -26,11 +28,12 @@ public class Game {
     }
 
     /**
-     * generates an game ID
+     * generates a game ID
+     * format 5 random digits
      * @return game ID
      */
     private int generateID() {
-        return 0;
+        return new Random().nextInt(10000, 99999);
     }
 
     public int getGameID() {

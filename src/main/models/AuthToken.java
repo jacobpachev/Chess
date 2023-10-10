@@ -1,6 +1,7 @@
 package models;
 
 import java.util.Objects;
+import java.util.Random;
 
 /**
  * Model of Authentication Token
@@ -32,7 +33,16 @@ public class AuthToken {
 
     /**
      * generates an authentication token
+     * format 10 random letters
      * @return token
      */
-    private String generateToken() {return null;}
+    private String generateToken() {
+        Random rand = new Random();
+        StringBuilder token = new StringBuilder();
+        for(int i = 1; i<=5; i++) {
+            token.append((char) (rand.nextInt(26) + 'A') );
+            token.append((char) (rand.nextInt(26) + 'a') );
+        }
+        return token.toString();
+    }
 }
