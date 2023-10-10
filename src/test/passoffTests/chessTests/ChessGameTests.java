@@ -1,10 +1,10 @@
-package test.passoffTests.chessTests;
+package passoffTests.chessTests;
 
 import chess.*;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
-import test.passoffTests.TestFactory;
+import passoffTests.TestFactory;
 
 import java.util.HashSet;
 import java.util.Set;

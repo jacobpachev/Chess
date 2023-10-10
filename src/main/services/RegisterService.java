@@ -12,7 +12,7 @@ public class RegisterService {
      * @param req request
      * @return response
      */
-    public RegisterResponse clear(RegisterRequest req){
+    public RegisterResponse register(RegisterRequest req){
         return null;
     }
 }

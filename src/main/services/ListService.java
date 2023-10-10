@@ -12,7 +12,7 @@ public class ListService {
      * @param req request
      * @return response
      */
-    public ListResponse clear(ListRequest req){
+    public ListResponse list(ListRequest req){
         return null;
     }
 }

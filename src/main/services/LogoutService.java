@@ -12,7 +12,7 @@ public class LogoutService {
      * @param req request
      * @return response
      */
-    public LogoutResponse clear(LogoutRequest req){
+    public LogoutResponse logout(LogoutRequest req){
         return null;
     }
 }

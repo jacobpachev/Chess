@@ -7,7 +7,7 @@ import responses.CreateResponse;
  */
 public class CreateService {
     /**
-     * Login
+     * Create
      * @param req request
      * @return response
      */
