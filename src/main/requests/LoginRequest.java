@@ -15,10 +15,13 @@ public class LoginRequest extends spark.Request{
      * @param password password
      * @param message error/success message
      */
-    public LoginRequest(String message, String username, String password) {
-        this.message = message;
+    public LoginRequest( String username, String password) {
         this.username = username;
         this.password = password;
+    }
+
+    public LoginRequest(String message) {
+        this.message = message;
     }
 
     public String getMessage() {

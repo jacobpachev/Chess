@@ -1,5 +1,7 @@
 package responses;
 
+import models.AuthToken;
+
 /**
  * Login Response class, just a data container
  */
@@ -7,9 +9,13 @@ public class LoginResponse extends spark.Response{
     private String authToken;
     private String username;
     private String message;
-    public LoginResponse() {
-        authToken = "";
-        username = "";
+    public LoginResponse(AuthToken authToken, String username) {
+        this.authToken = authToken.getAuthToken();
+        this.username = username;
+    }
+
+    public LoginResponse(String message) {
+        this.message = message;
     }
 
     public String getAuthToken() {

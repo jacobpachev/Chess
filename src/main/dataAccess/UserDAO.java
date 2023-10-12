@@ -15,8 +15,11 @@ public class UserDAO {
      * @param user User to place
      */
     public void insert(User user) throws DataAccessException {
+
+        if(find(user.getUserName()) != null) {
+            throw new DataAccessException("already taken");
+        }
         userData.add(user);
-        System.out.println(userData);
     }
 
     /**
@@ -30,7 +33,7 @@ public class UserDAO {
                 return user;
             }
         }
-        throw new DataAccessException("Could not find user");
+        return null;
     }
 
     /**

@@ -25,9 +25,16 @@ public class AuthDAO {
      * @param username user to find auth token
      * @return int
      */
-    public AuthToken find(String username) throws DataAccessException {
+    public AuthToken findByName(String username) throws DataAccessException {
         for(AuthToken token : tokenData) {
             if(token.getUsername().equals(username)) return token;
+        }
+        throw new DataAccessException("Failed to find auth token");
+    }
+
+    public AuthToken findByToken(String authToken) throws DataAccessException {
+        for(AuthToken token : tokenData) {
+            if(token.getAuthToken().equals(authToken)) return token;
         }
         throw new DataAccessException("Failed to find auth token");
     }
@@ -54,7 +61,7 @@ public class AuthDAO {
      */
     public void remove(String name) throws DataAccessException {
         try {
-            tokenData.remove(find(name));
+            tokenData.remove(findByName(name));
         }
         catch (DataAccessException e) {
             throw new DataAccessException("Could not remove token(not found)");
@@ -67,6 +74,6 @@ public class AuthDAO {
      * @param token new token
      */
     public void update(String name, String token) throws DataAccessException {
-        find(name).setAuthToken(token);
+        findByName(name).setAuthToken(token);
     }
 }

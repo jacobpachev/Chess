@@ -24,6 +24,8 @@ public class Game {
     public Game(String gameName, ChessGame game) {
         this.gameID = generateID();
         this.gameName = gameName;
+        this.whiteUsername = "";
+        this.blackUsername = "";
         this.game = game;
     }
 

@@ -17,6 +17,10 @@ public class RegisterResponse extends spark.Response{
         this.authToken = authToken;
     }
 
+    public RegisterResponse(String message) {
+        this.message = message;
+    }
+
     public String getUsername() {
         return username;
     }
