@@ -35,7 +35,7 @@ public class Game {
      * @return game ID
      */
     private int generateID() {
-        return new Random().nextInt(10000, 99999);
+        return new Random().nextInt(1000, 9999);
     }
 
     public int getGameID() {

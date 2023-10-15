@@ -4,27 +4,21 @@ package responses;
  * Create Response class, just a data container
  */
 public class CreateResponse extends spark.Response{
-    private String gameName;
     private int gameID;
     private String message;
 
     /**
-     * constructor with gameName and gameID
-     * @param gameName name of the game
+     * constructor with gameID
      * @param gameID game id number
      */
-    public CreateResponse(String gameName, int gameID) {
-        this.gameName = gameName;
+    public CreateResponse(int gameID) {
         this.gameID = gameID;
     }
 
-    public String getGameName() {
-        return gameName;
+    public CreateResponse(String message) {
+        this.message = message;
     }
 
-    public void setGameName(String gameName) {
-        this.gameName = gameName;
-    }
 
     public int getGameID() {
         return gameID;

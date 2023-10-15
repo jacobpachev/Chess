@@ -8,22 +8,23 @@ import java.util.List;
  * List Response class, just a data container
  */
 public class ListResponse extends spark.Response{
-    private List<Game> gameList;
+    private List<Game> games;
     private String message;
     /**
      * Constructor with list of games
-     * @param gameList list of games
+     * @param games list of games
      */
-    ListResponse(List<Game> gameList) {
-        this.gameList = gameList;
+    public ListResponse(List<Game> games) {
+        this.games = games;
+    }
+    public ListResponse(String message) { this.message = message; }
+
+    public List<Game> getGames() {
+        return games;
     }
 
-    public List<Game> getGameList() {
-        return gameList;
-    }
-
-    public void setGameList(List<Game> gameList) {
-        this.gameList = gameList;
+    public void setGames(List<Game> games) {
+        this.games = games;
     }
 
     public String getMessage() {

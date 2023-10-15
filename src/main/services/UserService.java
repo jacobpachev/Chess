@@ -7,6 +7,7 @@ import models.AuthToken;
 import models.User;
 import requests.LogoutRequest;
 import requests.RegisterRequest;
+import responses.CreateResponse;
 import responses.LogoutResponse;
 import responses.RegisterResponse;
 import requests.LoginRequest;
@@ -79,7 +80,10 @@ public class UserService {
             userToken = authData.findByToken(req.getAuthToken()).getAuthToken();
         }
         catch(DataAccessException e) {
-            return new LogoutResponse("Error: "+e.getMessage());
+            if(e.getMessage().equals("Failed to find auth token")) {
+                return new LogoutResponse("Error: unauthorized");
+            }
+            return new LogoutResponse("Error: " +e.getMessage());
         }
         if(!userToken.equals(req.getAuthToken())) {
             return new LogoutResponse("Error: unauthorized");
