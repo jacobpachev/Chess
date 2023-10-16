@@ -1,8 +1,5 @@
 package serviceTests;
 
-import dataAccess.DataAccessException;
-import dataAccess.GameDAO;
-import models.Game;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import requests.CreateRequest;
@@ -23,10 +20,10 @@ public class ListTest {
         var userService = new UserService();
         var gameService = new GameService();
         var registerResponse = userService.register(registerRequest);
-        var createResponse1 = new CreateRequest(registerResponse.getAuthToken(), "test1");
-        var createResponse2 = new CreateRequest(registerResponse.getAuthToken(), "test2");
-        gameService.create(createResponse1);
-        gameService.create(createResponse2);
+        var createRequest1 = new CreateRequest(registerResponse.getAuthToken(), "test1");
+        var createRequest2 = new CreateRequest(registerResponse.getAuthToken(), "test2");
+        gameService.create(createRequest1);
+        gameService.create(createRequest2);
 
         var listResponse = gameService.list(new ListRequest(registerResponse.getAuthToken()));
         assertEquals(listResponse.getGames().get(0).getGameName(), "test1");

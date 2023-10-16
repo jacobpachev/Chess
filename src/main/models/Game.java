@@ -2,6 +2,8 @@ package models;
 
 import chess.ChessGame;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -12,6 +14,7 @@ public class Game {
     private String whiteUsername;
     private String blackUsername;
     private String gameName;
+    private List<String> observers;
     private ChessGame game;
 
     public Game(String whiteUsername, String blackUsername, String gameName, ChessGame game) {
@@ -20,6 +23,7 @@ public class Game {
         this.blackUsername = blackUsername;
         this.gameName = gameName;
         this.game = game;
+        this.observers = new ArrayList<>();
     }
     public Game(String gameName, ChessGame game) {
         this.gameID = generateID();
@@ -27,6 +31,7 @@ public class Game {
         this.whiteUsername = "";
         this.blackUsername = "";
         this.game = game;
+        this.observers = new ArrayList<>();
     }
 
     /**
@@ -76,5 +81,21 @@ public class Game {
 
     public void setGame(ChessGame game) {
         this.game = game;
+    }
+
+    public List<String> getObservers() {
+        return observers;
+    }
+
+    public void setObservers(List<String> observers) {
+        this.observers = observers;
+    }
+
+    /**
+     * Adds an observers
+     * @param obsName name of observer to be added
+     */
+    public void addObserver(String obsName) {
+        observers.add(obsName);
     }
 }
