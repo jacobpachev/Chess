@@ -67,13 +67,4 @@ public class AuthDAO {
             throw new DataAccessException("Could not remove token(not found)");
         }
     }
-
-    /**
-     * update name with new token
-     * @param name username to update
-     * @param token new token
-     */
-    public void update(String name, String token) throws DataAccessException {
-        findByName(name).setAuthToken(token);
-    }
 }

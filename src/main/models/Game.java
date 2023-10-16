@@ -10,11 +10,11 @@ import java.util.Random;
  * model of Chess Game
  */
 public class Game {
-    private int gameID;
+    private final int gameID;
     private String whiteUsername;
     private String blackUsername;
     private String gameName;
-    private List<String> observers;
+    private final List<String> observers;
     private ChessGame game;
 
     public Game(String whiteUsername, String blackUsername, String gameName, ChessGame game) {
@@ -47,10 +47,6 @@ public class Game {
         return gameID;
     }
 
-    public void setGameID(int gameID) {
-        this.gameID = gameID;
-    }
-
     public String getWhiteUsername() {
         return whiteUsername;
     }
@@ -66,6 +62,7 @@ public class Game {
     public void setBlackUsername(String blackUsername) {
         this.blackUsername = blackUsername;
     }
+
 
     public String getGameName() {
         return gameName;
@@ -85,10 +82,6 @@ public class Game {
 
     public List<String> getObservers() {
         return observers;
-    }
-
-    public void setObservers(List<String> observers) {
-        this.observers = observers;
     }
 
     /**

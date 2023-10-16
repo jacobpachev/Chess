@@ -4,15 +4,16 @@ import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import requests.ClearRequest;
 import requests.CreateRequest;
 import requests.RegisterRequest;
+import services.AdminService;
 import services.GameService;
 import services.UserService;
 
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CreateTest {
     @Test
@@ -29,10 +30,10 @@ public class CreateTest {
         }
         var createRequest = new CreateRequest(registerResponse.getAuthToken(), "test");
         var createResponse = gameService.create(createRequest);
-        assert(createResponse.getGameID() >= 1000 || createResponse.getGameID() < 10000);
+        assertTrue(createResponse.getGameID() >= 1000 || createResponse.getGameID() < 10000, "Game ID in wrong range");
 
         try {
-            assertNotNull(gameDAO.find(createResponse.getGameID()));
+            assertNotNull(gameDAO.find(createResponse.getGameID()), "game ID not found");
         }
         catch(DataAccessException e) {
             System.out.println("Data access error");
@@ -45,6 +46,10 @@ public class CreateTest {
         var gameService = new GameService();
         String token = UUID.randomUUID().toString();
         var createResponse = gameService.create(new CreateRequest(token, "fail"));
-        assertEquals("Error: unauthorized", createResponse.getMessage());
+        assertEquals("Error: unauthorized", createResponse.getMessage(), "Unauthorized token works");
+        var clearService = new AdminService();
+        clearService.clear(new ClearRequest());
     }
+
+
 }

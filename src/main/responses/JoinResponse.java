@@ -4,6 +4,11 @@ public class JoinResponse extends spark.Response{
     private String message;
 
     /**
+     * Empty constructor
+     */
+    public JoinResponse() {}
+
+    /**
      * Constructor if no color specified
      * @param message error message
      */

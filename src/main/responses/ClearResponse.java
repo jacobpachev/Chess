@@ -4,6 +4,10 @@ package responses;
  */
 public class ClearResponse extends spark.Response{
     private String message;
+    public ClearResponse() {}
+    public ClearResponse(String message) {
+        this.message = message;
+    }
     public String getMessage() {
         return message;
     }

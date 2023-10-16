@@ -51,19 +51,5 @@ public class UserDAO {
         userData = new ArrayList<>();
     }
 
-    /**
-     * Removes user of @param name from data
-     * @param name username to remove
-     */
-    public void remove(String name) throws DataAccessException {
-        try {
-            User user = find(name);
-            userData.remove(user);
-        }
-        catch(DataAccessException e) {
-            throw new DataAccessException("Could not remove user(not found)");
-        }
-
-    }
 
 }

@@ -2,17 +2,16 @@ package serviceTests;
 
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import requests.ClearRequest;
 import requests.CreateRequest;
 import requests.JoinRequest;
-import requests.ListRequest;
 import requests.RegisterRequest;
+import services.AdminService;
 import services.GameService;
 import services.UserService;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -56,15 +55,19 @@ public class JoinTest {
         var registerResponse = userService.register(registerRequest);
         var createResponse = gameService.create(new CreateRequest(registerResponse.getAuthToken(), "test"));
         var gameID = createResponse.getGameID();
-        var whiteResponse = gameService.join(new JoinRequest(registerResponse.getAuthToken(), "white", gameID));
+        gameService.join(new JoinRequest(registerResponse.getAuthToken(), "white", gameID));
         var whiteResponseDupl = gameService.join(new JoinRequest(registerResponse.getAuthToken(), "white", gameID));
         assertEquals("Error: already taken", whiteResponseDupl.getMessage());
 
         var whiteResponseNotAuth = gameService.join(new JoinRequest(UUID.randomUUID().toString(), "white", gameID));
-        assertEquals("Error: unauthorized", whiteResponseDupl.getMessage());
+        assertEquals("Error: unauthorized", whiteResponseNotAuth.getMessage());
 
         var whiteResponseBad = gameService.join(new JoinRequest(registerResponse.getAuthToken(), "purple", gameID));
-        assertEquals("Error: bad request", whiteResponseDupl.getMessage());
+        assertEquals("Error: bad request", whiteResponseBad.getMessage());
 
+        var whiteResponseBadID = gameService.join(new JoinRequest(registerResponse.getAuthToken(), "white", 2006));
+        assertEquals("Error: bad request", whiteResponseBad.getMessage());
+        var clearService = new AdminService();
+        clearService.clear(new ClearRequest());
     }
 }

@@ -2,9 +2,11 @@ package serviceTests;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import requests.ClearRequest;
 import requests.CreateRequest;
 import requests.ListRequest;
 import requests.RegisterRequest;
+import services.AdminService;
 import services.GameService;
 import services.UserService;
 
@@ -47,5 +49,7 @@ public class ListTest {
         String token = UUID.randomUUID().toString();
         var listResponse = gameService.list(new ListRequest(token));
         assertEquals("Error: unauthorized", listResponse.getMessage());
+        var clearService = new AdminService();
+        clearService.clear(new ClearRequest());
     }
 }

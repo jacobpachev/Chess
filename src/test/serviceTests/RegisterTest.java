@@ -2,8 +2,10 @@ package serviceTests;
 
 import dataAccess.DataAccessException;
 import dataAccess.UserDAO;
+import requests.ClearRequest;
 import requests.RegisterRequest;
 import responses.RegisterResponse;
+import services.AdminService;
 import services.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,6 +36,8 @@ public class RegisterTest {
 
         RegisterResponse responseBad =  service.register(new RegisterRequest("", "", ""));
         assertEquals( "Error: bad request", responseBad.getMessage(), "Empty request");
+        var clearService = new AdminService();
+        clearService.clear(new ClearRequest());
     }
 
 

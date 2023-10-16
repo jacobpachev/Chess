@@ -1,7 +1,5 @@
 package models;
 
-import java.util.Objects;
-
 /**
  * model of User
  */

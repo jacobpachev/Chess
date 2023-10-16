@@ -70,6 +70,7 @@ public class GameDAO {
     public void claimPlayerSpot(String username, int gameID, String color) throws DataAccessException {
         if(color.equals("white")) find(gameID).setWhiteUsername(username);
         if(color.equals("black")) find(gameID).setBlackUsername(username);
+        if(color.isEmpty()) find(gameID).addObserver(username);
     }
 
     /**

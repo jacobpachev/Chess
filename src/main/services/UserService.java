@@ -76,17 +76,20 @@ public class UserService {
     public LogoutResponse logout(LogoutRequest req){
         AuthDAO authData = new AuthDAO();
         String userToken;
+        String userName;
         try {
+            userName = authData.findByToken(req.getAuthToken()).getUsername();
             userToken = authData.findByToken(req.getAuthToken()).getAuthToken();
+            if(!userToken.equals(req.getAuthToken())) {
+                return new LogoutResponse("Error: unauthorized");
+            }
+            authData.remove(userName);
         }
         catch(DataAccessException e) {
             if(e.getMessage().equals("Failed to find auth token")) {
                 return new LogoutResponse("Error: unauthorized");
             }
             return new LogoutResponse("Error: " +e.getMessage());
-        }
-        if(!userToken.equals(req.getAuthToken())) {
-            return new LogoutResponse("Error: unauthorized");
         }
         return new LogoutResponse();
     }

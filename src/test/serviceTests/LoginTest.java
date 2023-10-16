@@ -3,9 +3,11 @@ package serviceTests;
 import dataAccess.DataAccessException;
 import dataAccess.UserDAO;
 import dataAccess.AuthDAO;
+import requests.ClearRequest;
 import requests.LoginRequest;
 import requests.RegisterRequest;
 import responses.LoginResponse;
+import services.AdminService;
 import services.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -50,5 +52,7 @@ public class LoginTest {
 
         LoginResponse wrongPwdResponse = userService.login(wrongPwdReq);
         assertEquals("Error: unauthorized", wrongPwdResponse.getMessage(), "Wrong password");
+        var clearService = new AdminService();
+        clearService.clear(new ClearRequest());
     }
 }

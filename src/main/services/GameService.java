@@ -4,6 +4,7 @@ import chess.GameImpl;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
+import models.AuthToken;
 import models.Game;
 import requests.CreateRequest;
 import requests.JoinRequest;
@@ -47,7 +48,39 @@ public class GameService {
      * @return response
      */
     public JoinResponse join(JoinRequest req){
-        return null;
+        var gameDAO = new GameDAO();
+        var authDAO = new AuthDAO();
+        var token = req.getAuthToken();
+        var color = req.getPlayerColor();
+        if(!color.equals("white") && !color.equals("black") && !color.isEmpty()){
+            return new JoinResponse("Error: bad request");
+        }
+        try {
+            Game game = gameDAO.find(req.getGameID());
+            String username = authDAO.findByToken(token).getUsername();
+            if(color.equals("white")) {
+                if(!game.getWhiteUsername().isEmpty()) {
+                    throw new DataAccessException("already taken");
+                }
+            }
+            if(color.equals("black")) {
+                if(!game.getBlackUsername().isEmpty()) {
+                    throw new DataAccessException("already taken");
+                }
+            }
+            gameDAO.claimPlayerSpot(username, req.getGameID(), color);
+        }
+        catch (DataAccessException e) {
+            if(e.getMessage().equals("Failed to find auth token")) {
+                return new JoinResponse("Error: unauthorized");
+            }
+            if(e.getMessage().equals("Could not find game")) {
+                return new JoinResponse("Error: bad request");
+            }
+            return new JoinResponse("Error: " +e.getMessage());
+        }
+
+        return new JoinResponse();
     }
 
     /**
