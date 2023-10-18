@@ -2,7 +2,6 @@ package serviceTests;
 
 import dataAccess.DataAccessException;
 import dataAccess.UserDAO;
-import requests.ClearRequest;
 import requests.RegisterRequest;
 import responses.RegisterResponse;
 import services.AdminService;
@@ -37,7 +36,7 @@ public class RegisterTest {
         RegisterResponse responseBad =  service.register(new RegisterRequest("", "", ""));
         assertEquals( "Error: bad request", responseBad.getMessage(), "Empty request");
         var clearService = new AdminService();
-        clearService.clear(new ClearRequest());
+        clearService.clear();
     }
 
 

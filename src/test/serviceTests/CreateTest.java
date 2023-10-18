@@ -4,7 +4,6 @@ import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import requests.ClearRequest;
 import requests.CreateRequest;
 import requests.RegisterRequest;
 import services.AdminService;
@@ -48,7 +47,7 @@ public class CreateTest {
         var createResponse = gameService.create(new CreateRequest(token, "fail"));
         assertEquals("Error: unauthorized", createResponse.getMessage(), "Unauthorized token works");
         var clearService = new AdminService();
-        clearService.clear(new ClearRequest());
+        clearService.clear();
     }
 
 

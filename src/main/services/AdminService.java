@@ -4,7 +4,6 @@ import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import dataAccess.UserDAO;
-import requests.ClearRequest;
 import responses.ClearResponse;
 
 /**
@@ -13,10 +12,9 @@ import responses.ClearResponse;
 public class AdminService {
     /**
      * Clear
-     * @param req request
      * @return response
      */
-    public ClearResponse clear(ClearRequest req){
+    public ClearResponse clear(){
         var userDAO = new UserDAO();
         var authDAO = new AuthDAO();
         var gameDAO = new GameDAO();

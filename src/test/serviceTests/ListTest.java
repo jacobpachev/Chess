@@ -2,7 +2,6 @@ package serviceTests;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import requests.ClearRequest;
 import requests.CreateRequest;
 import requests.ListRequest;
 import requests.RegisterRequest;
@@ -50,6 +49,6 @@ public class ListTest {
         var listResponse = gameService.list(new ListRequest(token));
         assertEquals("Error: unauthorized", listResponse.getMessage());
         var clearService = new AdminService();
-        clearService.clear(new ClearRequest());
+        clearService.clear();
     }
 }

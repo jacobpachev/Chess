@@ -2,7 +2,6 @@ package serviceTests;
 
 import dataAccess.DataAccessException;
 import dataAccess.AuthDAO;
-import requests.ClearRequest;
 import requests.LogoutRequest;
 import requests.RegisterRequest;
 import responses.LogoutResponse;
@@ -37,12 +36,7 @@ public class LogoutTest {
         LogoutResponse logoutResponse = userService.logout(new LogoutRequest(token));
         assertNull(logoutResponse.getMessage(), "Error message received");
 
-        try {
-            assertNull(authDAO.findByName("Jap"));
-        }
-        catch (DataAccessException e) {
-            assertEquals("Failed to find auth token", e.getMessage());
-        }
+        assertThrowsExactly(DataAccessException.class, () -> authDAO.findByName("Jap"));
     }
 
     @Test
@@ -52,6 +46,6 @@ public class LogoutTest {
         var logoutResponse = userService.logout(new LogoutRequest(token));
         assertEquals("Error: unauthorized", logoutResponse.getMessage());
         var clearService = new AdminService();
-        clearService.clear(new ClearRequest());
+        clearService.clear();
     }
 }

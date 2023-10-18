@@ -13,6 +13,9 @@ import responses.CreateResponse;
 import responses.JoinResponse;
 import responses.ListResponse;
 
+import java.util.ArrayList;
+import java.util.Locale;
+
 /**
  * Game Service class, can make a various requests for game, than returns response
  */
@@ -51,7 +54,7 @@ public class GameService {
         var gameDAO = new GameDAO();
         var authDAO = new AuthDAO();
         var token = req.getAuthToken();
-        var color = req.getPlayerColor();
+        var color = req.getPlayerColor().toLowerCase();
         if(!color.equals("white") && !color.equals("black") && !color.isEmpty()){
             return new JoinResponse("Error: bad request");
         }

@@ -4,7 +4,6 @@ import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import requests.ClearRequest;
 import requests.CreateRequest;
 import requests.JoinRequest;
 import requests.RegisterRequest;
@@ -68,6 +67,6 @@ public class JoinTest {
         var whiteResponseBadID = gameService.join(new JoinRequest(registerResponse.getAuthToken(), "white", 2006));
         assertEquals("Error: bad request", whiteResponseBad.getMessage());
         var clearService = new AdminService();
-        clearService.clear(new ClearRequest());
+        clearService.clear();
     }
 }

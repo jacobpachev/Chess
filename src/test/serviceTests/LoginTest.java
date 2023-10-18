@@ -3,7 +3,6 @@ package serviceTests;
 import dataAccess.DataAccessException;
 import dataAccess.UserDAO;
 import dataAccess.AuthDAO;
-import requests.ClearRequest;
 import requests.LoginRequest;
 import requests.RegisterRequest;
 import responses.LoginResponse;
@@ -53,6 +52,6 @@ public class LoginTest {
         LoginResponse wrongPwdResponse = userService.login(wrongPwdReq);
         assertEquals("Error: unauthorized", wrongPwdResponse.getMessage(), "Wrong password");
         var clearService = new AdminService();
-        clearService.clear(new ClearRequest());
+        clearService.clear();
     }
 }

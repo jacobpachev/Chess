@@ -6,7 +6,6 @@ import dataAccess.UserDAO;
 import dataAccess.AuthDAO;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import requests.ClearRequest;
 import services.AdminService;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -19,7 +18,7 @@ public class ClearTest {
         var authDAO = new AuthDAO();
         var gameDAO = new GameDAO();
         var clearService = new AdminService();
-        clearService.clear(new ClearRequest());
+        clearService.clear();
         try {
             assertTrue(userDAO.findAll().isEmpty(), "user data not empty");
             assertTrue(authDAO.findAll().isEmpty(), "auth data not empty");
