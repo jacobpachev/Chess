@@ -2,7 +2,7 @@ package requests;
 /**
  * Join Request class, just a data container
  */
-public class JoinRequest extends spark.Request{
+public class JoinRequest{
     private String authToken;
     private String playerColor;
     private int gameID;
@@ -14,7 +14,16 @@ public class JoinRequest extends spark.Request{
      */
     public JoinRequest(String authToken, String playerColor, int gameID) {
         this.authToken = authToken;
-        this.playerColor = playerColor;
+        if(playerColor.isEmpty()) {
+            this.playerColor = null;
+        }
+        else {
+            this.playerColor = playerColor;
+        }
+        this.gameID = gameID;
+    }
+    public JoinRequest(String authToken, int gameID) {
+        this.authToken = authToken;
         this.gameID = gameID;
     }
 

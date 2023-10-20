@@ -2,7 +2,7 @@ package requests;
 /**
  *List Request class, just a data container
  */
-public class ListRequest extends spark.Request{
+public class ListRequest{
     private String authToken;
     /**
      * Constructor with token

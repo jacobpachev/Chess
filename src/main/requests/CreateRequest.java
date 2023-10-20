@@ -2,7 +2,7 @@ package requests;
 /**
  *Create Request class, just a data container
  */
-public class CreateRequest extends spark.Request{
+public class CreateRequest{
     private String authToken;
     private String gameName;
 

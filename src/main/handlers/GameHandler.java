@@ -4,10 +4,15 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
+import dataAccess.DataAccessException;
+import dataAccess.GameDAO;
 import requests.*;
+import responses.JoinResponse;
 import services.GameService;
 import spark.Request;
 import spark.Response;
+
+import java.util.Arrays;
 
 
 public class GameHandler {
@@ -17,7 +22,7 @@ public class GameHandler {
         gson = new Gson();
         gameService = new GameService();
     }
-    public Response list(Request request, Response response) {
+    public Object list(Request request, Response response) {
         var jsonBody = new GsonBuilder()
                 .setExclusionStrategies(new ExclusionStrategy() {
                     @Override
@@ -32,59 +37,69 @@ public class GameHandler {
         var listRequest = new ListRequest(request.headers("Authorization"));
         var listResponse = gameService.list(listRequest);
         switch (listResponse.getMessage()) {
-            case null:
-                response.status(200);
-            case "Error: unauthorized":
-                response.status(401);
-            default:
-                response.status(500);
+            case null -> response.status(200);
+            case "Error: unauthorized" -> response.status(401);
+            default -> response.status(500);
         }
-        System.out.println(jsonBody.toJson(listResponse));
         response.body(jsonBody.toJson(listResponse));
-        return response;
+        return jsonBody.toJson(listResponse);
     }
 
-    public Response create(Request request, Response response) {
-        var gameName = request.body().split(":")[1].replace("}", "");
+    public Object create(Request request, Response response) {
+        var gameName = "";
+        try {
+            gameName = request.body().split(":")[1].replace("}", "");
+        }
+        catch (ArrayIndexOutOfBoundsException e) {
+            response.status(400);
+            return "{\"message\":\"Error: bad request\"}";
+        }
+
         gameName = gameName.strip();
         var createRequest = new CreateRequest(request.headers("Authorization"), gameName);
-        System.out.println(createRequest.getGameName());
         var createResponse = gameService.create(createRequest);
-        if(createResponse.getGameID() == 0)
-            response.body(gson.toJson(createResponse.getMessage()));
-        response.body(gson.toJson(createResponse.getGameID()));
         switch (createResponse.getMessage()) {
-            case null:
-                response.status(200);
-            case "Error: unauthorized":
-                response.status(401);
-            case "Error: bad request":
-                response.status(400);
-            default:
-                response.status(500);
+            case null -> response.status(200);
+            case "Error: unauthorized" -> response.status(401);
+            case "Error: bad request" -> response.status(400);
+            default -> response.status(500);
         }
-        return response;
+        return gson.toJson(createResponse);
     }
 
-    public Response join(Request request, Response response) {
-        var color = request.body().split(":")[1].split(",")[0].strip();
-        var gameID = Integer.parseInt(request.body().split(":")[2].replace("}", "").strip());
-        var joinRequest = new JoinRequest(request.headers("Authorization"), color, gameID);
+    public Object join(Request request, Response response) {
+        var jsonBody = "";
+        JoinRequest joinRequest;
+        var authToken = request.headers("Authorization");
+        if(authToken.length() != 36) {
+            response.status(401);
+            return gson.toJson(new JoinResponse("Error: unauthorized"));
+        }
+        if(request.body().split(":")[0].contains("playerColor")) {
+            System.out.println(request.body().split(":")[1]);
+            jsonBody = "{\"authToken\": \"" + authToken + "\", " + request.body().replace("{", "");
+        }
+        else {
+            jsonBody = "{\"authToken\": \"" + authToken + "\", \"playerColor\": null, " + request.body().replace("{", "");
+        }
+        System.out.println(jsonBody);
+
+        joinRequest = gson.fromJson(jsonBody, JoinRequest.class);
         var joinResponse = gameService.join(joinRequest);
         switch (joinResponse.getMessage()) {
-            case null:
-                response.status(200);
-            case "Error: unauthorized":
-                response.status(401);
-            case "Error: bad request":
-                response.status(400);
-            case "Error: already taken":
-                response.status(403);
-            default:
-                response.status(500);
+            case null -> response.status(200);
+            case "Error: unauthorized" -> response.status(401);
+            case "Error: bad request" -> response.status(400);
+            case "Error: already taken" -> response.status(403);
+            default -> response.status(500);
         }
-        response.body(gson.toJson(joinResponse));
-
-        return response;
+        GameDAO gameDAO = new GameDAO();
+        try {
+            System.out.println(gameDAO.find(joinRequest.getGameID()).getWhiteUsername());
+        }
+        catch (DataAccessException e) {
+            System.out.println("data error");
+        }
+        return gson.toJson(joinResponse);
     }
 }

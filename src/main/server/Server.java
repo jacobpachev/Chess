@@ -13,8 +13,6 @@ public class Server {
         var adminHandler = new AdminHandler();
         var gameHandler = new GameHandler();
         var userHandler = new UserHandler();
-        var adminService = new AdminService();
-        Spark.externalStaticFileLocation("public");
         Spark.delete("/db", (req, res) -> adminHandler.clear(res));
         Spark.post("/user", userHandler::register);
         Spark.post("/session", userHandler::login);

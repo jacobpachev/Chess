@@ -4,7 +4,7 @@ package requests;
  * RegisterRequest class, this is basically a container class
  * just stores a request to register in class form
  */
-public class RegisterRequest extends spark.Request{
+public class RegisterRequest {
     private String username;
     private String password;
     private String email;

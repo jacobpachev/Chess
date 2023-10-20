@@ -2,7 +2,7 @@ package responses;
 /**
  * Clear Response class, just a data container
  */
-public class ClearResponse extends spark.Response{
+public class ClearResponse {
     private String message;
     public ClearResponse() {}
     public ClearResponse(String message) {

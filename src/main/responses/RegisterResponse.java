@@ -2,7 +2,7 @@ package responses;
 /**
  * Register Response class, just a data container
  */
-public class RegisterResponse extends spark.Response{
+public class RegisterResponse {
     private String username;
     private String authToken;
     private String message;

@@ -1,6 +1,6 @@
 package responses;
 
-public class JoinResponse extends spark.Response{
+public class JoinResponse {
     private String message;
 
     /**

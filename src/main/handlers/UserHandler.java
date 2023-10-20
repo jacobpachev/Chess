@@ -15,55 +15,39 @@ public class UserHandler {
         gson = new Gson();
         userService = new UserService();
     }
-    public Response register(Request req, Response response) {
-        System.out.println("Register was called!");
+    public Object register(Request req, Response response) {
         var registerRequest = gson.fromJson(req.body(), RegisterRequest.class);
+
         var registerResponse = userService.register(registerRequest);
         switch (registerResponse.getMessage()) {
-            case null:
-                response.status(200);
-            case "Error: bad request":
-                response.status(400);
-            case "Error: already taken":
-                response.status(403);
-            default:
-                response.status(500);
+            case null -> response.status(200);
+            case "Error: bad request" -> response.status(400);
+            case "Error: already taken" -> response.status(403);
+            default -> response.status(500);
         }
-        response.body(gson.toJson(registerResponse));
-        System.out.println(response.body());
-        System.out.println(response.status());
-        return response;
+        return gson.toJson(registerResponse);
     }
 
-    public Response login(Request request, Response response) {
+    public Object login(Request request, Response response) {
         var loginRequest = gson.fromJson(request.body(), LoginRequest.class);
         var loginResponse = userService.login(loginRequest);
         switch (loginResponse.getMessage()) {
-            case null:
-                response.status(200);
-            case "Error: unauthorized":
-                response.status(401);
-            default:
-                response.status(500);
+            case null -> response.status(200);
+            case "Error: unauthorized" -> response.status(401);
+            default -> response.status(500);
         }
-        response.body(gson.toJson(loginResponse));
-        System.out.println(response.body());
-        System.out.println(response.status());
-        return response;
+        return gson.toJson(loginResponse);
     }
 
-    public Response logout(Request request, Response response) {
+    public Object logout(Request request, Response response) {
         var logoutRequest = new LogoutRequest(request.headers("Authorization"));
         var logoutResponse = userService.logout(logoutRequest);
         switch (logoutResponse.getMessage()) {
-            case null:
-                response.status(200);
-            case "Error: unauthorized":
-                response.status(401);
-            default:
-                response.status(500);
+            case null -> response.status(200);
+            case "Error: unauthorized" -> response.status(401);
+            default -> response.status(500);
         }
-        System.out.println(response.status());
-        return response;
+        System.out.println("Logging out");
+        return gson.toJson(logoutResponse);
     }
 }

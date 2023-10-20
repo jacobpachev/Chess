@@ -5,12 +5,12 @@ import services.AdminService;
 import spark.Response;
 
 public class AdminHandler {
-    public String clear(Response res) {
+    public Object clear(Response res) {
         Gson gson = new Gson();
         AdminService adminService = new AdminService();
         if(adminService.clear().getMessage() == null) {
             res.status(200);
-            return gson.toJson(res);
+            return "{}";
         }
         res.status(500);
         res.body(adminService.clear().getMessage());

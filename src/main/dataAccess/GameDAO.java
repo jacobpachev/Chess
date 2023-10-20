@@ -68,6 +68,7 @@ public class GameDAO {
      * @param username user to be placed in game spot
      */
     public void claimPlayerSpot(String username, int gameID, String color) throws DataAccessException {
+        color = color.toLowerCase();
         if(color.equals("white")) find(gameID).setWhiteUsername(username);
         if(color.equals("black")) find(gameID).setBlackUsername(username);
         if(color.isEmpty()) find(gameID).addObserver(username);

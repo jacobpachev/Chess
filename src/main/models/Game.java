@@ -10,7 +10,7 @@ import java.util.Random;
  * model of Chess Game
  */
 public class Game {
-    private final int gameID;
+    private final Integer gameID;
     private String whiteUsername;
     private String blackUsername;
     private String gameName;
@@ -39,11 +39,11 @@ public class Game {
      * format 5 random digits
      * @return game ID
      */
-    private int generateID() {
+    private Integer generateID() {
         return new Random().nextInt(1000, 9999);
     }
 
-    public int getGameID() {
+    public Integer getGameID() {
         return gameID;
     }
 

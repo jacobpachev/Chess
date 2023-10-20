@@ -2,7 +2,7 @@ package requests;
 /**
  *Logout Request class, just a data container
  */
-public class LogoutRequest extends spark.Request{
+public class LogoutRequest {
     private String authToken;
     /**
      * Constructor with token

@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * List Response class, just a data container
  */
-public class ListResponse extends spark.Response{
+public class ListResponse {
     private List<Game> games;
     private String message;
     /**

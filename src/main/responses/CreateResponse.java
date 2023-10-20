@@ -3,15 +3,15 @@ package responses;
 /**
  * Create Response class, just a data container
  */
-public class CreateResponse extends spark.Response{
-    private int gameID;
+public class CreateResponse {
+    public Integer gameID;
     private String message;
 
     /**
      * constructor with gameID
      * @param gameID game id number
      */
-    public CreateResponse(int gameID) {
+    public CreateResponse(Integer gameID) {
         this.gameID = gameID;
     }
 
@@ -20,11 +20,11 @@ public class CreateResponse extends spark.Response{
     }
 
 
-    public int getGameID() {
+    public Integer getGameID() {
         return gameID;
     }
 
-    public void setGameID(int gameID) {
+    public void setGameID(Integer gameID) {
         this.gameID = gameID;
     }
 

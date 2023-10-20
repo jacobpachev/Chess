@@ -2,7 +2,7 @@ package responses;
 /**
  * Logout Response class, just a data container
  */
-public class LogoutResponse extends spark.Response{
+public class LogoutResponse {
     private String message;
 
     public LogoutResponse() {}

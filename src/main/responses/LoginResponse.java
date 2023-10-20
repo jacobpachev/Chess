@@ -5,7 +5,7 @@ import models.AuthToken;
 /**
  * Login Response class, just a data container
  */
-public class LoginResponse extends spark.Response{
+public class LoginResponse {
     private String authToken;
     private String username;
     private String message;

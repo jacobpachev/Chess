@@ -54,13 +54,20 @@ public class GameService {
         var gameDAO = new GameDAO();
         var authDAO = new AuthDAO();
         var token = req.getAuthToken();
-        var color = req.getPlayerColor().toLowerCase();
-        if(!color.equals("white") && !color.equals("black") && !color.isEmpty()){
-            return new JoinResponse("Error: bad request");
+        var color = req.getPlayerColor();
+        if(color != null) {
+            color = color.toLowerCase();
+            if (!color.equals("white") && !color.equals("black") && !color.isEmpty()) {
+                return new JoinResponse("Error: bad request");
+            }
         }
         try {
             Game game = gameDAO.find(req.getGameID());
             String username = authDAO.findByToken(token).getUsername();
+            if(color == null || color.isEmpty()) {
+                gameDAO.claimPlayerSpot(username, req.getGameID(), "");
+                return new JoinResponse();
+            }
             if(color.equals("white")) {
                 if(!game.getWhiteUsername().isEmpty()) {
                     throw new DataAccessException("already taken");

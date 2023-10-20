@@ -4,7 +4,7 @@ package requests;
  * RegisterRequest class, this is basically a container class
  * just stores a request to register in class form
  */
-public class LoginRequest extends spark.Request{
+public class LoginRequest{
     private String message;
     private String username;
     private String password;
@@ -13,7 +13,6 @@ public class LoginRequest extends spark.Request{
      * Constructor that takes
      * @param username username
      * @param password password
-     * @param message error/success message
      */
     public LoginRequest( String username, String password) {
         this.username = username;
