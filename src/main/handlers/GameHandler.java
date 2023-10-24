@@ -41,7 +41,6 @@ public class GameHandler {
             case "Error: unauthorized" -> response.status(401);
             default -> response.status(500);
         }
-        response.body(jsonBody.toJson(listResponse));
         return jsonBody.toJson(listResponse);
     }
 
@@ -92,13 +91,6 @@ public class GameHandler {
             case "Error: bad request" -> response.status(400);
             case "Error: already taken" -> response.status(403);
             default -> response.status(500);
-        }
-        GameDAO gameDAO = new GameDAO();
-        try {
-            System.out.println(gameDAO.find(joinRequest.getGameID()).getWhiteUsername());
-        }
-        catch (DataAccessException e) {
-            System.out.println("data error");
         }
         return gson.toJson(joinResponse);
     }

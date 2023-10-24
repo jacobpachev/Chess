@@ -25,6 +25,7 @@ public class UserHandler {
             case "Error: already taken" -> response.status(403);
             default -> response.status(500);
         }
+        System.out.println(response.status());
         return gson.toJson(registerResponse);
     }
 

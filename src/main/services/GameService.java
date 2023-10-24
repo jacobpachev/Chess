@@ -4,7 +4,6 @@ import chess.GameImpl;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
-import models.AuthToken;
 import models.Game;
 import requests.CreateRequest;
 import requests.JoinRequest;
@@ -13,8 +12,6 @@ import responses.CreateResponse;
 import responses.JoinResponse;
 import responses.ListResponse;
 
-import java.util.ArrayList;
-import java.util.Locale;
 
 /**
  * Game Service class, can make a various requests for game, than returns response
@@ -65,17 +62,25 @@ public class GameService {
             Game game = gameDAO.find(req.getGameID());
             String username = authDAO.findByToken(token).getUsername();
             if(color == null || color.isEmpty()) {
+                gameDAO.find(req.getGameID()).setBlackUsername(null);
+                gameDAO.find(req.getGameID()).setWhiteUsername(null);
+                System.out.println(gameDAO.find(req.getGameID()).getWhiteUsername() == null);
+                System.out.println(gameDAO.find(req.getGameID()).getBlackUsername() == null);
                 gameDAO.claimPlayerSpot(username, req.getGameID(), "");
                 return new JoinResponse();
             }
             if(color.equals("white")) {
-                if(!game.getWhiteUsername().isEmpty()) {
-                    throw new DataAccessException("already taken");
+                if(game.getWhiteUsername() != null) {
+                    if (!game.getWhiteUsername().isEmpty()) {
+                        throw new DataAccessException("already taken");
+                    }
                 }
             }
             if(color.equals("black")) {
-                if(!game.getBlackUsername().isEmpty()) {
-                    throw new DataAccessException("already taken");
+                if(game.getBlackUsername() != null) {
+                    if (!game.getBlackUsername().isEmpty()) {
+                        throw new DataAccessException("already taken");
+                    }
                 }
             }
             gameDAO.claimPlayerSpot(username, req.getGameID(), color);
@@ -89,7 +94,6 @@ public class GameService {
             }
             return new JoinResponse("Error: " +e.getMessage());
         }
-
         return new JoinResponse();
     }
 
