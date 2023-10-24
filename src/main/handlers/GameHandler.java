@@ -4,15 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
-import dataAccess.DataAccessException;
-import dataAccess.GameDAO;
 import requests.*;
 import responses.JoinResponse;
 import services.GameService;
 import spark.Request;
 import spark.Response;
 
-import java.util.Arrays;
 
 
 public class GameHandler {
