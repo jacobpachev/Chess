@@ -7,7 +7,7 @@ package requests;
 public class LoginRequest{
     private String message;
     private String username;
-    private String password;
+    private final String password;
 
     /**
      * Constructor that takes
@@ -19,9 +19,6 @@ public class LoginRequest{
         this.password = password;
     }
 
-    public LoginRequest(String message) {
-        this.message = message;
-    }
 
     public String getMessage() {
         return message;
@@ -43,8 +40,5 @@ public class LoginRequest{
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
 }

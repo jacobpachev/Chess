@@ -29,10 +29,10 @@ public class UserService {
         if(req.getUsername().isEmpty() || req.getPassword().isEmpty() || req.getEmail().isEmpty()) {
             return new RegisterResponse("Error: bad request");
         }
-        UserDAO userData = new UserDAO();
-        AuthDAO authData = new AuthDAO();
         AuthToken token = new AuthToken(req.getUsername());
         try {
+            UserDAO userData = new UserDAO();
+            AuthDAO authData = new AuthDAO();
             userData.insert(new User(req.getUsername(), req.getPassword(), req.getEmail()));
             authData.insert(token);
         }
@@ -48,8 +48,6 @@ public class UserService {
      * @return response
      */
     public LoginResponse login(LoginRequest req) {
-        UserDAO userDAO = new UserDAO();
-        AuthDAO authDAO = new AuthDAO();
         User user;
         if(req.getUsername() == null || req.getPassword() == null) {
             return new LoginResponse("Error: bad request");
@@ -58,6 +56,7 @@ public class UserService {
             return new LoginResponse("Error: bad request");
         }
         try {
+            UserDAO userDAO = new UserDAO();
             user = userDAO.find(req.getUsername());
         } catch (DataAccessException e) {
             return new LoginResponse("Error: " + e.getMessage());
@@ -70,6 +69,7 @@ public class UserService {
         }
         AuthToken userToken = new AuthToken(req.getUsername());
         try {
+            AuthDAO authDAO = new AuthDAO();
             authDAO.insert(userToken);
         } catch (DataAccessException e) {
             return new LoginResponse("Error: " + e.getMessage());

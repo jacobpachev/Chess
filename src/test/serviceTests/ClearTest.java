@@ -14,12 +14,12 @@ public class ClearTest {
     @Test
     @DisplayName("Successful Clear")
     public void successClear() {
-        var userDAO = new UserDAO();
-        var authDAO = new AuthDAO();
-        var gameDAO = new GameDAO();
         var clearService = new AdminService();
         clearService.clear();
         try {
+            var userDAO = new UserDAO();
+            var authDAO = new AuthDAO();
+            var gameDAO = new GameDAO();
             assertTrue(userDAO.findAll().isEmpty(), "user data not empty");
             assertTrue(authDAO.findAll().isEmpty(), "auth data not empty");
             assertTrue(gameDAO.findAll().isEmpty(), "game data not empty");

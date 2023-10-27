@@ -1,4 +1,6 @@
 import dataAccess.DataAccessException;
+import dataAccess.UserDAO;
+import models.User;
 
 import java.io.*;
 import java.net.URL;
@@ -9,12 +11,11 @@ import java.nio.charset.StandardCharsets;
 public class Main {
     public static void main(String[] args) {
         try {
-            var authToken = register();
-            var gameID = create(authToken);
-            join(authToken, gameID);
-            clear();
+            UserDAO userDAO = new UserDAO();
+            userDAO.insert(new User("Jacob", "howdy", "howdy@gmail.com"));
+            userDAO.clear();
         }
-        catch (IOException e) {
+        catch (DataAccessException e) {
             System.out.println(e.getMessage());
         }
     }

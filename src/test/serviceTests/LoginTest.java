@@ -22,12 +22,12 @@ public class LoginTest {
         userService.register(registerRequest);
 
         LoginRequest loginRequest = new LoginRequest("jap", "jap123");
-        UserDAO userDAO = new UserDAO();
-        AuthDAO authDAO = new AuthDAO();
         LoginResponse response = userService.login(loginRequest);
         assertEquals("jap", response.getUsername(), "Wrong username");
         assertEquals(36, response.getAuthToken().length(), "Wrong auth token len");
         try {
+            UserDAO userDAO = new UserDAO();
+            AuthDAO authDAO = new AuthDAO();
             assertNotNull(userDAO.find("jap"));
             assertNotNull(authDAO.findByName("jap"));
         }

@@ -6,8 +6,8 @@ package requests;
  */
 public class RegisterRequest {
     private String username;
-    private String password;
-    private String email;
+    private final String password;
+    private final String email;
 
     /**
      * Constructor that takes
@@ -33,17 +33,11 @@ public class RegisterRequest {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getEmail() {
         return email;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     @Override
     public String toString() {

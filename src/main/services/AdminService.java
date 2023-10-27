@@ -15,10 +15,10 @@ public class AdminService {
      * @return response
      */
     public ClearResponse clear(){
-        var userDAO = new UserDAO();
-        var authDAO = new AuthDAO();
-        var gameDAO = new GameDAO();
         try {
+            var userDAO = new UserDAO();
+            var authDAO = new AuthDAO();
+            var gameDAO = new GameDAO();
             userDAO.clear();
             authDAO.clear();
             gameDAO.clear();

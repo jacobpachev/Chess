@@ -4,7 +4,7 @@ package requests;
  */
 public class CreateRequest{
     private String authToken;
-    private String gameName;
+    private final String gameName;
 
     /**
      * Constructor with token, game name
@@ -28,7 +28,4 @@ public class CreateRequest{
         return gameName;
     }
 
-    public void setGameName(String gameName) {
-        this.gameName = gameName;
-    }
 }

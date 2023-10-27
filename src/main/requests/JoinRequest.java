@@ -4,8 +4,8 @@ package requests;
  */
 public class JoinRequest{
     private String authToken;
-    private String playerColor;
-    private int gameID;
+    private final String playerColor;
+    private final int gameID;
     /**
      * Constructor with auth token, color, game id
      * @param authToken authorization token
@@ -22,10 +22,6 @@ public class JoinRequest{
         }
         this.gameID = gameID;
     }
-    public JoinRequest(String authToken, int gameID) {
-        this.authToken = authToken;
-        this.gameID = gameID;
-    }
 
     public String getAuthToken() {
         return authToken;
@@ -39,15 +35,9 @@ public class JoinRequest{
         return gameID;
     }
 
-    public void setGameID(int gameID) {
-        this.gameID = gameID;
-    }
     public String getPlayerColor() {
         return playerColor;
     }
 
-    public void setPlayerColor(String playerColor) {
-        this.playerColor = playerColor;
-    }
 
 }

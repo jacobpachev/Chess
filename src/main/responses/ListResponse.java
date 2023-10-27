@@ -23,9 +23,6 @@ public class ListResponse {
         return games;
     }
 
-    public void setGames(List<Game> games) {
-        this.games = games;
-    }
 
     public String getMessage() {
         return message;

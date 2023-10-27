@@ -1,6 +1,5 @@
 package dataAccess;
 
-import chess.ChessGame;
 import models.Game;
 
 import java.util.ArrayList;
@@ -49,19 +48,6 @@ public class GameDAO {
         gameData = new ArrayList<>();
     }
 
-    /**
-     * Removes Game from data
-     * @param gameID GameID to remove
-     */
-    public void remove(int gameID) throws DataAccessException {
-        try {
-            Game game = find(gameID);
-            gameData.remove(game);
-        }
-        catch(DataAccessException e) {
-            throw new DataAccessException("Could not remove game(not found)");
-        }
-    }
 
     /**
      * Places a user as whitePlayer or blackPlayer
@@ -74,20 +60,5 @@ public class GameDAO {
         if(color.isEmpty()) find(gameID).addObserver(username);
     }
 
-    /**
-     * update gameID with new gameName
-     * @param gameId username to update
-     * @param gameName new name
-     */
-    public void updateName(int gameId, String gameName) throws DataAccessException {
-        find(gameId).setGameName(gameName);
-    }
-    /**
-     * update gameID with new game
-     * @param gameId username to update
-     * @param game new game
-     */
-    public void updateGame(int gameId, ChessGame game) throws DataAccessException {
-        find(gameId).setGame(game);
-    }
+
 }
