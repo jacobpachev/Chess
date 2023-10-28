@@ -1,15 +1,25 @@
+import chess.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dataAccess.DataAccessException;
 import dataAccess.UserDAO;
 import models.User;
 
 import java.io.*;
 import java.net.URL;
+import com.google.gson.Gson;
 
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 
 public class Main {
     public static void main(String[] args) {
+        var jsonBuilder = new GsonBuilder();
+        jsonBuilder.registerTypeAdapter(ChessGame.class, new GameAdapter());
+        var json = jsonBuilder.create();
+        ChessGame game = new GameImpl();
+        game.getBoard().resetBoard();
+        System.out.println(json.fromJson(json.toJson(game), ChessGame.class));
         try {
             UserDAO userDAO = new UserDAO();
             userDAO.insert(new User("Jacob", "howdy", "howdy@gmail.com"));

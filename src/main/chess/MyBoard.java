@@ -10,6 +10,9 @@ public class MyBoard implements ChessBoard{
     public MyBoard(){
         board = new HashMap<>();
     }
+    public MyBoard(HashMap<ChessPosition, ChessPiece> board){
+        this.board = board;
+    }
     public MyBoard(ChessBoard other) {
        board = (HashMap<ChessPosition, ChessPiece>) other.getBoard().clone();
     }
