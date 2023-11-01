@@ -1,6 +1,8 @@
 package models;
 
 import chess.ChessGame;
+import dataAccess.DataAccessException;
+import dataAccess.GameDAO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.Random;
  * model of Chess Game
  */
 public class Game {
-    private final Integer gameID;
+    private Integer gameID;
     private String whiteUsername;
     private String blackUsername;
     private String gameName;
@@ -18,7 +20,6 @@ public class Game {
     private ChessGame game;
 
     public Game(String whiteUsername, String blackUsername, String gameName, ChessGame game) {
-        this.gameID = generateID();
         this.whiteUsername = whiteUsername;
         this.blackUsername = blackUsername;
         this.gameName = gameName;
@@ -26,19 +27,9 @@ public class Game {
         this.observers = new ArrayList<>();
     }
     public Game(String gameName, ChessGame game) {
-        this.gameID = generateID();
         this.gameName = gameName;
         this.game = game;
         this.observers = new ArrayList<>();
-    }
-
-    /**
-     * generates a game ID
-     * format 5 random digits
-     * @return game ID
-     */
-    private Integer generateID() {
-        return new Random().nextInt(1000, 9999);
     }
 
     public Integer getGameID() {
@@ -85,5 +76,9 @@ public class Game {
      */
     public void addObserver(String obsName) {
         observers.add(obsName);
+    }
+
+    public void setGameID(Integer gameID) {
+        this.gameID = gameID;
     }
 }

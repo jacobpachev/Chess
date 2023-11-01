@@ -1,8 +1,12 @@
 import chess.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
+import dataAccess.GameDAO;
 import dataAccess.UserDAO;
+import models.AuthToken;
+import models.Game;
 import models.User;
 
 import java.io.*;
@@ -14,16 +18,13 @@ import java.nio.charset.StandardCharsets;
 
 public class Main {
     public static void main(String[] args) {
-        var jsonBuilder = new GsonBuilder();
-        jsonBuilder.registerTypeAdapter(ChessGame.class, new GameAdapter());
-        var json = jsonBuilder.create();
-        ChessGame game = new GameImpl();
-        game.getBoard().resetBoard();
-        System.out.println(json.fromJson(json.toJson(game), ChessGame.class));
         try {
-            UserDAO userDAO = new UserDAO();
-            userDAO.insert(new User("Jacob", "howdy", "howdy@gmail.com"));
-            userDAO.clear();
+            var gameDAO = new GameDAO();
+            var game = new Game("test", new GameImpl());
+            System.out.println("Made game");
+            gameDAO.insert(game);
+
+            System.out.println(gameDAO.find("test").getGameID());
         }
         catch (DataAccessException e) {
             System.out.println(e.getMessage());
@@ -60,7 +61,6 @@ public class Main {
         os.close();
         client.connect();
         var response = getInput(client.getInputStream());
-        System.out.println(response);
     }
 
     private static void logout(String authToken) throws IOException {
@@ -70,7 +70,6 @@ public class Main {
         client.addRequestProperty("Accept", "application/json");
         client.addRequestProperty("Authorization", authToken);
         client.connect();
-        System.out.println(client.getResponseCode());
 
     }
 

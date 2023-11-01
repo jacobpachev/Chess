@@ -22,7 +22,6 @@ public class JoinTest {
         var registerRequest = new RegisterRequest("jap", "jap123", "jap@byu.edu");
         var userService = new UserService();
         var gameService = new GameService();
-        var gameDAO = new GameDAO();
         var registerResponse = userService.register(registerRequest);
         var createResponse = gameService.create(new CreateRequest(registerResponse.getAuthToken(), "test"));
         var gameID = createResponse.getGameID();
@@ -35,6 +34,7 @@ public class JoinTest {
         assertNull(blackResponse.getMessage());
 
         try {
+            var gameDAO = new GameDAO();
             assertEquals("jap", gameDAO.find(gameID).getObservers().get(0));
             assertEquals("jap", gameDAO.find(gameID).getWhiteUsername());
             assertEquals("jap", gameDAO.find(gameID).getBlackUsername());
@@ -50,7 +50,6 @@ public class JoinTest {
         var registerRequest = new RegisterRequest("Jap", "jap123", "jap@byu.edu");
         var userService = new UserService();
         var gameService = new GameService();
-        var gameDAO = new GameDAO();
         var registerResponse = userService.register(registerRequest);
         var createResponse = gameService.create(new CreateRequest(registerResponse.getAuthToken(), "test"));
         var gameID = createResponse.getGameID();

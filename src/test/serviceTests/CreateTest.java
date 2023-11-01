@@ -21,7 +21,6 @@ public class CreateTest {
         var registerRequest = new RegisterRequest("jap", "jap123", "jap@byu.edu");
         var userService = new UserService();
         var gameService = new GameService();
-        var gameDAO = new GameDAO();
         var registerResponse = userService.register(registerRequest);
         if(registerResponse.getMessage() != null) {
             System.out.println("Data access error");
@@ -32,6 +31,7 @@ public class CreateTest {
         assertTrue(createResponse.getGameID() >= 1000 || createResponse.getGameID() < 10000, "Game ID in wrong range");
 
         try {
+            var gameDAO = new GameDAO();
             assertNotNull(gameDAO.find(createResponse.getGameID()), "game ID not found");
         }
         catch(DataAccessException e) {

@@ -83,7 +83,6 @@ public class UserService {
      * @return response
      */
     public LogoutResponse logout(LogoutRequest req){
-        AuthDAO authData = new AuthDAO();
         String userToken;
         String userName;
         if(req.getAuthToken() == null) {
@@ -93,6 +92,7 @@ public class UserService {
             return new LogoutResponse("Error: bad request");
         }
         try {
+            AuthDAO authData = new AuthDAO();
             userName = authData.findByToken(req.getAuthToken()).getUsername();
             userToken = authData.findByToken(req.getAuthToken()).getAuthToken();
             if(!userToken.equals(req.getAuthToken())) {

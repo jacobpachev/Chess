@@ -23,13 +23,14 @@ public class GameService {
      * @return response
      */
     public CreateResponse create(CreateRequest req){
-        AuthDAO authData = new AuthDAO();
-        GameDAO gameData = new GameDAO();
         Game game = null;
         try {
+            AuthDAO authData = new AuthDAO();
+            GameDAO gameData = new GameDAO();
             if(authData.findByToken(req.getAuthToken()) != null) {
                 game = new Game(req.getGameName(), new GameImpl());
                 gameData.insert(game);
+                game.setGameID(gameData.getID(game.getGameName()));
             }
         }
         catch (DataAccessException e) {
@@ -48,8 +49,6 @@ public class GameService {
      * @return response
      */
     public JoinResponse join(JoinRequest req){
-        var gameDAO = new GameDAO();
-        var authDAO = new AuthDAO();
         var token = req.getAuthToken();
         var color = req.getPlayerColor();
         if(color != null) {
@@ -59,13 +58,13 @@ public class GameService {
             }
         }
         try {
+            var gameDAO = new GameDAO();
+            var authDAO = new AuthDAO();
             Game game = gameDAO.find(req.getGameID());
             String username = authDAO.findByToken(token).getUsername();
             if(color == null || color.isEmpty()) {
                 gameDAO.find(req.getGameID()).setBlackUsername(null);
                 gameDAO.find(req.getGameID()).setWhiteUsername(null);
-                System.out.println(gameDAO.find(req.getGameID()).getWhiteUsername() == null);
-                System.out.println(gameDAO.find(req.getGameID()).getBlackUsername() == null);
                 gameDAO.claimPlayerSpot(username, req.getGameID(), "");
                 return new JoinResponse();
             }
@@ -103,9 +102,8 @@ public class GameService {
      * @return response
      */
     public ListResponse list(ListRequest req){
-        AuthDAO authDAO = new AuthDAO();
-        GameDAO gameDAO = new GameDAO();
         try {
+            AuthDAO authDAO = new AuthDAO();
             authDAO.findByToken(req.getAuthToken());
         }
         catch(DataAccessException e) {
@@ -115,6 +113,7 @@ public class GameService {
             return new ListResponse("Error: " +e.getMessage());
         }
         try {
+            GameDAO gameDAO = new GameDAO();
             return new ListResponse(gameDAO.findAll());
         }
         catch(DataAccessException e) {

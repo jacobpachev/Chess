@@ -72,13 +72,11 @@ public class GameHandler {
             return gson.toJson(new JoinResponse("Error: unauthorized"));
         }
         if(request.body().split(":")[0].contains("playerColor")) {
-            System.out.println(request.body().split(":")[1]);
             jsonBody = "{\"authToken\": \"" + authToken + "\", " + request.body().replace("{", "");
         }
         else {
             jsonBody = "{\"authToken\": \"" + authToken + "\", \"playerColor\": null, " + request.body().replace("{", "");
         }
-        System.out.println(jsonBody);
 
         joinRequest = gson.fromJson(jsonBody, JoinRequest.class);
         var joinResponse = gameService.join(joinRequest);

@@ -17,7 +17,6 @@ public class LogoutTest {
 
     @Test
     public void successLogout() {
-        var authDAO = new AuthDAO();
         var userReq = new RegisterRequest("Jap", "jap123", "jap@byu.edu");
         var userService = new UserService();
         if(userService.register(userReq).getMessage() != null) {
@@ -26,17 +25,16 @@ public class LogoutTest {
         }
         String token;
         try {
+            var authDAO = new AuthDAO();
             token = authDAO.findByName(userReq.getUsername()).getAuthToken();
+            LogoutResponse logoutResponse = userService.logout(new LogoutRequest(token));
+            assertNull(logoutResponse.getMessage(), "Error message received");
+
+            assertThrowsExactly(DataAccessException.class, () -> authDAO.findByName("Jap"));
         }
         catch (DataAccessException e) {
             System.out.println("Database error");
-            return;
         }
-
-        LogoutResponse logoutResponse = userService.logout(new LogoutRequest(token));
-        assertNull(logoutResponse.getMessage(), "Error message received");
-
-        assertThrowsExactly(DataAccessException.class, () -> authDAO.findByName("Jap"));
     }
 
     @Test

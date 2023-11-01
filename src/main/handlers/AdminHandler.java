@@ -14,6 +14,7 @@ public class AdminHandler {
         }
         res.status(500);
         res.body(adminService.clear().getMessage());
+        System.out.println(res.body());
         return gson.toJson(res);
 
     }

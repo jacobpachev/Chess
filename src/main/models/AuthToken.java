@@ -13,6 +13,11 @@ public class AuthToken {
         this.username = username;
     }
 
+    public AuthToken(String username, String authToken) {
+        this.username = username;
+        this.authToken = authToken;
+    }
+
     public String getAuthToken() {
         return authToken;
     }
