@@ -2,6 +2,8 @@ package serviceTests;
 
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import requests.CreateRequest;
@@ -16,6 +18,12 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JoinTest {
+    @BeforeEach
+    @AfterEach
+    void clear() {
+        var adminService = new AdminService();
+        adminService.clear();
+    }
     @Test
     @DisplayName("Successful Join")
     public void successJoin() {

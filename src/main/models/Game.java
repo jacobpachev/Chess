@@ -6,6 +6,7 @@ import dataAccess.GameDAO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -80,5 +81,18 @@ public class Game {
 
     public void setGameID(Integer gameID) {
         this.gameID = gameID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Game game1 = (Game) o;
+        return Objects.equals(gameID, game1.gameID) && Objects.equals(whiteUsername, game1.whiteUsername) && Objects.equals(blackUsername, game1.blackUsername) && Objects.equals(gameName, game1.gameName) && Objects.equals(observers, game1.observers) && Objects.equals(game, game1.game);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(gameID, whiteUsername, blackUsername, gameName, observers, game);
     }
 }

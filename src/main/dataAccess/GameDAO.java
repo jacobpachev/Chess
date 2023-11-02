@@ -54,6 +54,21 @@ public class GameDAO {
                  VALUES (?, ?, ?, ?, ?)
                 """;
         var jsonBuilder = new GsonBuilder();
+        try {
+            if(game.getGameID() != null) {
+                if (find(game.getGameID()) != null) {
+                    throw new DataAccessException("Id already in database");
+                }
+            }
+        }
+        catch (DataAccessException e) {
+            if(e.getMessage().equals("Id already in database")) {
+                throw new DataAccessException(e.getMessage());
+            }
+            else {
+                System.out.println(e.getMessage());
+            }
+        }
         jsonBuilder.registerTypeAdapter(ChessGame.class, new GameAdapter());
         var json = jsonBuilder.create();
         try(var conn = dataBase.getConnection()) {
@@ -224,7 +239,7 @@ public class GameDAO {
                     preparedStatement.executeUpdate();
                 }
             }
-            else {
+            else if(color.isEmpty()) {
                 var sqlStr = """
                         UPDATE game
                         SET observers = ?
@@ -240,6 +255,9 @@ public class GameDAO {
 
                     preparedStatement.executeUpdate();
                 }
+            }
+            else {
+                throw new DataAccessException("Not a valid color");
             }
         }
         catch (SQLException e) {

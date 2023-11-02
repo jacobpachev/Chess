@@ -39,6 +39,16 @@ public class AuthDAO {
      * @param authToken AuthToken to place
      */
     public void insert(AuthToken authToken) throws DataAccessException {
+        if(authToken.getUsername() != null) {
+            try {
+                findByToken(authToken.getAuthToken());
+            }
+            catch(DataAccessException e) {
+                if(!e.getMessage().equals("Failed to find auth token")) {
+                    throw new DataAccessException("Token already in database");
+                }
+            }
+        }
         try(var conn = dataBase.getConnection()) {
             try(var preparedStatement = conn.prepareStatement("INSERT INTO auth (token, username) VALUES(?, ?)")) {
                 preparedStatement.setString(1, authToken.getAuthToken());
@@ -47,6 +57,9 @@ public class AuthDAO {
             }
         }
         catch(SQLException e) {
+            if(e.getMessage().contains("Duplicate")) {
+                throw new DataAccessException("Token already in database");
+            }
             throw new DataAccessException(e.getMessage());
         }
 
@@ -59,13 +72,19 @@ public class AuthDAO {
      * @return int
      */
     public AuthToken findByName(String username) throws DataAccessException {
-        var token = "";
+
+        String token = null;
         try(var conn = dataBase.getConnection()) {
-            try(var preparedStatement = conn.prepareStatement("SELECT * FROM auth WHERE name = ?")) {
+            try(var preparedStatement = conn.prepareStatement("SELECT * FROM auth WHERE username = ?")) {
                 preparedStatement.setString(1, username);
                 var query = preparedStatement.executeQuery();
-                while(query.next()) {
+                var next = query.next();
+                if(!next) {
+                    return null;
+                }
+                while(next) {
                     token = query.getString("token");
+                    next = query.next();
                 }
             }
         }
@@ -76,13 +95,18 @@ public class AuthDAO {
     }
 
     public AuthToken findByToken(String token) throws DataAccessException {
-        var username = "";
+        String username = null;
         try(var conn = dataBase.getConnection()) {
             try(var preparedStatement = conn.prepareStatement("SELECT * FROM auth WHERE token = ?")) {
                 preparedStatement.setString(1, token);
                 var query = preparedStatement.executeQuery();
-                while(query.next()) {
+                var next = query.next();
+                if(!next) {
+                    throw new DataAccessException("Failed to find auth token");
+                }
+                while(next) {
                     username = query.getString("username");
+                    next = query.next();
                 }
             }
         }
@@ -132,7 +156,6 @@ public class AuthDAO {
 
     /**
      * Removes authToken from data
-     *
      * @param name username of token to remove
      */
     public void remove(String name) throws DataAccessException {

@@ -95,8 +95,11 @@ public class UserService {
             AuthDAO authData = new AuthDAO();
             userName = authData.findByToken(req.getAuthToken()).getUsername();
             userToken = authData.findByToken(req.getAuthToken()).getAuthToken();
-            if(!userToken.equals(req.getAuthToken())) {
-                return new LogoutResponse("Error: unauthorized");
+            System.out.println(userToken);
+            if(userToken != null) {
+                if (!userToken.equals(req.getAuthToken())) {
+                    return new LogoutResponse("Error: unauthorized");
+                }
             }
             authData.remove(userName);
         }

@@ -2,6 +2,8 @@ package serviceTests;
 
 import dataAccess.DataAccessException;
 import dataAccess.UserDAO;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import requests.RegisterRequest;
 import responses.RegisterResponse;
 import services.AdminService;
@@ -13,6 +15,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 public class RegisterTest {
+    @BeforeEach
+    @AfterEach
+    void clear() {
+        var adminService = new AdminService();
+        adminService.clear();
+    }
     @Test
     @DisplayName("Successful Register")
     public void successRegister() throws DataAccessException {
@@ -31,7 +39,7 @@ public class RegisterTest {
         RegisterRequest request = new RegisterRequest("jap2", "jap123", "jap@byu.edu");
         service.register(request);
         RegisterResponse response =  service.register(request);
-        assertEquals( "Error: already taken", response.getMessage(), "Duplicate requests");
+        assertEquals( "Error: User already in database", response.getMessage(), "Duplicate requests");
 
         RegisterResponse responseBad =  service.register(new RegisterRequest("", "", ""));
         assertEquals( "Error: bad request", responseBad.getMessage(), "Empty request");

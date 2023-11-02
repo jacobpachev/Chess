@@ -39,6 +39,21 @@ public class UserDAO {
      * @param user User to place
      */
     public void insert(User user) throws DataAccessException {
+        try {
+            if(user.getUserName() != null) {
+                if (find(user.getUserName()) != null) {
+                    throw new DataAccessException("User already in database");
+                }
+            }
+        }
+        catch (DataAccessException e) {
+            if(e.getMessage().equals("User already in database")) {
+                throw new DataAccessException(e.getMessage());
+            }
+            else {
+                System.out.println(e.getMessage());
+            }
+        }
         try(var conn = dataBase.getConnection()) {
             try(var preparedStatement = conn.prepareStatement("INSERT INTO user (name, password, email) VALUES(?, ?, ?)")) {
                 preparedStatement.setString(1, user.getUserName());
@@ -60,15 +75,20 @@ public class UserDAO {
      * @return int
      */
     public User find(String username) throws DataAccessException {
-        var password = "";
-        var email = "";
+        String password = null;
+        String email = null;
         try(var conn = dataBase.getConnection()) {
             try(var preparedStatement = conn.prepareStatement("SELECT * FROM user WHERE name = ?")) {
                 preparedStatement.setString(1, username);
                 var query = preparedStatement.executeQuery();
-                while(query.next()) {
+                var next = query.next();
+                if(!next) {
+                    return null;
+                }
+                while(next) {
                     password = query.getString("password");
                     email = query.getString("email");
+                    next = query.next();
                 }
             }
         }

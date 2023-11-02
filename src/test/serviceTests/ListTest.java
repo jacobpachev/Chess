@@ -1,5 +1,7 @@
 package serviceTests;
 
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import requests.CreateRequest;
@@ -14,6 +16,12 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ListTest {
+    @BeforeEach
+    @AfterEach
+    void clear() {
+        var adminService = new AdminService();
+        adminService.clear();
+    }
     @Test
     @DisplayName("Successful List")
     public void successList() {

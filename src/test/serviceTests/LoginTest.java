@@ -3,9 +3,13 @@ package serviceTests;
 import dataAccess.DataAccessException;
 import dataAccess.UserDAO;
 import dataAccess.AuthDAO;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import requests.LoginRequest;
+import requests.LogoutRequest;
 import requests.RegisterRequest;
 import responses.LoginResponse;
+import responses.LogoutResponse;
 import services.AdminService;
 import services.UserService;
 import org.junit.jupiter.api.DisplayName;
@@ -14,12 +18,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class LoginTest {
+    @BeforeEach
+    @AfterEach
+    void clear() {
+        var adminService = new AdminService();
+        adminService.clear();
+    }
     @Test
     @DisplayName("Successful Login")
     public void successLogin() {
         RegisterRequest registerRequest = new RegisterRequest("jap", "jap123", "jap@byu.edu");
         UserService userService = new UserService();
-        userService.register(registerRequest);
+        var registerResponse = userService.register(registerRequest);
+
+        var logoutRequest = new LogoutRequest(registerResponse.getAuthToken());
+        userService.logout(logoutRequest);
 
         LoginRequest loginRequest = new LoginRequest("jap", "jap123");
         LoginResponse response = userService.login(loginRequest);

@@ -2,6 +2,8 @@ package serviceTests;
 
 import dataAccess.DataAccessException;
 import dataAccess.AuthDAO;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import requests.LogoutRequest;
 import requests.RegisterRequest;
 import responses.LogoutResponse;
@@ -14,9 +16,16 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class LogoutTest {
+    @BeforeEach
+    @AfterEach
+    void clear() {
+        var adminService = new AdminService();
+        adminService.clear();
+    }
 
     @Test
-    public void successLogout() {
+    public void
+    successLogout() {
         var userReq = new RegisterRequest("Jap", "jap123", "jap@byu.edu");
         var userService = new UserService();
         if(userService.register(userReq).getMessage() != null) {

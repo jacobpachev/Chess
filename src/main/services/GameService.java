@@ -32,6 +32,9 @@ public class GameService {
                 gameData.insert(game);
                 game.setGameID(gameData.getID(game.getGameName()));
             }
+            if(authData.findByToken(req.getAuthToken()).getAuthToken() == null) {
+                throw new DataAccessException("Failed to find auth token");
+            }
         }
         catch (DataAccessException e) {
             if(e.getMessage().equals("Failed to find auth token")) {
@@ -51,9 +54,14 @@ public class GameService {
     public JoinResponse join(JoinRequest req){
         var token = req.getAuthToken();
         var color = req.getPlayerColor();
+        var gameID = req.getGameID();
+        System.out.println(gameID);
+        if(gameID < 1000) {
+            return new JoinResponse("Error: bad request");
+        }
         if(color != null) {
             color = color.toLowerCase();
-            if (!color.equals("white") && !color.equals("black") && !color.isEmpty()) {
+            if ((!color.equals("white") && !color.equals("black") && !color.isEmpty())) {
                 return new JoinResponse("Error: bad request");
             }
         }
