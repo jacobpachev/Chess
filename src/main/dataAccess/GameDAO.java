@@ -223,6 +223,7 @@ public class GameDAO {
      * @param username user to be placed in game spot
      */
     public void claimPlayerSpot(String username, int gameID, String color) throws DataAccessException {
+
         try(var conn = dataBase.getConnection()) {
             color = color.toLowerCase();
             if(color.equals("white") || color.equals("black")) {
@@ -235,7 +236,7 @@ public class GameDAO {
                         """;
                 try(var preparedStatement = conn.prepareStatement(sqlStr)) {
                     preparedStatement.setString(1, username);
-                    preparedStatement.setInt(2, 1000);
+                    preparedStatement.setInt(2, gameID);
                     preparedStatement.executeUpdate();
                 }
             }

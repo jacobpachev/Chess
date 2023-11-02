@@ -39,7 +39,7 @@ public class LogoutTest {
             LogoutResponse logoutResponse = userService.logout(new LogoutRequest(token));
             assertNull(logoutResponse.getMessage(), "Error message received");
 
-            assertThrowsExactly(DataAccessException.class, () -> authDAO.findByName("Jap"));
+            assertNull(authDAO.findByName("Jap"));
         }
         catch (DataAccessException e) {
             System.out.println("Database error");
