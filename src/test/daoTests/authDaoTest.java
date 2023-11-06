@@ -4,8 +4,6 @@ import chess.GameImpl;
 import dataAccess.DataAccessException;
 import dataAccess.AuthDAO;
 import models.AuthToken;
-import models.Game;
-import models.User;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

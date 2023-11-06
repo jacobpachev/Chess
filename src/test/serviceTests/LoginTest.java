@@ -9,7 +9,6 @@ import requests.LoginRequest;
 import requests.LogoutRequest;
 import requests.RegisterRequest;
 import responses.LoginResponse;
-import responses.LogoutResponse;
 import services.AdminService;
 import services.UserService;
 import org.junit.jupiter.api.DisplayName;

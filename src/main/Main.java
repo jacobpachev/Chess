@@ -1,17 +1,9 @@
-import chess.*;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
-import dataAccess.UserDAO;
-import models.AuthToken;
 import models.Game;
-import models.User;
 
 import java.io.*;
 import java.net.URL;
-import com.google.gson.Gson;
 
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;

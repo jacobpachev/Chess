@@ -1,13 +1,11 @@
 package models;
 
 import chess.ChessGame;
-import dataAccess.DataAccessException;
-import dataAccess.GameDAO;
+
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 /**
  * model of Chess Game

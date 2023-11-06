@@ -7,7 +7,6 @@ import models.AuthToken;
 import models.User;
 import requests.LogoutRequest;
 import requests.RegisterRequest;
-import responses.CreateResponse;
 import responses.LogoutResponse;
 import responses.RegisterResponse;
 import requests.LoginRequest;
