@@ -1,3 +1,4 @@
+import chess.GameImpl;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
 import models.Game;
