@@ -6,13 +6,12 @@ import chess.MyPosition;
 import java.util.*;
 
 import static ui.EscapeSequences.*;
+import ui.Repl;
 
 public class Main {
     public static void main(String[] args) {
-        var game = new GameImpl();
-        game.getBoard().resetBoard();
-        renderBoard(game.getBoard(), "white");
-        renderBoard(game.getBoard(), "black");
+        var repl = new Repl();
+        repl.run();
     }
 
     static void renderBoard(ChessBoard board, String color) {
