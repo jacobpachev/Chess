@@ -43,6 +43,7 @@ public class GameService {
             return new CreateResponse("Error: " +e.getMessage());
         }
         assert game != null;
+        System.out.println(game);
         return new CreateResponse(game.getGameID());
     }
 

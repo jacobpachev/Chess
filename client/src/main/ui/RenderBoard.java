@@ -1,20 +1,17 @@
+package ui;
+
 import chess.ChessBoard;
 import chess.ChessGame;
-import chess.GameImpl;
 import chess.MyPosition;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static ui.EscapeSequences.*;
-import ui.Repl;
+import static ui.EscapeSequences.RESET_TEXT_COLOR;
 
-public class Main {
-    public static void main(String[] args) {
-        var repl = new Repl();
-        repl.run();
-    }
-
-    static void renderBoard(ChessBoard board, String color) {
+public class RenderBoard {
+    public void renderBoard(ChessBoard board, String color) {
         var range = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
         var rangeReversed = new ArrayList<>(Arrays.asList(8, 7, 6, 5, 4, 3, 2, 1));
         var letters = "    h  g  f  e  d  c  b  a    ";
@@ -59,5 +56,4 @@ public class Main {
         System.out.print(RESET_BG_COLOR);
         System.out.println(RESET_TEXT_COLOR);
     }
-
 }

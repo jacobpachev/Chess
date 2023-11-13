@@ -44,15 +44,14 @@ public class GameHandler {
     public Object create(Request request, Response response) {
         var gameName = "";
         try {
-            gameName = request.body().split(":")[1].replace("}", "");
+            gameName = request.body().split(":")[2].replace("}", "");
         }
         catch (ArrayIndexOutOfBoundsException e) {
             response.status(400);
             return "{\"message\":\"Error: bad request\"}";
         }
-
-        gameName = gameName.strip();
-        var createRequest = new CreateRequest(request.headers("Authorization"), gameName);
+        gameName = gameName.strip().replace("\"", "");
+        var createRequest = new CreateRequest(gameName,  request.headers("Authorization"));
         var createResponse = gameService.create(createRequest);
         switch (createResponse.getMessage()) {
             case null -> response.status(200);

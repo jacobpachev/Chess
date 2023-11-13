@@ -95,6 +95,7 @@ public class AuthDAO {
     }
 
     public AuthToken findByToken(String token) throws DataAccessException {
+        System.out.println(token);
         String username = null;
         try(var conn = dataBase.getConnection()) {
             try(var preparedStatement = conn.prepareStatement("SELECT * FROM auth WHERE token = ?")) {

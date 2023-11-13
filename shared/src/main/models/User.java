@@ -4,19 +4,19 @@ package models;
  * model of User
  */
 public class User {
-    private final String userName;
+    private final String username;
     private final String password;
     private final String email;
 
     public User(String userName, String password, String email) {
-        this.userName = userName;
+        this.username = userName;
         this.password = password;
         this.email = email;
     }
 
 
     public String getUserName() {
-        return userName;
+        return username;
     }
 
     public String getPassword() {
