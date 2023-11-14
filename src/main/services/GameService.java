@@ -121,6 +121,7 @@ public class GameService {
         }
         try {
             GameDAO gameDAO = new GameDAO();
+
             return new ListResponse(gameDAO.findAll());
         }
         catch(DataAccessException e) {

@@ -20,17 +20,7 @@ public class GameHandler {
         gameService = new GameService();
     }
     public Object list(Request request, Response response) {
-        var jsonBody = new GsonBuilder()
-                .setExclusionStrategies(new ExclusionStrategy() {
-                    @Override
-                    public boolean shouldSkipField(FieldAttributes f) {
-                        return (f.getName().equals("observers") || f.getName().equals("game"));
-                    }
-                    @Override
-                    public boolean shouldSkipClass(Class<?> aClass) {
-                        return false;
-                    }
-                }).create();
+        var jsonBody = new Gson();
         var listRequest = new ListRequest(request.headers("Authorization"));
         var listResponse = gameService.list(listRequest);
         switch (listResponse.getMessage()) {

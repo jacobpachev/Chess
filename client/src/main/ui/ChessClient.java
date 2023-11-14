@@ -5,10 +5,7 @@ import models.User;
 import requests.*;
 import serverFacade.ServerFacade;
 
-import java.sql.Ref;
 import java.util.*;
-
-import static ui.EscapeSequences.*;
 
 public class ChessClient {
     boolean loggedIn = false;
@@ -54,11 +51,11 @@ public class ChessClient {
         if(loggedIn) {
             throw new Exception("400 Only one user can be signed in");
         }
-        if(params.length >= 1) {
-            loggedIn = true;
+        if(params.length >= 2) {
             var username = params[0];
             var password = params[1];
             token = server.loginUser(new LoginRequest(username, password)).getAuthToken();
+            loggedIn = true;
             return "Logged in as "+username+"\n";
         }
         throw new Exception("400 Bad Format");
@@ -83,7 +80,8 @@ public class ChessClient {
         var games = server.listGames(new ListRequest(token)).getGames();
         var gamesListStr = new StringBuilder();
         for (var game : games) {
-            gamesListStr.append("Game ").append(game.getGameID()).append("\n");
+            gamesListStr.append("Game ").append(game.getGameName()).append("\n");
+            gamesListStr.append("\tId: ").append(game.getGameID()).append("\n");
             gamesListStr.append("\tWhite player: ").append(game.getWhiteUsername()).append("\n");
             gamesListStr.append("\tBlack player: ").append(game.getBlackUsername()).append("\n");
             gamesListStr.append("\tObservers: ").append(game.getObservers()).append("\n");
@@ -107,8 +105,13 @@ public class ChessClient {
             var board = new RenderBoard();
             var game = new GameImpl();
             game.getBoard().resetBoard();
+            System.out.println("White\n");
             board.renderBoard(game.getBoard(), "white");
+            System.out.println("Black\n");
             board.renderBoard(game.getBoard(), "black");
+            if(color.equals("observer")) {
+                System.out.println();
+            }
             return "Joined game " + gameID + " as " + color +"\n";
         }
         throw new Exception("400 Bad Format");
@@ -124,7 +127,9 @@ public class ChessClient {
     }
 
     public String quit() throws Exception{
-        logout();
+        if(loggedIn) {
+            logout();
+        }
         System.out.println("Goodbye!");
         return "quit";
     }
@@ -141,7 +146,7 @@ public class ChessClient {
         return """
                 - help Displays this message
                 - logout Logs user out, transitions back to pre game
-                - create <game-name> Create a new game
+                - create <name> Create a new game
                 - list List all games
                 - join <WHITE/BLACK> <gameID> Join game as white or black
                 - join <empty> <gameID> Join game as observer

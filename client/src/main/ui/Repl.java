@@ -19,7 +19,9 @@ public class Repl {
             var line = scanner.nextLine();
             try {
                 command = client.eval(line);
-                System.out.println(command);
+                if(!command.equalsIgnoreCase("quit")) {
+                    System.out.println(command);
+                }
             }
             catch (Throwable e) {
                 System.out.println(e.getMessage());

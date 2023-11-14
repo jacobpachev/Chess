@@ -24,10 +24,11 @@ public class RenderBoard {
         System.out.print(SET_BG_COLOR_LIGHT_GREY);
         System.out.print(SET_TEXT_COLOR_BLACK);
         System.out.print(letters);
-        System.out.print(RESET_BG_COLOR);
-        System.out.println(RESET_TEXT_COLOR);
+        System.out.println(UNICODE_ESCAPE+"[0m");
         for(var j : range) {
+            System.out.print(SET_TEXT_BOLD);
             System.out.print(SET_BG_COLOR_LIGHT_GREY);
+            System.out.print(SET_TEXT_COLOR_BLACK);
             System.out.print(" "+j+" ");
             var offset = (j % 2 == 0) ? 1 : 0;
             for (var i : rangeReversed) {
@@ -42,18 +43,19 @@ public class RenderBoard {
                 }
                 System.out.print(" "+pieceStr+" ");
             }
+            System.out.print(SET_TEXT_BOLD);
             System.out.print(SET_BG_COLOR_LIGHT_GREY);
             System.out.print(SET_TEXT_COLOR_BLACK);
             System.out.print(" "+j+" ");
-            System.out.print(RESET_BG_COLOR);
-            System.out.println(RESET_TEXT_COLOR);
+            System.out.println(UNICODE_ESCAPE+"[0m");
 
 
         }
+        System.out.print(SET_TEXT_BOLD);
         System.out.print(SET_BG_COLOR_LIGHT_GREY);
         System.out.print(SET_TEXT_COLOR_BLACK);
         System.out.print(letters);
-        System.out.print(RESET_BG_COLOR);
-        System.out.println(RESET_TEXT_COLOR);
+        System.out.println(UNICODE_ESCAPE+"[0m");
+
     }
 }
