@@ -8,9 +8,7 @@ import serverFacade.ServerFacade;
 public class ClientMain {
 
     public static void main(String[] args) throws Exception {
-        var serverFacade = new ServerFacade("http://localhost:8080");
-        var user = serverFacade.addUser(new User("test", "jacob", "jap@byu.edu"));
-        var token = user.getAuthToken();
-        serverFacade.addGame(new CreateRequest("test", token));
+        var repl = new Repl();
+        repl.run();
     }
 }
