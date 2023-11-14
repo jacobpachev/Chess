@@ -5,9 +5,7 @@ import chess.GameAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import models.User;
-import requests.CreateRequest;
-import requests.LoginRequest;
-import requests.LogoutRequest;
+import requests.*;
 import responses.*;
 
 import java.io.IOException;
@@ -50,6 +48,15 @@ public class ServerFacade {
         return makeRequest("/game", "POST", req, CreateResponse.class, req.getAuthToken());
     }
 
+    public JoinResponse joinGame(JoinRequest req) throws Exception {
+        return makeRequest("/game", "PUT", req, JoinResponse.class, req.getAuthToken());
+    }
+
+    public ListResponse listGames(ListRequest req) throws Exception {
+        return makeRequest("/game", "GET", null, ListResponse.class, req.getAuthToken());
+    }
+
+
     private <T> T makeRequest(String path, String method, Object req, Class<T> T, String token) throws Exception {
         var url = (new URI(serverUrl+path).toURL());
         var http = (HttpURLConnection) url.openConnection();
@@ -58,7 +65,9 @@ public class ServerFacade {
             http.addRequestProperty("Authorization", token);
         }
         http.setDoOutput(true);
-        writeBody(req, http);
+        if(req != null) {
+            writeBody(req, http);
+        }
         http.connect();
         if(http.getResponseCode() != 200) {
             throw new Exception("Error "+http.getResponseCode()+" "+http.getResponseMessage());

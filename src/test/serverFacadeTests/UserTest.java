@@ -2,18 +2,13 @@ package serverFacadeTests;
 
 import dataAccess.DataAccessException;
 import dataAccess.UserDAO;
-import dataAccess.GameDAO;
 import dataAccess.AuthDAO;
 import models.User;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import requests.LoginRequest;
-import requests.LogoutRequest;
 import serverFacade.ServerFacade;
-
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

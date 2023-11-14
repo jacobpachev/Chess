@@ -43,7 +43,6 @@ public class GameService {
             return new CreateResponse("Error: " +e.getMessage());
         }
         assert game != null;
-        System.out.println(game);
         return new CreateResponse(game.getGameID());
     }
 
@@ -56,7 +55,6 @@ public class GameService {
         var token = req.getAuthToken();
         var color = req.getPlayerColor();
         var gameID = req.getGameID();
-        System.out.println(gameID);
         if(gameID < 1000) {
             return new JoinResponse("Error: bad request");
         }

@@ -38,6 +38,7 @@ public class GameHandler {
             case "Error: unauthorized" -> response.status(401);
             default -> response.status(500);
         }
+        System.out.println(jsonBody.toJson(listResponse));
         return jsonBody.toJson(listResponse);
     }
 

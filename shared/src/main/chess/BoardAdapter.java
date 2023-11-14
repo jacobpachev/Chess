@@ -17,7 +17,6 @@ public class BoardAdapter implements JsonDeserializer<ChessBoard> {
         var json = gsonBuilder.create();
         var piecesStr = new StringBuilder();
         els = Arrays.toString(els).split(",");
-        System.out.println(Arrays.toString(els));
         var pieces = new ArrayList<ChessPiece>();
         var positions = new ArrayList<ChessPosition>();
         for(int j = 0; j+10 < els.length; j+=10) {
