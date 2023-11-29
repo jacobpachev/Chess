@@ -25,4 +25,5 @@ public class WSFacade extends Endpoint {
     public void send(String msg) throws Exception {
         this.session.getBasicRemote().sendText(msg);
     }
+
 }

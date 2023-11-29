@@ -4,6 +4,7 @@ import chess.GameImpl;
 import models.User;
 import requests.*;
 import serverFacade.ServerFacade;
+import webSocketMessages.userCommands.JoinPlayer;
 import websocket.WSFacade;
 
 import java.util.*;
@@ -130,6 +131,7 @@ public class ChessClient {
             if(color.equals("observer")) {
                 System.out.println();
             }
+
             return "Joined game " + gameID + " as " + color +"\n";
         }
         throw new Exception("400 Bad Format");
