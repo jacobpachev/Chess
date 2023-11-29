@@ -4,15 +4,22 @@ import handlers.AdminHandler;
 import handlers.UserHandler;
 import handlers.GameHandler;
 
+import org.eclipse.jetty.websocket.api.annotations.*;
+import org.eclipse.jetty.websocket.api.*;
 import spark.Spark;
+
+@WebSocket
 public class Server {
     public static void main(String[] args) {
         int port = 8080;
         Spark.port(port);
+
         var adminHandler = new AdminHandler();
         var gameHandler = new GameHandler();
         var userHandler = new UserHandler();
         Spark.externalStaticFileLocation("web");
+        Spark.webSocket("/connect", Server.class);
+        Spark.get("/echo:msg", (req, res) -> "HTTP response: " + req.params(":msg"));
         Spark.delete("/db", (req, res) -> adminHandler.clear(res));
         Spark.post("/user", userHandler::register);
         Spark.post("/session", userHandler::login);
@@ -41,6 +48,12 @@ public class Server {
         });
 
         Spark.before((request, response) -> response.header("Access-Control-Allow-Origin", "*"));
+    }
+
+    @OnWebSocketMessage
+    public void onMessage(Session session, String message) throws Exception {
+        System.out.printf("Received: %s", message);
+        session.getRemote().sendString("WebSocket response: " + message);
     }
 
 }

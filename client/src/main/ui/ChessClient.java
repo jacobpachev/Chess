@@ -4,6 +4,7 @@ import chess.GameImpl;
 import models.User;
 import requests.*;
 import serverFacade.ServerFacade;
+import websocket.WSFacade;
 
 import java.util.*;
 
@@ -11,9 +12,16 @@ public class ChessClient {
     boolean loggedIn = false;
     String token = null;
     ServerFacade server;
+    WSFacade wsFacade;
 
     public ChessClient(String serverUrl) {
         server = new ServerFacade(serverUrl);
+        try {
+            wsFacade = new WSFacade();
+        }
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public String eval(String line) throws Exception {
@@ -23,6 +31,7 @@ public class ChessClient {
         return switch (command) {
             default -> help();
             case "quit" -> quit();
+            case "notify" -> notify(params);
             case "register" -> register(params);
             case "login" -> login(params);
             case "logout" -> logout();
@@ -30,6 +39,11 @@ public class ChessClient {
             case "list" -> list();
             case "join" -> join(params);
         };
+    }
+
+    public String notify(String[] params) throws Exception {
+        wsFacade.send(String.join(" ", params));
+        return "\n";
     }
 
     public String register(String[] params) throws Exception {
@@ -105,10 +119,14 @@ public class ChessClient {
             var board = new RenderBoard();
             var game = new GameImpl();
             game.getBoard().resetBoard();
-            System.out.println("White\n");
-            board.renderBoard(game.getBoard(), "white");
-            System.out.println("Black\n");
-            board.renderBoard(game.getBoard(), "black");
+            if(color.equals("white") || color.equals("observer")) {
+                System.out.println("White\n");
+                board.renderBoard(game.getBoard(), "white");
+            }
+            if(color.equals("black") || color.equals("observer")) {
+                System.out.println("Black\n");
+                board.renderBoard(game.getBoard(), "black");
+            }
             if(color.equals("observer")) {
                 System.out.println();
             }

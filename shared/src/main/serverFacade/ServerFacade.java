@@ -33,31 +33,31 @@ public class ServerFacade {
     }
 
     public RegisterResponse addUser(User user) throws Exception {
-        return makeRequest("/user", "POST", user, RegisterResponse.class, "");
+        return makeRequestGeneric("/user", "POST", user, RegisterResponse.class, "");
     }
 
     public LoginResponse loginUser(LoginRequest user) throws Exception {
-        return makeRequest("/session", "POST", user, LoginResponse.class, "");
+        return makeRequestGeneric("/session", "POST", user, LoginResponse.class, "");
     }
 
     public LogoutResponse logoutUser(String token) throws Exception {
-        return makeRequest("/session", "DELETE", null, LogoutResponse.class, token);
+        return makeRequestGeneric("/session", "DELETE", null, LogoutResponse.class, token);
     }
 
     public CreateResponse addGame(CreateRequest req) throws Exception {
-        return makeRequest("/game", "POST", req, CreateResponse.class, req.getAuthToken());
+        return makeRequestGeneric("/game", "POST", req, CreateResponse.class, req.getAuthToken());
     }
 
     public JoinResponse joinGame(JoinRequest req) throws Exception {
-        return makeRequest("/game", "PUT", req, JoinResponse.class, req.getAuthToken());
+        return makeRequestGeneric("/game", "PUT", req, JoinResponse.class, req.getAuthToken());
     }
 
     public ListResponse listGames(ListRequest req) throws Exception {
-        return makeRequest("/game", "GET", null, ListResponse.class, req.getAuthToken());
+        return makeRequestGeneric("/game", "GET", null, ListResponse.class, req.getAuthToken());
     }
 
 
-    private <T> T makeRequest(String path, String method, Object req, Class<T> T, String token) throws Exception {
+    private <T> T makeRequestGeneric(String path, String method, Object req, Class<T> T, String token) throws Exception {
         var url = (new URI(serverUrl+path).toURL());
         var http = (HttpURLConnection) url.openConnection();
         http.setRequestMethod(method);
@@ -92,10 +92,8 @@ public class ServerFacade {
         if(connection.getContentLength() < 0) {
             try(var inputStream = connection.getInputStream()) {
                 var reader = new InputStreamReader(inputStream);
-                if(responseClass != null) {
-                    gsonBuilder.registerTypeAdapter(ChessGame.class, new GameAdapter());
-                    response = gsonBuilder.create().fromJson(reader, responseClass);
-                }
+                gsonBuilder.registerTypeAdapter(ChessGame.class, new GameAdapter());
+                response = gsonBuilder.create().fromJson(reader, responseClass);
             }
         }
         return response;
