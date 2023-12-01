@@ -45,7 +45,7 @@ public class ServerFacade {
     }
 
     public CreateResponse addGame(CreateRequest req) throws Exception {
-        return makeRequestGeneric("/game", "POST", req, CreateResponse.class, req.getAuthToken());
+        return makeRequestGeneric("/game", "POST", req.getGameName(), CreateResponse.class, req.getAuthToken());
     }
 
     public JoinResponse joinGame(JoinRequest req) throws Exception {

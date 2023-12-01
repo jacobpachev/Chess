@@ -1,28 +1,69 @@
 package ui;
 
+import chess.ChessGame;
 import chess.GameImpl;
+import com.google.gson.Gson;
+import models.Game;
 import models.User;
 import requests.*;
 import serverFacade.ServerFacade;
+import webSocketMessages.serverMessages.LoadGame;
+import webSocketMessages.serverMessages.Notification;
+import webSocketMessages.userCommands.JoinObserver;
 import webSocketMessages.userCommands.JoinPlayer;
 import websocket.WSFacade;
 
 import java.util.*;
 
+import static ui.EscapeSequences.UNICODE_ESCAPE;
+
 public class ChessClient {
     boolean loggedIn = false;
     String token = null;
     ServerFacade server;
+    String curUser;
+    String curColor;
     WSFacade wsFacade;
+    Gson json = new Gson();
 
     public ChessClient(String serverUrl) {
         server = new ServerFacade(serverUrl);
         try {
-            wsFacade = new WSFacade();
+            wsFacade = new WSFacade(this);
         }
         catch(Exception e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void notify(String message) {
+        try {
+            message = new Gson().fromJson(message, Notification.class).getMessage();
+        }
+        catch (Exception ignored) {}
+        try {
+            message = new Gson().fromJson(message, Error.class).getMessage();
+        }
+        catch (Exception ignored) {}
+        System.out.println(EscapeSequences.SET_TEXT_BOLD+EscapeSequences.SET_TEXT_COLOR_RED+message);
+        System.out.println(UNICODE_ESCAPE+"[0m");
+        System.out.print(">>>");
+    }
+
+    public void redraw(ChessGame game) {
+        if(game.getBoard().getBoard().isEmpty()) {
+            game.getBoard().resetBoard();
+        }
+        if(curColor.equals("white") || curColor.equals("observer")) {
+            System.out.println("\nwhite");
+            new RenderBoard().renderBoard(game.getBoard(), "white");
+        }
+        System.out.println();
+        if(curColor.equals("black") || curColor.equals("observer")) {
+            System.out.println("black");
+            new RenderBoard().renderBoard(game.getBoard(), "black");
+        }
+        System.out.print(">>> ");
     }
 
     public String eval(String line) throws Exception {
@@ -32,7 +73,6 @@ public class ChessClient {
         return switch (command) {
             default -> help();
             case "quit" -> quit();
-            case "notify" -> notify(params);
             case "register" -> register(params);
             case "login" -> login(params);
             case "logout" -> logout();
@@ -42,10 +82,7 @@ public class ChessClient {
         };
     }
 
-    public String notify(String[] params) throws Exception {
-        wsFacade.send(String.join(" ", params));
-        return "\n";
-    }
+
 
     public String register(String[] params) throws Exception {
         if(loggedIn) {
@@ -57,6 +94,7 @@ public class ChessClient {
             var password = params[1];
             var email = params[2];
             token = server.addUser(new User(username, password, email)).getAuthToken();
+            curUser = username;
             return "Registered "+username+"\n";
         }
         throw new Exception("400 Bad Format");
@@ -69,6 +107,7 @@ public class ChessClient {
         if(params.length >= 2) {
             var username = params[0];
             var password = params[1];
+            curUser = username;
             token = server.loginUser(new LoginRequest(username, password)).getAuthToken();
             loggedIn = true;
             return "Logged in as "+username+"\n";
@@ -117,6 +156,8 @@ public class ChessClient {
             }
             server.joinGame(new JoinRequest(token, color, Integer.parseInt(gameID)));
             color = (color.isEmpty()) ? "observer" : color;
+            curColor = color;
+            var teamColor = (color.equals("white")) ? ChessGame.TeamColor.WHITE : ChessGame.TeamColor.BLACK;
             var board = new RenderBoard();
             var game = new GameImpl();
             game.getBoard().resetBoard();
@@ -130,8 +171,12 @@ public class ChessClient {
             }
             if(color.equals("observer")) {
                 System.out.println();
+                wsFacade.send(json.toJson(new JoinObserver(token, Integer.parseInt(gameID), curUser)));
             }
 
+            if(!color.equals("observer")) {
+                wsFacade.send(json.toJson(new JoinPlayer(token, Integer.parseInt(gameID), teamColor, curUser)));
+            }
             return "Joined game " + gameID + " as " + color +"\n";
         }
         throw new Exception("400 Bad Format");

@@ -28,18 +28,21 @@ public class GameHandler {
             case "Error: unauthorized" -> response.status(401);
             default -> response.status(500);
         }
-        System.out.println(jsonBody.toJson(listResponse));
         return jsonBody.toJson(listResponse);
     }
 
     public Object create(Request request, Response response) {
-        var gameName = "";
-        try {
-            gameName = request.body().split(":")[2].replace("}", "");
+        String gameName;
+        if(!request.body().contains("{")) {
+            gameName = request.body().replace("\"", "");
         }
-        catch (ArrayIndexOutOfBoundsException e) {
-            response.status(400);
-            return "{\"message\":\"Error: bad request\"}";
+        else {
+            try {
+                gameName = new Gson().fromJson(request.body(), CreateRequest.class).getGameName();
+            } catch (Exception e) {
+                response.status(400);
+                return "{\"message\":\"Error: bad request\"}";
+            }
         }
         gameName = gameName.strip().replace("\"", "");
         var createRequest = new CreateRequest(gameName,  request.headers("Authorization"));
@@ -54,21 +57,13 @@ public class GameHandler {
     }
 
     public Object join(Request request, Response response) {
-        var jsonBody = "";
         JoinRequest joinRequest;
         var authToken = request.headers("Authorization");
         if(authToken.length() != 36) {
             response.status(401);
             return gson.toJson(new JoinResponse("Error: unauthorized"));
         }
-        if(request.body().split(":")[0].contains("playerColor")) {
-            jsonBody = "{\"authToken\": \"" + authToken + "\", " + request.body().replace("{", "");
-        }
-        else {
-            jsonBody = "{\"authToken\": \"" + authToken + "\", \"playerColor\": null, " + request.body().replace("{", "");
-        }
-
-        joinRequest = gson.fromJson(jsonBody, JoinRequest.class);
+        joinRequest = gson.fromJson(request.body(), JoinRequest.class);
         var joinResponse = gameService.join(joinRequest);
         switch (joinResponse.getMessage()) {
             case null -> response.status(200);
