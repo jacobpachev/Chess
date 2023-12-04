@@ -9,6 +9,8 @@ import requests.*;
 import serverFacade.ServerFacade;
 import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Notification;
+import webSocketMessages.serverMessages.Error;
+import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.JoinObserver;
 import webSocketMessages.userCommands.JoinPlayer;
 import websocket.WSFacade;
@@ -32,20 +34,19 @@ public class ChessClient {
             wsFacade = new WSFacade(this);
         }
         catch(Exception e) {
+
             System.out.println(e.getMessage());
         }
     }
 
     public void notify(String message) {
-        try {
+        if(message.contains("NOTIFICATION")) {
             message = new Gson().fromJson(message, Notification.class).getMessage();
         }
-        catch (Exception ignored) {}
-        try {
-            message = new Gson().fromJson(message, Error.class).getMessage();
+        if(message.contains("ERROR")) {
+            message = new Gson().fromJson(message, Error.class).getErrorMessage();
         }
-        catch (Exception ignored) {}
-        System.out.println(EscapeSequences.SET_TEXT_BOLD+EscapeSequences.SET_TEXT_COLOR_RED+message);
+        System.out.println("\n"+EscapeSequences.SET_TEXT_BOLD+EscapeSequences.SET_TEXT_COLOR_RED+message);
         System.out.println(UNICODE_ESCAPE+"[0m");
         System.out.print(">>>");
     }
@@ -154,7 +155,13 @@ public class ChessClient {
                 color = params[0];
                 gameID = params[1];
             }
-            server.joinGame(new JoinRequest(token, color, Integer.parseInt(gameID)));
+            try {
+                server.joinGame(new JoinRequest(token, color, Integer.parseInt(gameID)));
+            }
+            catch(Exception e) {
+                wsFacade.send(e.getMessage());
+                throw new Exception(e.getMessage());
+            }
             color = (color.isEmpty()) ? "observer" : color;
             curColor = color;
             var teamColor = (color.equals("white")) ? ChessGame.TeamColor.WHITE : ChessGame.TeamColor.BLACK;

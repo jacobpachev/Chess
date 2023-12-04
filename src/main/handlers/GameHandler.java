@@ -6,6 +6,7 @@ import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import requests.*;
 import responses.JoinResponse;
+import server.websocket.ConnectionManager;
 import services.GameService;
 import spark.Request;
 import spark.Response;
@@ -13,12 +14,9 @@ import spark.Response;
 
 
 public class GameHandler {
-    Gson gson;
-    GameService gameService;
-    public GameHandler() {
-        gson = new Gson();
-        gameService = new GameService();
-    }
+    Gson gson = new Gson();
+    GameService gameService = new GameService();
+
     public Object list(Request request, Response response) {
         var jsonBody = new Gson();
         var listRequest = new ListRequest(request.headers("Authorization"));
@@ -57,6 +55,7 @@ public class GameHandler {
     }
 
     public Object join(Request request, Response response) {
+        System.out.println("Join called");
         JoinRequest joinRequest;
         var authToken = request.headers("Authorization");
         if(authToken.length() != 36) {
@@ -64,6 +63,7 @@ public class GameHandler {
             return gson.toJson(new JoinResponse("Error: unauthorized"));
         }
         joinRequest = gson.fromJson(request.body(), JoinRequest.class);
+        joinRequest.setAuthToken(authToken);
         var joinResponse = gameService.join(joinRequest);
         switch (joinResponse.getMessage()) {
             case null -> response.status(200);

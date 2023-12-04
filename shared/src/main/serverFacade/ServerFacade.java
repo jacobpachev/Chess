@@ -70,6 +70,7 @@ public class ServerFacade {
         }
         http.connect();
         if(http.getResponseCode() != 200) {
+
             throw new Exception("Error "+http.getResponseCode()+" "+http.getResponseMessage());
         }
         return readBody(T, http);

@@ -65,14 +65,15 @@ public class GameService {
                 return new JoinResponse("Error: bad request");
             }
         }
+
         try {
             var gameDAO = new GameDAO();
             var authDAO = new AuthDAO();
             Game game = gameDAO.find(req.getGameID());
             String username = authDAO.findByToken(token).getUsername();
+            System.out.println(username+" joining "+gameID+" as "+color);
+
             if(color == null || color.isEmpty()) {
-                gameDAO.find(req.getGameID()).setBlackUsername(null);
-                gameDAO.find(req.getGameID()).setWhiteUsername(null);
                 gameDAO.claimPlayerSpot(username, req.getGameID(), "");
                 return new JoinResponse();
             }
