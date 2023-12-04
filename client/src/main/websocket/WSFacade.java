@@ -33,7 +33,7 @@ public class WSFacade extends Endpoint {
                     clientUi.notify("\n" + message);
                 }
                 else {
-                    clientUi.redraw(game);
+                    clientUi.redraw(game, null, null);
                 }
             }
         });

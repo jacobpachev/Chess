@@ -1,7 +1,9 @@
 package ui;
 
 import chess.ChessGame;
+import chess.ChessPosition;
 import chess.GameImpl;
+import chess.MyPosition;
 import com.google.gson.Gson;
 import models.Game;
 import models.User;
@@ -21,11 +23,13 @@ import static ui.EscapeSequences.UNICODE_ESCAPE;
 
 public class ChessClient {
     boolean loggedIn = false;
+    boolean playing = false;
     String token = null;
     ServerFacade server;
     String curUser;
     String curColor;
     WSFacade wsFacade;
+    ChessGame game;
     Gson json = new Gson();
 
     public ChessClient(String serverUrl) {
@@ -51,20 +55,21 @@ public class ChessClient {
         System.out.print(">>>");
     }
 
-    public void redraw(ChessGame game) {
+    public String redraw(ChessGame game, ArrayList<ChessPosition> highlights, ChessPosition pieceToHighlight) {
         if(game.getBoard().getBoard().isEmpty()) {
             game.getBoard().resetBoard();
         }
         if(curColor.equals("white") || curColor.equals("observer")) {
             System.out.println("\nwhite");
-            new RenderBoard().renderBoard(game.getBoard(), "white");
+            new RenderBoard().renderBoard(game.getBoard(), "white", highlights, pieceToHighlight);
         }
         System.out.println();
-        if(curColor.equals("black") || curColor.equals("observer")) {
+        if(curColor.equals("black")) {
             System.out.println("black");
-            new RenderBoard().renderBoard(game.getBoard(), "black");
+            new RenderBoard().renderBoard(game.getBoard(), "black", highlights, pieceToHighlight);
         }
         System.out.print(">>> ");
+        return "";
     }
 
     public String eval(String line) throws Exception {
@@ -80,6 +85,8 @@ public class ChessClient {
             case "create" -> create(params);
             case "list" -> list();
             case "join" -> join(params);
+            case "redraw" -> redraw(game, null, null);
+            case "highlight" -> highlight(params);
         };
     }
 
@@ -170,11 +177,11 @@ public class ChessClient {
             game.getBoard().resetBoard();
             if(color.equals("white") || color.equals("observer")) {
                 System.out.println("White\n");
-                board.renderBoard(game.getBoard(), "white");
+                board.renderBoard(game.getBoard(), "white", null, null);
             }
-            if(color.equals("black") || color.equals("observer")) {
+            if(color.equals("black")) {
                 System.out.println("Black\n");
-                board.renderBoard(game.getBoard(), "black");
+                board.renderBoard(game.getBoard(), "black", null, null);
             }
             if(color.equals("observer")) {
                 System.out.println();
@@ -184,10 +191,34 @@ public class ChessClient {
             if(!color.equals("observer")) {
                 wsFacade.send(json.toJson(new JoinPlayer(token, Integer.parseInt(gameID), teamColor, curUser)));
             }
+            playing = true;
+            this.game = game;
             return "Joined game " + gameID + " as " + color +"\n";
         }
         throw new Exception("400 Bad Format");
     }
+
+    public String highlight(String[] params) throws Exception {
+        if(!playing) {
+            throw new Exception("Must be in a game to highlight legal moves");
+        }
+        var piecePos = params[0];
+        if(piecePos.length() != 2) {
+            throw new Exception("400 Bad Format");
+        }
+        var colLetter = piecePos.substring(0,1);
+        var col = (int) colLetter.charAt(0)-96;
+        var row = Integer.parseInt(piecePos.substring(1));
+        var pos = new MyPosition(row, col);
+        System.out.println("Row: "+row+", Col: "+col);
+        var highlights = new ArrayList<ChessPosition>();
+        for(var move : game.validMoves(pos)) {
+            highlights.add(move.getEndPosition());
+        }
+        redraw(game, highlights, pos);
+        return "\n";
+    }
+
 
     public String logout() throws Exception {
         if(!loggedIn) {
@@ -214,6 +245,16 @@ public class ChessClient {
                     - login <username> <password> Logs an already registered user in
                     - register <username> <password> <email> Registers a user with given info
                     """;
+        }
+        else if (playing) {
+            return """
+            - help Displays this message
+            - redraw Redraws the board
+            - leave Leaves current game
+            - make move <start-pos> <end-pos> Makes a move from start-pos to end-pos(e.g. e2 e4)
+            - resign Resigns current game
+            - highlight <piece-pos> Highlights all legal moves for selected piece
+            """;
         }
         return """
                 - help Displays this message
