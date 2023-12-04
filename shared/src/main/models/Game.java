@@ -76,6 +76,7 @@ public class Game {
     public void addObserver(String obsName) {
         observers.add(obsName);
     }
+    public void removeObserver(String obsName) {observers.remove(obsName);}
 
     public void setGameID(Integer gameID) {
         this.gameID = gameID;

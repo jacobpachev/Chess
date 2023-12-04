@@ -266,6 +266,29 @@ public class GameDAO {
         }
     }
 
+    public void removeObserver(String obsName, Integer gameID) throws DataAccessException {
+        var gson = new Gson();
+        var game = find(gameID);
+        try (var conn = dataBase.getConnection()) {
+            var sqlStr = """
+                        UPDATE game
+                        SET observers = ?
+                        WHERE gameID = ?
+                        """;
+            try(var preparedStatement = conn.prepareStatement(sqlStr)) {
+                game.removeObserver(obsName);
+                preparedStatement.setString(1, gson.toJson(game.getObservers()));
+                preparedStatement.setInt(2, gameID);
+
+                preparedStatement.executeUpdate();
+            }
+
+        }
+        catch (SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
+    }
+
     public int getID(String gameName) {
         gameName = gameName.replaceAll("\"", "");
         try {

@@ -48,7 +48,12 @@ public class RenderBoard {
                 var pieceStr = " ";
                 if(piece != null) {
                     var pieceColor = (piece.getTeamColor() == ChessGame.TeamColor.WHITE) ? SET_TEXT_COLOR_RED : SET_TEXT_COLOR_BLUE;
-                    pieceStr = piece.toString().toUpperCase();
+                    if(highlights != null) {
+                        if (highlights.contains(curPos) || (pieceToHighlight.equals(curPos))) {
+                            pieceColor = SET_TEXT_COLOR_BLACK;
+                        }
+                    }
+                        pieceStr = piece.toString().toUpperCase();
                     System.out.print(pieceColor);
                 }
                 System.out.print(" "+pieceStr+" ");

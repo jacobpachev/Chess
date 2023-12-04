@@ -15,6 +15,7 @@ import webSocketMessages.serverMessages.Error;
 import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.JoinObserver;
 import webSocketMessages.userCommands.JoinPlayer;
+import webSocketMessages.userCommands.Leave;
 import websocket.WSFacade;
 
 import java.util.*;
@@ -30,6 +31,7 @@ public class ChessClient {
     String curColor;
     WSFacade wsFacade;
     ChessGame game;
+    Integer curID;
     Gson json = new Gson();
 
     public ChessClient(String serverUrl) {
@@ -87,6 +89,7 @@ public class ChessClient {
             case "join" -> join(params);
             case "redraw" -> redraw(game, null, null);
             case "highlight" -> highlight(params);
+            case "leave" -> leave();
         };
     }
 
@@ -193,6 +196,7 @@ public class ChessClient {
             }
             playing = true;
             this.game = game;
+            curID = Integer.valueOf(gameID);
             return "Joined game " + gameID + " as " + color +"\n";
         }
         throw new Exception("400 Bad Format");
@@ -210,7 +214,6 @@ public class ChessClient {
         var col = (int) colLetter.charAt(0)-96;
         var row = Integer.parseInt(piecePos.substring(1));
         var pos = new MyPosition(row, col);
-        System.out.println("Row: "+row+", Col: "+col);
         var highlights = new ArrayList<ChessPosition>();
         for(var move : game.validMoves(pos)) {
             highlights.add(move.getEndPosition());
@@ -219,6 +222,15 @@ public class ChessClient {
         return "\n";
     }
 
+
+    public String leave() throws Exception {
+        if(!playing) {
+            throw new Exception("Must be in a game to leave it");
+        }
+        playing = false;
+        wsFacade.send(new Gson().toJson(new Leave(token, curID)));
+        return "Left game";
+    }
 
     public String logout() throws Exception {
         if(!loggedIn) {
