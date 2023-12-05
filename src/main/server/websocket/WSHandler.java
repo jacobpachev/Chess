@@ -39,6 +39,7 @@ public class WSHandler {
             case JOIN_OBSERVER -> joinObserver(session, message);
             case JOIN_PLAYER -> joinPlayer(session, message);
             case MAKE_MOVE -> move(session, message);
+            case RESIGN -> resign(session, message);
             case LEAVE -> leave(session, message);
         }
     }
@@ -115,13 +116,43 @@ public class WSHandler {
             board.resetBoard();
             game.getGame().setBoard(board);
         }
-        game.getGame().makeMove(gameCmd.getMove());
+        try {
+            game.getGame().makeMove(gameCmd.getMove());
+        }
+        catch (Exception e) {
+            session.getRemote().sendString(new Gson().toJson(new Error(message)));
+            return;
+        }
         game.setGame(game.getGame());
         gameDao.setGame(game);
         var notification = new Notification(userName+" moved "+gameCmd.getMove());
         connectionManager.sendToAll("", new LoadGame(game.getGame()));
         connectionManager.sendToAll(userName, notification);
 
+        if(game.getGame().isInCheck(ChessGame.TeamColor.WHITE)) {
+            connectionManager.sendToAll("", new Notification(game.getWhiteUsername()+" is in check!"));
+        }
+
+        if(game.getGame().isInCheck(ChessGame.TeamColor.BLACK)) {
+            connectionManager.sendToAll("", new Notification(game.getBlackUsername()+" is in check!"));
+        }
+
+        if(game.getGame().isInCheckmate(ChessGame.TeamColor.WHITE)) {
+            connectionManager.sendToAll("", new Notification(game.getWhiteUsername()+" got checkmated!"));
+        }
+
+        if(game.getGame().isInCheckmate(ChessGame.TeamColor.BLACK)) {
+            connectionManager.sendToAll("", new Notification(game.getBlackUsername()+" got checkmated!"));
+        }
+
+    }
+
+    private void resign(Session session, String message) throws Exception {
+        var gameCmd = json.fromJson(message, Resign.class);
+        var userName = findUser(session, gameCmd.getAuthString());
+        connectionManager.remove(userName);
+        var notification = new Notification(userName+" resigned");
+        connectionManager.sendToAll(userName, notification);
     }
 
     private void leave(Session session, String message) throws Exception {

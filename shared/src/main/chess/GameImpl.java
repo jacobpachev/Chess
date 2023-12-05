@@ -114,7 +114,6 @@ public class GameImpl implements ChessGame{
                 board = new MyBoard(otherBoard);
                 throw new InvalidMoveException("Attempted to move while in check");
             }
-            checkEnPassant(teamTurn);
             setTeamTurn(otherTeam);
         }
         else {

@@ -40,13 +40,13 @@ public class Pawn implements ChessPiece{
         ChessPiece side2;
         if(board.getPiece(squareRight) != null){
             side1 = board.getPiece(squareRight);
-            if(side1.getTeamColor() != getTeamColor() && side1.isFirstMove() && row == rightRow) {
+            if(side1.getTeamColor() != getTeamColor() && row == rightRow) {
                 moves.add(new MyChessMove(myPosition, new MyPosition(row+direction,col+1)));
             }
         }
         if(board.getPiece(squareLeft) != null){
             side2 = board.getPiece(squareLeft);
-            if(side2.getTeamColor() != getTeamColor() && side2.isFirstMove() && row == rightRow) {
+            if(side2.getTeamColor() != getTeamColor() && row == rightRow) {
                 moves.add(new MyChessMove(myPosition, new MyPosition(row+direction,col-1)));
             }
         }

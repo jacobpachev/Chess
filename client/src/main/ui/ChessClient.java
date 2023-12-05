@@ -10,10 +10,7 @@ import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Notification;
 import webSocketMessages.serverMessages.Error;
 import webSocketMessages.serverMessages.ServerMessage;
-import webSocketMessages.userCommands.JoinObserver;
-import webSocketMessages.userCommands.JoinPlayer;
-import webSocketMessages.userCommands.Leave;
-import webSocketMessages.userCommands.MakeMove;
+import webSocketMessages.userCommands.*;
 import websocket.WSFacade;
 
 import java.util.*;
@@ -23,6 +20,7 @@ import static ui.EscapeSequences.UNICODE_ESCAPE;
 public class ChessClient {
     boolean loggedIn = false;
     boolean playing = false;
+    boolean canMove = false;
     String token = null;
     ServerFacade server;
     String curUser;
@@ -96,6 +94,7 @@ public class ChessClient {
             case "redraw" -> redraw(game, null, null);
             case "highlight" -> highlight(params);
             case "move" -> move(params);
+            case "resign" -> resign();
             case "leave" -> leave();
         };
     }
@@ -202,6 +201,7 @@ public class ChessClient {
                 wsFacade.send(json.toJson(new JoinPlayer(token, Integer.parseInt(gameID), teamColor, curUser)));
             }
             playing = true;
+            canMove = true;
             this.game = game;
             curID = Integer.valueOf(gameID);
             return "Joined game " + gameID + " as " + color +"\n";
@@ -230,6 +230,9 @@ public class ChessClient {
     }
 
     public String move(String[] params) throws Exception {
+        if(!canMove) {
+            throw new Exception("Must be in a game to move");
+        }
         var startStr = params[0];
         var endStr = params[1];
         var colStart = (int) startStr.substring(0,1).charAt(0)-96;
@@ -243,11 +246,21 @@ public class ChessClient {
         return "Moved from "+startStr+" to "+endStr;
     }
 
+    public String resign() throws Exception {
+        if(!playing) {
+            throw new Exception("Must be in a game to resign");
+        }
+        canMove = false;
+        wsFacade.send(new Gson().toJson(new Resign(token, curID)));
+        return "Resigned, you lost :(";
+    }
+
     public String leave() throws Exception {
         if(!playing) {
             throw new Exception("Must be in a game to leave it");
         }
         playing = false;
+        canMove = false;
         wsFacade.send(new Gson().toJson(new Leave(token, curID)));
         return "Left game";
     }

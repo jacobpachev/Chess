@@ -110,14 +110,12 @@ public class GameDAO {
                     gameName = query.getString("gameName");
                     observers = gson.fromJson(query.getString("observers"), List.class);
                     chessGame = gson.fromJson(query.getString("game"), ChessGame.class);
-                    System.out.println(query.getString("game"));
                 }
             }
         }
         catch(SQLException e) {
             throw new DataAccessException(e.getMessage());
         }
-        System.out.println(gson.toJson(chessGame));
         var game = new Game(whiteUsername, blackUsername, gameName, chessGame);
         game.setGameID(gameID);
         if(observers == null) {
