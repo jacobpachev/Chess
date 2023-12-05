@@ -12,15 +12,20 @@ public class MyBoard implements ChessBoard{
         this.board = board;
     }
     public MyBoard(ChessBoard other) {
-       board = (HashMap<ChessPosition, ChessPiece>) other.getBoard().clone();
+        board = new HashMap<>();
+        for (int i = 8; i >= 1; i--) {
+            for (int j = 1; j <= 8; j++) {
+                board.put(new MyPosition(i, j), other.getPiece(new MyPosition(i, j)));
+            }
+        }
+
     }
-    public HashMap<ChessPosition, ChessPiece> getBoard() {return board;}
+
     @Override
     public void addPiece(ChessPosition position, ChessPiece piece) {
         board.put(position, piece);
     }
 
-    public void clearSquare(ChessPosition position) { board.put(position, null); }
 
     @Override
     public ChessPiece getPiece(ChessPosition position) {
@@ -59,6 +64,8 @@ public class MyBoard implements ChessBoard{
         addPiece(new MyPosition(1, 4), new Queen(ChessGame.TeamColor.WHITE));
         addPiece(new MyPosition(8, 4), new Queen(ChessGame.TeamColor.BLACK));
     }
+
+
 
     @Override
     public String toString() {

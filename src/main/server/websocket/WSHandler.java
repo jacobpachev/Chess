@@ -1,7 +1,8 @@
 package server.websocket;
 
-import chess.ChessGame;
+import chess.*;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dataAccess.AuthDAO;
 import dataAccess.DataAccessException;
 import dataAccess.GameDAO;
@@ -14,10 +15,7 @@ import webSocketMessages.serverMessages.Error;
 import webSocketMessages.serverMessages.LoadGame;
 import webSocketMessages.serverMessages.Notification;
 import webSocketMessages.serverMessages.ServerMessage;
-import webSocketMessages.userCommands.JoinObserver;
-import webSocketMessages.userCommands.JoinPlayer;
-import webSocketMessages.userCommands.Leave;
-import webSocketMessages.userCommands.UserGameCommand;
+import webSocketMessages.userCommands.*;
 
 import javax.websocket.OnError;
 import java.io.IOException;
@@ -40,6 +38,7 @@ public class WSHandler {
         switch (gameCmd.getCommandType()) {
             case JOIN_OBSERVER -> joinObserver(session, message);
             case JOIN_PLAYER -> joinPlayer(session, message);
+            case MAKE_MOVE -> move(session, message);
             case LEAVE -> leave(session, message);
         }
     }
@@ -86,7 +85,6 @@ public class WSHandler {
         var userName = findUser(session, gameCmd.getAuthString());
         if(!userName.equals(userInGame)) {
             session.getRemote().sendString(json.toJson(new Error("Error 403: Color already taken")));
-            System.out.println("Sending: "+json.toJson(new Error("Error 403: Color already taken")));
             return;
         }
         var notification = new Notification(userName+" joined as "+color);
@@ -94,6 +92,38 @@ public class WSHandler {
         connectionManager.sendToAll(userName, notification);
         session.getRemote().sendString(json.toJson(new LoadGame(game.getGame())));
     }
+
+    private void move(Session session, String message) throws Exception {
+        var gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(ChessPosition.class, new PosAdapter());
+        gsonBuilder.registerTypeAdapter(ChessMove.class, new MoveAdapter());
+
+        var gameCmd = gsonBuilder.create().fromJson(message, MakeMove.class);
+        var userName = findUser(session, gameCmd.getAuthString());
+        var gameDao = new GameDAO();
+        var game = gameDao.find(gameCmd.getGameID());
+        var board = game.getGame().getBoard();
+        var empty = true;
+        for (int i = 8; i >= 1; i--) {
+            for (int j = 1; j <= 8; j++) {
+                if(board.getPiece(new MyPosition(i, j)) != null) {
+                    empty = false;
+                }
+            }
+        }
+        if(empty) {
+            board.resetBoard();
+            game.getGame().setBoard(board);
+        }
+        game.getGame().makeMove(gameCmd.getMove());
+        game.setGame(game.getGame());
+        gameDao.setGame(game);
+        var notification = new Notification(userName+" moved "+gameCmd.getMove());
+        connectionManager.sendToAll("", new LoadGame(game.getGame()));
+        connectionManager.sendToAll(userName, notification);
+
+    }
+
     private void leave(Session session, String message) throws Exception {
         var gameCmd = json.fromJson(message, Leave.class);
         var userName = findUser(session, gameCmd.getAuthString());
@@ -113,7 +143,6 @@ public class WSHandler {
                 color = "black";
             }
         }
-        System.out.println("Color: "+color);
         if(color.isEmpty()) {
             gameDao.removeObserver(userName, game.getGameID());
         }

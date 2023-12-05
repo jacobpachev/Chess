@@ -55,7 +55,6 @@ public class GameHandler {
     }
 
     public Object join(Request request, Response response) {
-        System.out.println("Join called");
         JoinRequest joinRequest;
         var authToken = request.headers("Authorization");
         if(authToken.length() != 36) {

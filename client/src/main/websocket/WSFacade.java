@@ -27,7 +27,7 @@ public class WSFacade extends Endpoint {
                 if(message.contains("board")) {
                     var gsonBuilder = new GsonBuilder();
                     gsonBuilder.registerTypeAdapter(ChessGame.class, new GameAdapter());
-                    game = gsonBuilder.create().fromJson(message, ChessGame.class);
+                    game = gsonBuilder.create().fromJson(message, LoadGame.class).getGame();
                 }
                 if(game == null) {
                     clientUi.notify("\n" + message);

@@ -1,9 +1,6 @@
 package ui;
 
-import chess.ChessGame;
-import chess.ChessPosition;
-import chess.GameImpl;
-import chess.MyPosition;
+import chess.*;
 import com.google.gson.Gson;
 import models.Game;
 import models.User;
@@ -16,6 +13,7 @@ import webSocketMessages.serverMessages.ServerMessage;
 import webSocketMessages.userCommands.JoinObserver;
 import webSocketMessages.userCommands.JoinPlayer;
 import webSocketMessages.userCommands.Leave;
+import webSocketMessages.userCommands.MakeMove;
 import websocket.WSFacade;
 
 import java.util.*;
@@ -58,7 +56,15 @@ public class ChessClient {
     }
 
     public String redraw(ChessGame game, ArrayList<ChessPosition> highlights, ChessPosition pieceToHighlight) {
-        if(game.getBoard().getBoard().isEmpty()) {
+        var empty = true;
+        for (int i = 8; i >= 1; i--) {
+            for (int j = 1; j <= 8; j++) {
+                if(game.getBoard().getPiece(new MyPosition(i, j)) != null) {
+                    empty = false;
+                }
+            }
+        }
+        if(empty) {
             game.getBoard().resetBoard();
         }
         if(curColor.equals("white") || curColor.equals("observer")) {
@@ -89,6 +95,7 @@ public class ChessClient {
             case "join" -> join(params);
             case "redraw" -> redraw(game, null, null);
             case "highlight" -> highlight(params);
+            case "move" -> move(params);
             case "leave" -> leave();
         };
     }
@@ -222,6 +229,19 @@ public class ChessClient {
         return "\n";
     }
 
+    public String move(String[] params) throws Exception {
+        var startStr = params[0];
+        var endStr = params[1];
+        var colStart = (int) startStr.substring(0,1).charAt(0)-96;
+        var rowStart = Integer.parseInt(startStr.substring(1));
+        var startPos = new MyPosition(rowStart, colStart);
+        var colEnd = (int) endStr.substring(0,1).charAt(0)-96;
+        var rowEnd = Integer.parseInt(endStr.substring(1));
+        var endPos = new MyPosition(rowEnd, colEnd);
+        var move = new MyChessMove(startPos, endPos);
+        wsFacade.send(new Gson().toJson(new MakeMove(token, curID, move)));
+        return "Moved from "+startStr+" to "+endStr;
+    }
 
     public String leave() throws Exception {
         if(!playing) {
@@ -263,7 +283,7 @@ public class ChessClient {
             - help Displays this message
             - redraw Redraws the board
             - leave Leaves current game
-            - make move <start-pos> <end-pos> Makes a move from start-pos to end-pos(e.g. e2 e4)
+            - move <start-pos> <end-pos> Makes a move from start-pos to end-pos(e.g. e2 e4)
             - resign Resigns current game
             - highlight <piece-pos> Highlights all legal moves for selected piece
             """;

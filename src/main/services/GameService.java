@@ -71,7 +71,6 @@ public class GameService {
             var authDAO = new AuthDAO();
             Game game = gameDAO.find(req.getGameID());
             String username = authDAO.findByToken(token).getUsername();
-            System.out.println(username+" joining "+gameID+" as "+color);
 
             if(color == null || color.isEmpty()) {
                 gameDAO.claimPlayerSpot(username, req.getGameID(), "");

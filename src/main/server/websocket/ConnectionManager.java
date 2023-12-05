@@ -21,7 +21,7 @@ public class ConnectionManager {
         connections.remove(username);
     }
 
-    public void sendToAll(String exceptUserName, Notification notification) throws IOException {
+    public void sendToAll(String exceptUserName, Object notification) throws IOException {
         var connectionsToRemove = new ArrayList<Connection>();
         for(var connection : connections.values()) {
             if(connection.session.isOpen()) {

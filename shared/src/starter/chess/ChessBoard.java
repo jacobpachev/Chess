@@ -21,7 +21,6 @@ public interface ChessBoard {
      */
     ChessPiece getPiece(ChessPosition position);
 
-    HashMap<ChessPosition, ChessPiece> getBoard();
 
     /**
      * Sets the board to the default starting board
@@ -29,5 +28,4 @@ public interface ChessBoard {
      */
     void resetBoard();
 
-    void clearSquare(ChessPosition position);
 }

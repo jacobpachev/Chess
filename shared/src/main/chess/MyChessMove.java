@@ -46,6 +46,8 @@ public class MyChessMove implements ChessMove {
     }
 
     public String toString() {
-        return("Start: "+start+", End: "+end);
+        var startPos = ((char)(start.getColumn()+96))+String.valueOf(start.getRow());
+        var endPos = ((char)(end.getColumn()+96))+String.valueOf(end.getRow());
+        return startPos+" to "+endPos;
     }
 }

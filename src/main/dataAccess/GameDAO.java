@@ -110,12 +110,14 @@ public class GameDAO {
                     gameName = query.getString("gameName");
                     observers = gson.fromJson(query.getString("observers"), List.class);
                     chessGame = gson.fromJson(query.getString("game"), ChessGame.class);
+                    System.out.println(query.getString("game"));
                 }
             }
         }
         catch(SQLException e) {
             throw new DataAccessException(e.getMessage());
         }
+        System.out.println(gson.toJson(chessGame));
         var game = new Game(whiteUsername, blackUsername, gameName, chessGame);
         game.setGameID(gameID);
         if(observers == null) {
@@ -161,6 +163,22 @@ public class GameDAO {
             game.addObserver(observer);
         }
         return game;
+    }
+
+    public void setGame(Game game) throws DataAccessException {
+        var gameID = game.getGameID();
+        var gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(ChessGame.class, new GameAdapter());
+        try(var conn = dataBase.getConnection()) {
+            try(var preparedStatement = conn.prepareStatement("UPDATE game SET game = ? WHERE gameID = ?")) {
+                preparedStatement.setString(1, gsonBuilder.create().toJson(game.getGame()));
+                preparedStatement.setString(2, String.valueOf(gameID));
+                preparedStatement.executeUpdate();
+            }
+        }
+        catch(SQLException e) {
+            throw new DataAccessException(e.getMessage());
+        }
     }
 
     /**
