@@ -7,7 +7,7 @@ public class GameImpl implements ChessGame{
     TeamColor teamTurn;
     ChessBoard board;
     public GameImpl(){
-        teamTurn = TeamColor.WHITE;
+        teamTurn = null;
         board = new MyBoard();
     }
     @Override

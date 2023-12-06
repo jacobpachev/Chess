@@ -20,6 +20,7 @@ public class ConnectionManager {
     public void remove(String username) {
         connections.remove(username);
     }
+    public void removeAll() {connections.clear();}
 
     public void sendToAll(String exceptUserName, Object notification) throws IOException {
         var connectionsToRemove = new ArrayList<Connection>();

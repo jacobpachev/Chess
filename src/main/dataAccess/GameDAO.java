@@ -173,6 +173,11 @@ public class GameDAO {
                 preparedStatement.setString(2, String.valueOf(gameID));
                 preparedStatement.executeUpdate();
             }
+            try(var preparedStatement = conn.prepareStatement("UPDATE game SET observers = ? WHERE gameID = ?")) {
+                preparedStatement.setString(1, gsonBuilder.create().toJson(game.getObservers()));
+                preparedStatement.setString(2, String.valueOf(gameID));
+                preparedStatement.executeUpdate();
+            }
         }
         catch(SQLException e) {
             throw new DataAccessException(e.getMessage());

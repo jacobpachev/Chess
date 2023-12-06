@@ -19,6 +19,7 @@ import webSocketMessages.userCommands.*;
 
 import javax.websocket.OnError;
 import java.io.IOException;
+import java.time.temporal.Temporal;
 
 
 @WebSocket
@@ -46,7 +47,6 @@ public class WSHandler {
 
     @OnError
     public void onError(Session session, Throwable t) throws IOException {
-        System.out.println("sending "+t.getMessage());
         session.getRemote().sendString("Error "+t.getMessage());
     }
 
@@ -55,6 +55,7 @@ public class WSHandler {
         var gameId = gameCmd.getGameID();
         var gameDao = new GameDAO();
         var game = gameDao.find(gameId);
+        var userName = findUser(session, gameCmd.getAuthString());
         if(game.getGameName() == null) {
             session.getRemote().sendString(json.toJson(new Error("Error 403: Bad request, game id not in database")));
             return;
@@ -67,7 +68,10 @@ public class WSHandler {
             session.getRemote().sendString(json.toJson(new Error("Error 401: Unauthorized")));
             throw new DataAccessException(e.getMessage());
         }
-        var userName = auth.getUsername();
+        if(!game.getObservers().contains(userName)) {
+            game.addObserver(userName);
+        }
+        gameDao.setGame(game);
         var notification = new Notification(userName+" now observing");
 
         connectionManager.add(userName, session);
@@ -89,6 +93,10 @@ public class WSHandler {
             return;
         }
         var notification = new Notification(userName+" joined as "+color);
+        if(color.equals(ChessGame.TeamColor.WHITE)) {
+            game.getGame().setTeamTurn(ChessGame.TeamColor.WHITE);
+            gameDao.setGame(game);
+        }
         connectionManager.add(userName, session);
         connectionManager.sendToAll(userName, notification);
         session.getRemote().sendString(json.toJson(new LoadGame(game.getGame())));
@@ -104,6 +112,32 @@ public class WSHandler {
         var gameDao = new GameDAO();
         var game = gameDao.find(gameCmd.getGameID());
         var board = game.getGame().getBoard();
+        ChessGame.TeamColor color;
+        if(game.getWhiteUsername().equals(userName)) {
+            color = ChessGame.TeamColor.WHITE;
+        }
+        else if(game.getBlackUsername().equals(userName)) {
+            color = ChessGame.TeamColor.BLACK;
+        }
+        else {
+            color = null;
+        }
+        if(color == null) {
+            session.getRemote().sendString(new Gson().toJson(new Error("Error: Observer can not move")));
+            return;
+        }
+        else if(!color.equals(game.getGame().getTeamTurn())) {
+            session.getRemote().sendString(new Gson().toJson(new Error("Error: Not "+color+"'s turn")));
+            return;
+        }
+        if(!connectionManager.connections.containsKey(userName)) {
+            session.getRemote().sendString(new Gson().toJson(new Error("Error: Not allowed to move, not connected")));
+            return;
+        }
+        if(gameDao.find(game.getGameID()).getGame().getTeamTurn() == null) {
+            session.getRemote().sendString(new Gson().toJson(new Error("Error: Game over, no moving allowed")));
+            return;
+        }
         var empty = true;
         for (int i = 8; i >= 1; i--) {
             for (int j = 1; j <= 8; j++) {
@@ -139,20 +173,38 @@ public class WSHandler {
 
         if(game.getGame().isInCheckmate(ChessGame.TeamColor.WHITE)) {
             connectionManager.sendToAll("", new Notification(game.getWhiteUsername()+" got checkmated!"));
+            game.getGame().setTeamTurn(null);
+            game.setGame(game.getGame());
+            gameDao.setGame(game);
         }
 
         if(game.getGame().isInCheckmate(ChessGame.TeamColor.BLACK)) {
             connectionManager.sendToAll("", new Notification(game.getBlackUsername()+" got checkmated!"));
+            game.getGame().setTeamTurn(null);
+            game.setGame(game.getGame());
+            gameDao.setGame(game);
+
         }
 
     }
 
     private void resign(Session session, String message) throws Exception {
         var gameCmd = json.fromJson(message, Resign.class);
+        var gameDao = new GameDAO();
+        var game = gameDao.find(gameCmd.getGameID());
         var userName = findUser(session, gameCmd.getAuthString());
-        connectionManager.remove(userName);
+        if(game.getObservers().contains(userName)) {
+            session.getRemote().sendString(new Gson().toJson(new Error("Observer can't resign")));
+            return;
+        }
+        if(game.getGame().getTeamTurn() == null) {
+            session.getRemote().sendString(new Gson().toJson(new Error("Can not resign after game conclusion")));
+            return;
+        }
+        game.getGame().setTeamTurn(null);
+        gameDao.setGame(game);
         var notification = new Notification(userName+" resigned");
-        connectionManager.sendToAll(userName, notification);
+        connectionManager.sendToAll("", notification);
     }
 
     private void leave(Session session, String message) throws Exception {
